@@ -21,7 +21,6 @@
 
 - [Overview](#-overview)
 - [Key Features](#-key-features)
-- [Architecture](#-architecture)
 - [Quick Start Guide](#-quick-start-guide)
 - [Data Types Supported](#-data-types-supported)
 - [Intelligence Agents](#-intelligence-agents)
@@ -85,42 +84,6 @@ This demo demonstrates:
 - **Data Visualization** - Automatic generation of tables, charts, and graphs
 - **Cross-Type Analysis** - Correlate data across structured, semi-structured, and unstructured sources
 
----
-
-## 🏛️ Architecture
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                    Snowflake Intelligence                        │
-│                    manufacturing_intelligence                    │
-└─────────────────────────────────────────────────────────────────┘
-                              │
-                              ├──────────────────────────────────┐
-                              │                                  │
-                    ┌─────────▼─────────┐          ┌───────────▼──────────┐
-                    │  Semantic View      │          │  Cortex Search        │
-                    │  manufacturing_    │          │  manufacturing_       │
-                    │  operations        │          │  documents_search     │
-                    └─────────┬─────────┘          └───────────┬──────────┘
-                               │                                  │
-        ┌──────────────────────┼──────────────────────┐         │
-        │                      │                        │         │
-┌───────▼────────┐  ┌──────────▼──────────┐  ┌────────▼────────┐
-│  Structured    │  │  Semi-Structured    │  │  Unstructured    │
-│  Data          │  │  Data               │  │  Data            │
-├────────────────┤  ├─────────────────────┤  ├──────────────────┤
-│ • supply_chain │  │ • connected_       │  │ • maintenance_   │
-│ • production   │  │   products         │  │   logs            │
-│ • inventory    │  │ • iot_sensors      │  │ • quality_        │
-│                │  │ • supplier_        │  │   reports        │
-│                │  │   documents        │  │ • supplier_      │
-│                │  │ • product_         │  │   communications │
-│                │  │   configurations   │  │ • engineering_    │
-│                │  │                    │  │   docs            │
-│                │  │                    │  │ • incident_       │
-│                │  │                    │  │   reports        │
-└────────────────┘  └────────────────────┘  └──────────────────┘
-```
 
 ### Intelligence Agents Location
 
@@ -578,24 +541,6 @@ This demonstration is provided as-is for educational and demonstration purposes.
 
 ---
 
-## 📞 Support & Resources
-
-### Snowflake Resources
-- [Snowflake Intelligence Documentation](https://docs.snowflake.com/en/user-guide/intelligence-overview)
-- [Semantic Views Guide](https://docs.snowflake.com/en/user-guide/semantic-views)
-- [Cortex Search Documentation](https://docs.snowflake.com/en/user-guide/cortex-search)
-- [Intelligence Agents Guide](https://docs.snowflake.com/en/user-guide/agents)
-
-### Related Documentation
-- [Snowflake Cortex Functions](https://docs.snowflake.com/en/sql-reference/functions/cortex)
-- [Dynamic Tables](https://docs.snowflake.com/en/user-guide/dynamic-tables-overview)
-
----
-
-<div align="center">
-
-**Created for:** KPMG Manufacturing Event  
-**Presenter:** Bharath Suresh, Senior Partner Solutions Engineer at Snowflake
 
 ![Snowflake](https://img.shields.io/badge/Powered_by-Snowflake-29B5E8?style=for-the-badge&logo=snowflake&logoColor=white)
 
