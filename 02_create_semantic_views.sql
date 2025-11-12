@@ -121,7 +121,7 @@ DIMENSIONS (
   cp.alert_status AS CASE 
     WHEN cp.telemetry_data:sensors[0]:type::STRING = 'temperature' AND cp.telemetry_data:sensors[0]:value::NUMBER > 90 THEN 'High Temperature Alert'
     WHEN cp.telemetry_data:sensors[0]:type::STRING = 'battery_level' AND cp.telemetry_data:sensors[0]:value::NUMBER < 20 THEN 'Low Battery Alert'
-    WHEN ARRAY_SIZE(cp.telemetry_data:diagnostics:error_codes::ARRAY) > 0 THEN 'Error Codes Present'
+    WHEN ARRAY_SIZE(cp.telemetry_data:diagnostics:error_codes) > 0 THEN 'Error Codes Present'
     ELSE 'Normal'
   END,
   cp.created_at AS cp.created_at
@@ -155,8 +155,8 @@ DIMENSIONS (
   iot.operating_mode AS iot.machine_state:operating_mode::STRING,
   iot.calibration_technician AS iot.calibration_data:calibration_technician::STRING,
   iot.overall_status AS CASE 
-    WHEN ARRAY_SIZE(iot.machine_state:alerts::ARRAY) > 0 THEN 'Alert'
-    WHEN ARRAY_SIZE(iot.machine_state:warnings::ARRAY) > 0 THEN 'Warning'
+    WHEN ARRAY_SIZE(iot.machine_state:alerts) > 0 THEN 'Alert'
+    WHEN ARRAY_SIZE(iot.machine_state:warnings) > 0 THEN 'Warning'
     ELSE 'Normal'
   END,
   iot.created_at AS iot.created_at
@@ -164,8 +164,8 @@ DIMENSIONS (
 METRICS (
   iot.avg_primary_sensor_value AS AVG(iot.sensor_readings[0]:value::NUMBER),
   iot.avg_uptime_hours AS AVG(iot.machine_state:uptime_hours::NUMBER),
-  iot.total_alert_count AS SUM(ARRAY_SIZE(iot.machine_state:alerts::ARRAY)),
-  iot.total_warning_count AS SUM(ARRAY_SIZE(iot.machine_state:warnings::ARRAY)),
+  iot.total_alert_count AS SUM(ARRAY_SIZE(iot.machine_state:alerts)),
+  iot.total_warning_count AS SUM(ARRAY_SIZE(iot.machine_state:warnings)),
   iot.sensor_reading_count AS COUNT(*)
 );
 
