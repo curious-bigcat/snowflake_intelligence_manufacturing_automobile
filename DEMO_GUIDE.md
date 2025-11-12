@@ -3,6 +3,30 @@
 ## Overview
 This demo showcases Snowflake Intelligence capabilities for Vehicle Manufacturing, addressing key challenges such as data silos, real-time visibility, and scalable AI adoption.
 
+## Architecture
+
+### Unified Semantic View
+- **Name:** `manufacturing_operations`
+- **Purpose:** Single semantic view consolidating all structured and semi-structured data
+- **Tables Included:**
+  - Structured: `supply_chain`, `production`, `inventory`
+  - Semi-structured: `connected_products`, `iot_sensors`, `supplier_documents`, `product_configurations`
+  - Unstructured: `maintenance_logs`, `quality_reports`, `supplier_communications`, `engineering_docs`, `incident_reports`
+- **Features:** Relationships defined between tables, dimensions and metrics for business-friendly querying
+
+### Unified Cortex Search Service
+- **Name:** `manufacturing_documents_search`
+- **Purpose:** Single search service for all unstructured text data
+- **Data Sources:** Combines text from maintenance logs, quality reports, supplier communications, engineering docs, and incident reports
+- **Features:** Hybrid (vector + keyword) search with semantic reranking
+
+### Intelligence Agents
+- **Syntax:** Uses `FROM SPECIFICATION` with YAML format
+- **Tools:** Each agent has access to:
+  - `Analyst1` (cortex_analyst_text_to_sql): Queries the unified semantic view
+  - `Search1` (cortex_search): Searches the unified Cortex Search service
+- **Configuration:** Tool resources configured per agent with appropriate filters
+
 ## Demo Structure
 
 ### Part 1: Supply Chain Intelligence
@@ -239,18 +263,22 @@ Reference the customer case studies from reference.MD:
 ## Troubleshooting
 
 ### If agents don't have enough context:
-- Ensure semantic views are created and populated
-- Check that agents have SELECT privileges on semantic views
+- Ensure the unified semantic view (`manufacturing_operations`) is created and populated
+- Ensure the unified Cortex Search service (`manufacturing_documents_search`) is created and indexed
+- Check that agents have proper tool_resources configured (semantic_view and cortex_search service)
 - Verify that the Intelligence object is properly configured
+- Check that agents have USAGE privileges on the semantic view and Cortex Search service
 
 ### If queries return generic responses:
 - Make queries more specific to Vehicle Manufacturing domain
 - Reference specific data elements (suppliers, parts, production lines, vehicle models)
 - Ask for analysis rather than just data retrieval
+- Verify that agents have access to both Analyst1 (semantic view) and Search1 (Cortex Search) tools
 
 ### If performance is slow:
-- Ensure warehouse is running
-- Check that semantic views are optimized
+- Ensure warehouse is running (especially CORTEX_SEARCH_WH for Cortex Search service)
+- Check that the unified semantic view is optimized
+- Verify Cortex Search service is fully indexed (check INDEXING_STATE)
 - Consider using smaller datasets for demo
 
 ---
@@ -263,8 +291,9 @@ Reference the customer case studies from reference.MD:
    - Tailor agent instructions to their use cases
 
 2. **Expand Capabilities:**
-   - Add more semantic views (e.g., customer data, financial data)
-   - Create specialized agents for specific roles
+   - Add more tables to the unified semantic view (e.g., customer data, financial data)
+   - Add more unstructured data sources to the unified Cortex Search service
+   - Create specialized agents for specific roles with custom tool configurations
    - Integrate with external tools via APIs
 
 3. **Production Deployment:**
