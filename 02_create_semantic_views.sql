@@ -127,14 +127,14 @@ DIMENSIONS (
   cp.created_at AS cp.created_at
 )
 METRICS (
-  cp.avg_primary_sensor_value AS AVG(TRY_CAST(cp.telemetry_data:sensors[0]:value AS NUMBER)),
-  cp.avg_battery_health AS AVG(TRY_CAST(cp.telemetry_data:diagnostics:battery_health AS NUMBER)),
-  cp.avg_location_lat AS AVG(TRY_CAST(cp.location_data:latitude AS NUMBER)),
-  cp.avg_location_lon AS AVG(TRY_CAST(cp.location_data:longitude AS NUMBER)),
-  cp.avg_current_speed AS AVG(TRY_CAST(cp.location_data:speed AS NUMBER)),
-  cp.avg_driver_behavior_score AS AVG(TRY_CAST(cp.driver_info:behavior_score AS NUMBER)),
-  cp.total_trip_distance_miles AS SUM(TRY_CAST(cp.trip_metadata:distance_miles AS NUMBER)),
-  cp.avg_fuel_efficiency AS AVG(TRY_CAST(cp.trip_metadata:fuel_efficiency AS NUMBER)),
+  cp.avg_primary_sensor_value AS AVG(cp.telemetry_data:sensors[0]:value::NUMBER),
+  cp.avg_battery_health AS AVG(cp.telemetry_data:diagnostics:battery_health::NUMBER),
+  cp.avg_location_lat AS AVG(cp.location_data:latitude::NUMBER),
+  cp.avg_location_lon AS AVG(cp.location_data:longitude::NUMBER),
+  cp.avg_current_speed AS AVG(cp.location_data:speed::NUMBER),
+  cp.avg_driver_behavior_score AS AVG(cp.driver_info:behavior_score::NUMBER),
+  cp.total_trip_distance_miles AS SUM(cp.trip_metadata:distance_miles::NUMBER),
+  cp.avg_fuel_efficiency AS AVG(cp.trip_metadata:fuel_efficiency::NUMBER),
   cp.telemetry_record_count AS COUNT(*)
 );
 
@@ -162,10 +162,10 @@ DIMENSIONS (
   iot.created_at AS iot.created_at
 )
 METRICS (
-  iot.avg_primary_sensor_value AS AVG(TRY_CAST(iot.sensor_readings[0]:value AS NUMBER)),
-  iot.avg_uptime_hours AS AVG(TRY_CAST(iot.machine_state:uptime_hours AS NUMBER)),
-  iot.total_alert_count AS SUM(ARRAY_SIZE(TRY_CAST(iot.machine_state:alerts AS ARRAY))),
-  iot.total_warning_count AS SUM(ARRAY_SIZE(TRY_CAST(iot.machine_state:warnings AS ARRAY))),
+  iot.avg_primary_sensor_value AS AVG(iot.sensor_readings[0]:value::NUMBER),
+  iot.avg_uptime_hours AS AVG(iot.machine_state:uptime_hours::NUMBER),
+  iot.total_alert_count AS SUM(ARRAY_SIZE(iot.machine_state:alerts::ARRAY)),
+  iot.total_warning_count AS SUM(ARRAY_SIZE(iot.machine_state:warnings::ARRAY)),
   iot.sensor_reading_count AS COUNT(*)
 );
 
@@ -188,8 +188,8 @@ DIMENSIONS (
   sd.created_at AS sd.created_at
 )
 METRICS (
-  sd.total_document_value AS SUM(TRY_CAST(sd.extracted_data:total_value AS NUMBER)),
-  sd.avg_audit_score AS AVG(TRY_CAST(sd.compliance_info:audit_score AS NUMBER)),
+  sd.total_document_value AS SUM(sd.extracted_data:total_value::NUMBER),
+  sd.avg_audit_score AS AVG(sd.compliance_info:audit_score::NUMBER),
   sd.document_count AS COUNT(*)
 );
 
@@ -210,11 +210,11 @@ DIMENSIONS (
   pc.created_at AS pc.created_at
 )
 METRICS (
-  pc.avg_length_mm AS AVG(TRY_CAST(pc.specifications:dimensions:length_mm AS NUMBER)),
-  pc.avg_width_mm AS AVG(TRY_CAST(pc.specifications:dimensions:width_mm AS NUMBER)),
-  pc.avg_weight_kg AS AVG(TRY_CAST(pc.specifications:weight_kg AS NUMBER)),
-  pc.avg_max_speed_kmh AS AVG(TRY_CAST(pc.specifications:performance:max_speed_kmh AS NUMBER)),
-  pc.avg_total_components AS AVG(TRY_CAST(pc.bill_of_materials:total_components AS NUMBER)),
+  pc.avg_length_mm AS AVG(pc.specifications:dimensions:length_mm::NUMBER),
+  pc.avg_width_mm AS AVG(pc.specifications:dimensions:width_mm::NUMBER),
+  pc.avg_weight_kg AS AVG(pc.specifications:weight_kg::NUMBER),
+  pc.avg_max_speed_kmh AS AVG(pc.specifications:performance:max_speed_kmh::NUMBER),
+  pc.avg_total_components AS AVG(pc.bill_of_materials:total_components::NUMBER),
   pc.configuration_count AS COUNT(*)
 );
 
