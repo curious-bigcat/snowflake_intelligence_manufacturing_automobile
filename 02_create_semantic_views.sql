@@ -15,26 +15,33 @@ TABLES (
   -- Structured Data Tables
   sc AS MANUFACTURING_DEMO.DATA.supply_chain PRIMARY KEY (supplier_id, part_number, order_date),
   prod AS MANUFACTURING_DEMO.DATA.production PRIMARY KEY (production_line_id, machine_id, batch_number, start_time),
-  inv AS MANUFACTURING_DEMO.DATA.inventory PRIMARY KEY (warehouse_id, part_number),
+  inv AS MANUFACTURING_DEMO.DATA.inventory PRIMARY KEY (warehouse_id, part_number) UNIQUE (part_number),
   
   -- Semi-structured Data Tables
   cp AS MANUFACTURING_DEMO.DATA.connected_products PRIMARY KEY (vehicle_id, telemetry_timestamp),
   iot AS MANUFACTURING_DEMO.DATA.iot_sensors PRIMARY KEY (sensor_id, timestamp),
-  sd AS MANUFACTURING_DEMO.DATA.supplier_documents PRIMARY KEY (document_id),
-  pc AS MANUFACTURING_DEMO.DATA.product_configurations PRIMARY KEY (product_id, version),
+  sd AS MANUFACTURING_DEMO.DATA.supplier_documents PRIMARY KEY (document_id) UNIQUE (supplier_id),
+  pc AS MANUFACTURING_DEMO.DATA.product_configurations PRIMARY KEY (product_id, version) UNIQUE (product_id),
   
   -- Unstructured Data Tables
-  ml AS MANUFACTURING_DEMO.DATA.maintenance_logs PRIMARY KEY (log_id),
-  qr AS MANUFACTURING_DEMO.DATA.quality_reports PRIMARY KEY (report_id),
-  scm AS MANUFACTURING_DEMO.DATA.supplier_communications PRIMARY KEY (communication_id),
-  ed AS MANUFACTURING_DEMO.DATA.engineering_docs PRIMARY KEY (doc_id),
+  ml AS MANUFACTURING_DEMO.DATA.maintenance_logs PRIMARY KEY (log_id) UNIQUE (machine_id),
+  qr AS MANUFACTURING_DEMO.DATA.quality_reports PRIMARY KEY (report_id) UNIQUE (batch_number),
+  scm AS MANUFACTURING_DEMO.DATA.supplier_communications PRIMARY KEY (communication_id) UNIQUE (supplier_id),
+  ed AS MANUFACTURING_DEMO.DATA.engineering_docs PRIMARY KEY (doc_id) UNIQUE (product_id),
   ir AS MANUFACTURING_DEMO.DATA.incident_reports PRIMARY KEY (incident_id)
 )
 RELATIONSHIPS (
-  -- Note: Relationships require referenced columns to be PRIMARY KEY or UNIQUE
-  -- Since most foreign keys are not primary keys, we'll rely on semantic view
-  -- to enable cross-table queries through shared dimensions (product_id, supplier_id, etc.)
-  -- without explicit relationship definitions
+  -- Supply Chain Relationships
+  sc_inventory AS sc(part_number) REFERENCES inv(part_number),
+  scm_supplier AS scm(supplier_id) REFERENCES sd(supplier_id),
+  
+  -- Production Relationships
+  prod_product_config AS prod(product_id) REFERENCES pc(product_id),
+  prod_quality_reports AS prod(batch_number) REFERENCES qr(batch_number),
+  prod_maintenance AS prod(machine_id) REFERENCES ml(machine_id),
+  
+  -- Engineering Docs Relationships
+  ed_product_config AS ed(product_id) REFERENCES pc(product_id)
 )
 DIMENSIONS (
   -- Supply Chain Dimensions
