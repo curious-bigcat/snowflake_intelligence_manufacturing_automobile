@@ -155,8 +155,6 @@ DIMENSIONS (
   iot.created_at AS iot.created_at
 )
 METRICS (
-  iot.alert_records_count AS SUM(CASE WHEN ARRAY_SIZE(iot.machine_state:alerts) > 0 THEN 1 ELSE 0 END),
-  iot.warning_records_count AS SUM(CASE WHEN ARRAY_SIZE(iot.machine_state:warnings) > 0 THEN 1 ELSE 0 END),
   iot.sensor_reading_count AS COUNT(*)
 );
 
