@@ -28,8 +28,8 @@ CREATE WAREHOUSE IF NOT EXISTS CORTEX_SEARCH_WH
 -- Searches maintenance log entries, issues found, actions taken, and recommendations
 CREATE OR REPLACE CORTEX SEARCH SERVICE maintenance_logs_search
   ON log_entry
-  ATTRIBUTES log_id, machine_id, maintenance_date, technician_id, maintenance_type
   PRIMARY KEY (log_id)
+  ATTRIBUTES log_id, machine_id, maintenance_date, technician_id, maintenance_type
   WAREHOUSE = CORTEX_SEARCH_WH
   TARGET_LAG = '1 day'
   EMBEDDING_MODEL = 'snowflake-arctic-embed-l-v2.0'
@@ -57,8 +57,8 @@ CREATE OR REPLACE CORTEX SEARCH SERVICE maintenance_logs_search
 -- Searches quality inspection notes, defect descriptions, root cause analysis, and corrective actions
 CREATE OR REPLACE CORTEX SEARCH SERVICE quality_reports_search
   ON inspection_notes
-  ATTRIBUTES report_id, batch_number, product_id, report_date, inspector_id
   PRIMARY KEY (report_id)
+  ATTRIBUTES report_id, batch_number, product_id, report_date, inspector_id
   WAREHOUSE = CORTEX_SEARCH_WH
   TARGET_LAG = '1 day'
   EMBEDDING_MODEL = 'snowflake-arctic-embed-l-v2.0'
@@ -86,8 +86,8 @@ CREATE OR REPLACE CORTEX SEARCH SERVICE quality_reports_search
 -- Searches supplier communication content, summaries, and action items
 CREATE OR REPLACE CORTEX SEARCH SERVICE supplier_communications_search
   ON content
-  ATTRIBUTES communication_id, supplier_id, communication_date, communication_type, subject
   PRIMARY KEY (communication_id)
+  ATTRIBUTES communication_id, supplier_id, communication_date, communication_type, subject
   WAREHOUSE = CORTEX_SEARCH_WH
   TARGET_LAG = '1 day'
   EMBEDDING_MODEL = 'snowflake-arctic-embed-l-v2.0'
@@ -114,8 +114,8 @@ CREATE OR REPLACE CORTEX SEARCH SERVICE supplier_communications_search
 -- Searches engineering document content, design notes, test procedures, and change history
 CREATE OR REPLACE CORTEX SEARCH SERVICE engineering_docs_search
   ON document_content
-  ATTRIBUTES doc_id, product_id, doc_type, doc_date, author, version
   PRIMARY KEY (doc_id)
+  ATTRIBUTES doc_id, product_id, doc_type, doc_date, author, version
   WAREHOUSE = CORTEX_SEARCH_WH
   TARGET_LAG = '1 day'
   EMBEDDING_MODEL = 'snowflake-arctic-embed-l-v2.0'
@@ -144,8 +144,8 @@ CREATE OR REPLACE CORTEX SEARCH SERVICE engineering_docs_search
 -- Searches incident descriptions, witness statements, investigation findings, and preventive measures
 CREATE OR REPLACE CORTEX SEARCH SERVICE incident_reports_search
   ON incident_description
-  ATTRIBUTES incident_id, incident_date, location, severity, status
   PRIMARY KEY (incident_id)
+  ATTRIBUTES incident_id, incident_date, location, severity, status
   WAREHOUSE = CORTEX_SEARCH_WH
   TARGET_LAG = '1 day'
   EMBEDDING_MODEL = 'snowflake-arctic-embed-l-v2.0'
