@@ -36,11 +36,12 @@ DIMENSIONS (
   END
 )
 METRICS (
-  sc.delivery_days AS DATEDIFF(day, sc.order_date, sc.delivery_date),
-  sc.quantity AS sc.quantity,
-  sc.unit_cost AS sc.unit_cost,
-  sc.total_cost AS sc.quantity * sc.unit_cost,
-  sc.risk_score AS sc.risk_score
+  sc.avg_delivery_days AS AVG(DATEDIFF(day, sc.order_date, sc.delivery_date)),
+  sc.total_quantity AS SUM(sc.quantity),
+  sc.avg_unit_cost AS AVG(sc.unit_cost),
+  sc.total_cost AS SUM(sc.quantity * sc.unit_cost),
+  sc.avg_risk_score AS AVG(sc.risk_score),
+  sc.order_count AS COUNT(*)
 );
 
 -- Semantic View: Production Performance
@@ -65,14 +66,15 @@ DIMENSIONS (
   END
 )
 METRICS (
-  prod.production_duration_minutes AS DATEDIFF(minute, prod.start_time, prod.end_time),
-  prod.quantity_produced AS prod.quantity_produced,
-  prod.quality_score AS prod.quality_score,
-  prod.energy_consumption AS prod.energy_consumption,
-  prod.downtime_minutes AS prod.downtime_minutes,
-  prod.units_per_hour AS ROUND(prod.quantity_produced / NULLIF(DATEDIFF(minute, prod.start_time, prod.end_time), 0) * 60, 2),
-  prod.energy_per_unit AS ROUND(prod.energy_consumption / NULLIF(prod.quantity_produced, 0), 4),
-  prod.downtime_percentage AS ROUND(prod.downtime_minutes / NULLIF(DATEDIFF(minute, prod.start_time, prod.end_time), 0) * 100, 2)
+  prod.avg_production_duration_minutes AS AVG(DATEDIFF(minute, prod.start_time, prod.end_time)),
+  prod.total_quantity_produced AS SUM(prod.quantity_produced),
+  prod.avg_quality_score AS AVG(prod.quality_score),
+  prod.total_energy_consumption AS SUM(prod.energy_consumption),
+  prod.total_downtime_minutes AS SUM(prod.downtime_minutes),
+  prod.avg_units_per_hour AS AVG(ROUND(prod.quantity_produced / NULLIF(DATEDIFF(minute, prod.start_time, prod.end_time), 0) * 60, 2)),
+  prod.avg_energy_per_unit AS AVG(ROUND(prod.energy_consumption / NULLIF(prod.quantity_produced, 0), 4)),
+  prod.avg_downtime_percentage AS AVG(ROUND(prod.downtime_minutes / NULLIF(DATEDIFF(minute, prod.start_time, prod.end_time), 0) * 100, 2)),
+  prod.batch_count AS COUNT(*)
 );
 
 -- Semantic View: Inventory Status
@@ -92,10 +94,11 @@ DIMENSIONS (
   inv.last_updated AS inv.last_updated
 )
 METRICS (
-  inv.current_stock AS inv.current_stock,
-  inv.reorder_level AS inv.reorder_level,
-  inv.reorder_quantity AS inv.reorder_quantity,
-  inv.stock_above_reorder AS inv.current_stock - inv.reorder_level
+  inv.total_current_stock AS SUM(inv.current_stock),
+  inv.avg_reorder_level AS AVG(inv.reorder_level),
+  inv.total_reorder_quantity AS SUM(inv.reorder_quantity),
+  inv.total_stock_above_reorder AS SUM(inv.current_stock - inv.reorder_level),
+  inv.inventory_item_count AS COUNT(*)
 );
 
 -- Semantic View: Connected Products Analytics (Semi-structured)
@@ -124,14 +127,15 @@ DIMENSIONS (
   cp.created_at AS cp.created_at
 )
 METRICS (
-  cp.primary_sensor_value AS cp.telemetry_data:sensors[0]:value::NUMBER,
-  cp.battery_health AS cp.telemetry_data:diagnostics:battery_health::NUMBER,
-  cp.location_lat AS cp.location_data:latitude::NUMBER,
-  cp.location_lon AS cp.location_data:longitude::NUMBER,
-  cp.current_speed AS cp.location_data:speed::NUMBER,
-  cp.driver_behavior_score AS cp.driver_info:behavior_score::NUMBER,
-  cp.trip_distance_miles AS cp.trip_metadata:distance_miles::NUMBER,
-  cp.fuel_efficiency AS cp.trip_metadata:fuel_efficiency::NUMBER
+  cp.avg_primary_sensor_value AS AVG(cp.telemetry_data:sensors[0]:value::NUMBER),
+  cp.avg_battery_health AS AVG(cp.telemetry_data:diagnostics:battery_health::NUMBER),
+  cp.avg_location_lat AS AVG(cp.location_data:latitude::NUMBER),
+  cp.avg_location_lon AS AVG(cp.location_data:longitude::NUMBER),
+  cp.avg_current_speed AS AVG(cp.location_data:speed::NUMBER),
+  cp.avg_driver_behavior_score AS AVG(cp.driver_info:behavior_score::NUMBER),
+  cp.total_trip_distance_miles AS SUM(cp.trip_metadata:distance_miles::NUMBER),
+  cp.avg_fuel_efficiency AS AVG(cp.trip_metadata:fuel_efficiency::NUMBER),
+  cp.telemetry_record_count AS COUNT(*)
 );
 
 -- Semantic View: IoT Sensor Analytics (Semi-structured)
@@ -158,10 +162,11 @@ DIMENSIONS (
   iot.created_at AS iot.created_at
 )
 METRICS (
-  iot.primary_sensor_value AS iot.sensor_readings[0]:value::NUMBER,
-  iot.uptime_hours AS iot.machine_state:uptime_hours::NUMBER,
-  iot.alert_count AS ARRAY_SIZE(iot.machine_state:alerts::ARRAY),
-  iot.warning_count AS ARRAY_SIZE(iot.machine_state:warnings::ARRAY)
+  iot.avg_primary_sensor_value AS AVG(iot.sensor_readings[0]:value::NUMBER),
+  iot.avg_uptime_hours AS AVG(iot.machine_state:uptime_hours::NUMBER),
+  iot.total_alert_count AS SUM(ARRAY_SIZE(iot.machine_state:alerts::ARRAY)),
+  iot.total_warning_count AS SUM(ARRAY_SIZE(iot.machine_state:warnings::ARRAY)),
+  iot.sensor_reading_count AS COUNT(*)
 );
 
 -- Semantic View: Supplier Documents Overview (Semi-structured)
@@ -183,8 +188,9 @@ DIMENSIONS (
   sd.created_at AS sd.created_at
 )
 METRICS (
-  sd.document_value AS sd.extracted_data:total_value::NUMBER,
-  sd.audit_score AS sd.compliance_info:audit_score::NUMBER
+  sd.total_document_value AS SUM(sd.extracted_data:total_value::NUMBER),
+  sd.avg_audit_score AS AVG(sd.compliance_info:audit_score::NUMBER),
+  sd.document_count AS COUNT(*)
 );
 
 -- Semantic View: Product Configurations Overview (Semi-structured)
@@ -204,11 +210,12 @@ DIMENSIONS (
   pc.created_at AS pc.created_at
 )
 METRICS (
-  pc.length_mm AS pc.specifications:dimensions:length_mm::NUMBER,
-  pc.width_mm AS pc.specifications:dimensions:width_mm::NUMBER,
-  pc.weight_kg AS pc.specifications:weight_kg::NUMBER,
-  pc.max_speed_kmh AS pc.specifications:performance:max_speed_kmh::NUMBER,
-  pc.total_components AS pc.bill_of_materials:total_components::NUMBER
+  pc.avg_length_mm AS AVG(pc.specifications:dimensions:length_mm::NUMBER),
+  pc.avg_width_mm AS AVG(pc.specifications:dimensions:width_mm::NUMBER),
+  pc.avg_weight_kg AS AVG(pc.specifications:weight_kg::NUMBER),
+  pc.avg_max_speed_kmh AS AVG(pc.specifications:performance:max_speed_kmh::NUMBER),
+  pc.avg_total_components AS AVG(pc.bill_of_materials:total_components::NUMBER),
+  pc.configuration_count AS COUNT(*)
 );
 
 -- Semantic View: Maintenance Logs Summary (Unstructured)
@@ -232,8 +239,7 @@ DIMENSIONS (
   ml.created_at AS ml.created_at
 )
 METRICS (
-  -- Text fields are available for semantic search but not as metrics
-  -- Dimensions can reference them for search purposes
+  ml.maintenance_log_count AS COUNT(*)
 );
 
 -- Semantic View: Quality Reports Summary (Unstructured)
@@ -282,7 +288,7 @@ DIMENSIONS (
   scm.created_at AS scm.created_at
 )
 METRICS (
-  -- Text fields available for semantic search via dimensions
+  scm.communication_count AS COUNT(*)
 );
 
 -- Semantic View: Engineering Documentation Summary (Unstructured)
@@ -301,7 +307,7 @@ DIMENSIONS (
   ed.created_at AS ed.created_at
 )
 METRICS (
-  -- Text fields available for semantic search via dimensions
+  ed.document_count AS COUNT(*)
 );
 
 -- Semantic View: Incident Reports Summary (Unstructured)
@@ -319,7 +325,7 @@ DIMENSIONS (
   ir.created_at AS ir.created_at
 )
 METRICS (
-  -- Text fields available for semantic search via dimensions
+  ir.incident_count AS COUNT(*)
 );
 
 -- Grant SELECT on semantic views
