@@ -9,10 +9,10 @@
 -- View Name: manufacturing_operations
 -- 
 -- Includes:
--- - 11 tables (3 structured, 4 semi-structured, 4 unstructured referenced via relationships)
--- - Relationships between tables (supply chain ↔ inventory, production ↔ quality, etc.)
--- - Business-friendly dimensions (risk categories, quality ratings, stock status, alert status)
--- - Aggregate metrics (averages, totals, counts) for analytics
+-- - 11 tables total: 3 structured, 4 semi-structured, 5 unstructured
+-- - Relationships between tables (supply chain ↔ inventory, production ↔ quality, production ↔ maintenance, etc.)
+-- - Business-friendly dimensions (risk categories, quality ratings, stock status, alert status, driver names, etc.)
+-- - Aggregate metrics (averages, totals, counts) for analytics across all tables
 -- ============================================================================
 
 USE DATABASE MANUFACTURING_DEMO;
