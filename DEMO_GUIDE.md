@@ -44,70 +44,100 @@ This demo showcases Snowflake Intelligence capabilities for Vehicle Manufacturin
 
 #### Structured Data Queries (Tables & Graphs)
 
-1. **Supplier Performance Table**
+1. **Which suppliers have high risk scores?**
    ```
-   Create a table showing supplier performance metrics including total orders, average delivery time, total spend, and risk scores. Sort by risk score descending.
-   ```
-
-2. **Supplier Spend by Region (Bar Chart)**
-   ```
-   Create a bar chart showing total spend by supplier region. Use different colors for each region.
+   Show me suppliers with high risk scores and their details.
    ```
 
-3. **Inventory Status Dashboard Table**
+2. **What's our total spend by region?**
    ```
-   Generate a comprehensive inventory status table showing part numbers, current stock levels, reorder levels, reorder quantities, stock status (Reorder Needed/Low Stock/Adequate), and warehouse locations.
-   ```
-
-4. **Inventory Stock Distribution (Pie Chart)**
-   ```
-   Create a pie chart showing the distribution of parts by stock status: Reorder Needed, Low Stock, and Adequate Stock.
+   Show me how much we spend with suppliers in each region. Make it a bar chart.
    ```
 
-5. **Supply Chain Risk Analysis Table**
+3. **Which parts need reordering?**
    ```
-   Create a detailed table of suppliers with high risk scores (above 0.4). Include supplier name, region, risk category, number of orders, total quantity ordered, and average unit cost.
+   Show me parts that need reordering with their current stock levels.
    ```
 
-6. **Supplier Risk vs Spend (Scatter Plot)**
+4. **How is our inventory distributed?**
    ```
-   Create a scatter plot with risk score on x-axis and total spend on y-axis. Color code by region.
+   Show me a pie chart of parts by stock status - which ones need reorder, which are low, and which are adequate.
+   ```
+
+5. **What's the average delivery time by supplier?**
+   ```
+   Show me how long it takes each supplier to deliver on average.
+   ```
+
+6. **Which suppliers are delivering late?**
+   ```
+   Show me suppliers with delayed deliveries and their delivery status.
+   ```
+
+7. **What's our total cost by supplier?**
+   ```
+   Show me total spend for each supplier in a table.
+   ```
+
+8. **Show me risk vs spend relationship**
+   ```
+   Create a scatter plot showing supplier risk scores versus total spend, colored by region.
    ```
 
 #### Semi-Structured Data Queries (JSON/VARIANT)
 
-7. **Supplier Document Analysis Table**
+9. **What payment terms do our suppliers have?**
    ```
-   Extract data from supplier documents and show me a table with document ID, supplier ID, document type, document title, category, currency, payment terms, total value, and ISO standard compliance.
+   Show me payment terms extracted from supplier documents.
    ```
 
-8. **Supplier Document Value Distribution (Bar Chart)**
-   ```
-   Create a bar chart showing total document value by supplier and document type.
-   ```
+10. **Which suppliers have ISO certifications?**
+    ```
+    Show me suppliers with ISO standards from their compliance documents.
+    ```
+
+11. **What's the total value of supplier documents?**
+    ```
+    Show me total document values by supplier and document type in a bar chart.
+    ```
+
+12. **What currencies are used in supplier contracts?**
+    ```
+    Show me currencies and payment terms from supplier documents.
+    ```
 
 #### Unstructured Data Queries (NLP Search)
 
-9. **Supplier Communication Analysis**
-   ```
-   Search supplier communications for discussions about delivery delays or supply chain disruptions. Summarize the key issues and resolutions.
-   ```
-
-10. **Supplier Performance from Communications**
+13. **Are there any delivery delay discussions?**
     ```
-    Based on supplier communications, what are the main concerns or issues raised? Which suppliers have the most communication activity?
+    Search supplier communications for discussions about delivery delays.
     ```
 
-11. **Supplier Communication Summary Table**
+14. **What quality issues have suppliers mentioned?**
     ```
-    Generate a table from supplier communications showing supplier ID, communication date, type, subject, and key action items mentioned.
+    Find supplier communications about quality problems.
+    ```
+
+15. **What are suppliers saying about pricing?**
+    ```
+    Search supplier communications for pricing or contract discussions.
+    ```
+
+16. **Which suppliers have the most communications?**
+    ```
+    Show me which suppliers we communicate with most frequently.
     ```
 
 #### Combined Data Type Queries
 
-12. **Cross-Type Supplier Analysis**
+17. **Give me a complete supplier view**
     ```
-    Provide a comprehensive supplier analysis: Show supplier risk scores from structured data, extract payment terms from supplier documents, and search communications for any concerns. Create a unified table.
+    Show me supplier risk scores, their payment terms from documents, and any concerns from communications all together.
+    ```
+
+18. **Which high-risk suppliers have delivery issues?**
+    ```
+    Show me suppliers with high risk scores, check their delivery status, and search communications for any delay discussions.
     ```
 
 ---
@@ -118,100 +148,115 @@ This demo showcases Snowflake Intelligence capabilities for Vehicle Manufacturin
 
 #### Structured Data Queries (Tables & Graphs)
 
-1. **Production Efficiency by Line Table**
+1. **Which production lines are most efficient?**
    ```
-   Show me a table comparing production efficiency across all production lines. Include columns for production line ID, total units produced, average quality score, total downtime minutes, and efficiency percentage.
-   ```
-
-2. **Production Efficiency Trend (Line Chart)**
-   ```
-   Show me a line chart of production efficiency over time by production line. Include a trend line.
+   Show me production efficiency by line with units produced and quality scores.
    ```
 
-3. **Production Batch Quality Report Table**
+2. **How is production efficiency trending?**
    ```
-   Show me a table of all production batches with their quality scores, quantity produced, production duration, energy consumption, and quality rating (Excellent/Good/Acceptable/Needs Improvement).
-   ```
-
-4. **Quality Scores Distribution (Histogram)**
-   ```
-   Generate a histogram showing the distribution of quality scores across all production batches.
+   Show me a line chart of production efficiency over time by production line.
    ```
 
-5. **Energy Consumption Analysis Table**
+3. **What's the quality rating of our batches?**
    ```
-   What is our energy consumption per unit produced? Show me a table with production line ID, total energy consumed, units produced, and energy per unit.
+   Show me production batches with their quality ratings - excellent, good, acceptable, or needs improvement.
    ```
 
-6. **Energy Efficiency Comparison (Bar Chart)**
+4. **How are quality scores distributed?**
    ```
-   Create a bar chart comparing energy consumption per unit across different production lines.
+   Show me a histogram of quality scores across all batches.
+   ```
+
+5. **How much energy do we use per unit?**
+   ```
+   Show me energy consumption per unit produced by production line.
+   ```
+
+6. **Which lines are most energy efficient?**
+   ```
+   Show me a bar chart comparing energy efficiency across production lines.
+   ```
+
+7. **Which machines have the most downtime?**
+   ```
+   Show me machines with high downtime and their production line.
+   ```
+
+8. **What's our average production duration?**
+   ```
+   Show me average production time per batch.
    ```
 
 #### Semi-Structured Data Queries (JSON/VARIANT)
 
-7. **IoT Sensor Readings Table**
-   ```
-   Create a table from IoT sensor data showing sensor ID, machine ID, primary sensor name, sensor status, machine state, and timestamp. Filter for sensors with warnings or alerts.
-   ```
+9. **Which machines have sensor alerts?**
+    ```
+    Show me machines with sensor warnings or alerts from IoT sensors.
+    ```
 
-8. **IoT Sensor Status by Machine (Stacked Bar Chart)**
-   ```
-   Generate a stacked bar chart showing sensor status distribution (normal/warning/alert) by machine ID.
-   ```
+10. **What's the status of our sensors?**
+    ```
+    Show me a stacked bar chart of sensor status - normal, warning, or alert - by machine.
+    ```
 
-9. **Machine State Analysis**
-   ```
-   Extract machine state information from IoT sensors and create a table showing machine ID, current state, uptime, and any alerts.
-   ```
+11. **What state are our machines in?**
+    ```
+    Show me machine states from IoT sensors - which ones are running, idle, or have issues.
+    ```
+
+12. **Which sensors need attention?**
+    ```
+    Show me sensors with warnings or alerts, their machine ID, and sensor type.
+    ```
 
 #### Unstructured Data Queries (NLP Search)
 
-10. **Maintenance Log Search**
+13. **What maintenance issues do we have?**
     ```
-    Search maintenance logs for any mentions of bearing failures or bearing replacements. What machines are affected and what actions were taken?
-    ```
-
-11. **Maintenance Pattern Recognition**
-    ```
-    Analyze maintenance logs to identify recurring issues or patterns. Which machines have the most frequent maintenance needs?
+    Search maintenance logs for bearing failures or replacements. What machines are affected?
     ```
 
-12. **Maintenance Summary Table**
+14. **Which machines need frequent maintenance?**
     ```
-    Create a table summarizing maintenance activities by extracting key information from maintenance logs. Include machine ID, maintenance date, maintenance type, issues found, and actions taken.
-    ```
-
-13. **Quality Issue Investigation**
-    ```
-    Find quality reports that mention paint defects or surface finish issues. What were the root causes and corrective actions?
+    Find machines with recurring maintenance issues from the logs.
     ```
 
-14. **Quality Defect Analysis Table**
+15. **What maintenance was done recently?**
     ```
-    Extract quality defect information from quality reports and create a table showing batch number, defect description, severity, root cause, and corrective actions.
+    Show me a summary of recent maintenance activities - which machines, what was done, and what issues were found.
     ```
 
-15. **Quality Trend Analysis**
+16. **What quality defects are we seeing?**
     ```
-    Search quality reports for trends in defect types over time. Are there any emerging quality concerns?
+    Search quality reports for paint defects or surface finish issues. What caused them?
+    ```
+
+17. **What defects were found in batches?**
+    ```
+    Show me batches with defects - what was the defect, severity, and what corrective actions were taken.
+    ```
+
+18. **Are there quality trends we should worry about?**
+    ```
+    Search quality reports for trends in defect types over time.
     ```
 
 #### Combined Data Type Queries
 
-16. **Production + IoT Sensor Correlation**
+19. **Do sensor alerts affect quality?**
     ```
-    Correlate production batch data with IoT sensor readings. Show me which production batches had sensor alerts and how that affected quality scores. Create a table and a correlation chart.
-    ```
-
-17. **Production + Maintenance Correlation**
-    ```
-    Match production batch numbers with quality reports. Create a table showing batch number, quality score from production data, and defect descriptions from quality reports.
+    Show me production batches that had IoT sensor alerts and their quality scores. Is there a correlation?
     ```
 
-18. **IoT + Maintenance Correlation**
+20. **What's the connection between production and quality reports?**
     ```
-    Correlate IoT sensor alerts with maintenance logs. Which machines had sensor warnings and what maintenance was performed? Show me a timeline chart.
+    Match production batches with quality reports. Show me batch number, quality score, and any defect descriptions.
+    ```
+
+21. **Do sensor alerts lead to maintenance?**
+    ```
+    Show me machines with IoT sensor warnings and what maintenance was performed. Create a timeline.
     ```
 
 ---
@@ -222,100 +267,105 @@ This demo showcases Snowflake Intelligence capabilities for Vehicle Manufacturin
 
 #### Structured Data Queries (Tables & Graphs)
 
-1. **Connected Vehicle Summary Table**
+1. **How many vehicles do we have connected?**
    ```
-   Create a table showing all connected vehicles with their product IDs, total telemetry records, and last update timestamp.
+   Show me all connected vehicles with their product IDs and last update time.
    ```
 
-2. **Vehicle Usage Distribution (Pie Chart)**
+2. **Where are our vehicles located?**
    ```
-   Create a pie chart showing the distribution of vehicles by geofence region.
+   Show me a pie chart of vehicles by geofence region.
    ```
 
 #### Semi-Structured Data Queries (JSON/VARIANT)
 
-3. **Connected Vehicle Sensor Analysis Table**
-   ```
-   Extract and analyze sensor data from connected vehicles. Show me a table with vehicle ID, sensor types, sensor values, thresholds, and alert status for vehicles with sensor values exceeding thresholds.
-   ```
-
-4. **Sensor Value Distribution (Box Plot)**
-   ```
-   Create a box plot showing the distribution of primary sensor values by sensor type from connected vehicles.
-   ```
-
-5. **Battery Health Trend (Line Chart)**
-   ```
-   Show me a line chart of battery health over time for all connected vehicles. Group by vehicle ID.
-   ```
-
-6. **Connected Vehicle Trip Analysis Table**
-   ```
-   Extract trip metadata from connected vehicles and create a table showing vehicle ID, trip ID, route, distance in miles, duration in minutes, fuel efficiency, number of stops, and driver name.
-   ```
-
-7. **Fuel Efficiency by Route (Scatter Plot)**
-   ```
-   Create a scatter plot showing fuel efficiency vs distance for different routes from connected vehicle trip data.
-   ```
-
-8. **Product Configuration Comparison Table**
-   ```
-   Extract product configuration details and create a comparison table showing product ID, model type, engine type, transmission, dimensions (length, width, weight), and max speed for all product versions.
-   ```
-
-9. **Product Configuration Distribution (Bar Chart)**
-   ```
-   Create a bar chart showing the count of products by engine type and transmission combination.
-   ```
-
-10. **Driver Behavior Analysis Table**
+3. **Which vehicles have sensor alerts?**
     ```
-    Extract driver information from connected vehicles and create a table showing driver ID, driver name, behavior score, driving hours, and fatigue risk level.
+    Show me vehicles with sensor alerts - high temperature, low battery, or error codes.
     ```
 
-11. **Driver Behavior Score Distribution (Histogram)**
+4. **What are the sensor values?**
     ```
-    Create a histogram showing the distribution of driver behavior scores across all connected vehicles.
+    Show me a box plot of sensor values by sensor type from connected vehicles.
+    ```
+
+5. **How is battery health changing?**
+    ```
+    Show me a line chart of battery health over time for each vehicle.
+    ```
+
+6. **What routes are vehicles taking?**
+    ```
+    Show me trip details - vehicle ID, route, distance, duration, fuel efficiency, and driver name.
+    ```
+
+7. **Which routes are most fuel efficient?**
+    ```
+    Show me a scatter plot of fuel efficiency versus distance for different routes.
+    ```
+
+8. **What are our product configurations?**
+    ```
+    Show me product configurations - model type, engine type, transmission, dimensions, and max speed.
+    ```
+
+9. **How many products by engine and transmission?**
+    ```
+    Show me a bar chart of products grouped by engine type and transmission.
+    ```
+
+10. **How are drivers performing?**
+    ```
+    Show me driver behavior scores, driving hours, and fatigue risk levels.
+    ```
+
+11. **What's the distribution of driver scores?**
+    ```
+    Show me a histogram of driver behavior scores.
+    ```
+
+12. **What's the average speed of our vehicles?**
+    ```
+    Show me average current speed by vehicle and location.
     ```
 
 #### Unstructured Data Queries (NLP Search)
 
-12. **Engineering Documentation Search**
+13. **What do engineering docs say about brakes?**
     ```
-    Find engineering documents related to brake system design or brake component specifications. What are the key design parameters?
-    ```
-
-13. **Engineering Change History**
-    ```
-    Find engineering documents that describe design changes or modifications. What products were affected and why?
+    Find engineering documents about brake system design or brake components.
     ```
 
-14. **Maintenance Correlation with Telemetry**
+14. **What design changes were made?**
     ```
-    Search maintenance logs for vehicles with specific VINs or product IDs. Correlate maintenance activities with telemetry alerts.
+    Find engineering documents describing design changes. Which products were affected?
     ```
 
-15. **Cross-Document Product Analysis**
+15. **What maintenance was done on vehicles?**
     ```
-    Search across all documents for mentions of specific vehicle models or product configurations. What issues or improvements are documented?
+    Search maintenance logs for specific vehicles. What maintenance was performed?
+    ```
+
+16. **What issues are documented for our products?**
+    ```
+    Search all documents for mentions of vehicle models or product configurations. What issues or improvements are documented?
     ```
 
 #### Combined Data Type Queries
 
-16. **Telemetry + Maintenance Correlation**
+17. **Do vehicle alerts lead to maintenance?**
     ```
-    Correlate connected vehicle telemetry alerts with maintenance logs. Which vehicles had sensor alerts and what maintenance was performed? Show me a timeline chart.
-    ```
-
-17. **Product Config + Engineering Docs**
-    ```
-    Match product configurations with engineering documentation. Show me a table with product ID, configuration details, and related engineering document summaries.
+    Show me vehicles with telemetry alerts and what maintenance was performed. Create a timeline.
     ```
 
-18. **Comprehensive Vehicle Analysis**
+18. **What's the connection between product configs and engineering docs?**
     ```
-    Provide a comprehensive analysis: Show connected vehicle telemetry data, extract product configuration details, search engineering docs for related specifications, and find any maintenance logs for those vehicles. Create a unified dashboard.
+    Match product configurations with engineering documentation. Show me product details and related engineering specs.
+    ```
+
+19. **Give me a complete vehicle view**
+    ```
+    Show me vehicle telemetry data, product configurations, related engineering docs, and any maintenance logs all together.
     ```
 
 ---
@@ -326,54 +376,54 @@ This demo showcases Snowflake Intelligence capabilities for Vehicle Manufacturin
 
 #### Cross-Type Analysis Queries
 
-1. **End-to-End Visibility Dashboard**
+1. **Give me a complete operations overview**
    ```
-   Give me a comprehensive overview of our manufacturing operations. Show supplier risk scores, production quality metrics, inventory levels, connected vehicle performance, and any related maintenance or quality issues. Create tables and charts.
-   ```
-
-2. **Structured + Semi-Structured Analysis**
-   ```
-   Correlate production batch data with IoT sensor readings. Show me which production batches had sensor alerts and how that affected quality scores. Include charts showing the correlation.
+   Show me everything - supplier risks, production quality, inventory levels, vehicle performance, and any issues from reports. Create tables and charts.
    ```
 
-3. **Structured + Unstructured Analysis**
+2. **Do sensor alerts affect production quality?**
    ```
-   Match production batch numbers with quality reports. Create a table showing batch number, quality score from production data, and defect descriptions from quality reports. Add a trend chart.
-   ```
-
-4. **Semi-Structured + Unstructured Analysis**
-   ```
-   Correlate connected vehicle telemetry alerts with maintenance logs. Which vehicles had sensor alerts and what maintenance was performed? Show correlation charts.
+   Show me production batches with IoT sensor alerts and their quality scores. Is there a connection?
    ```
 
-5. **All Three Types Combined**
+3. **What do quality reports say about our batches?**
    ```
-   Provide a comprehensive analysis: Show supplier risk scores, production quality for parts from those suppliers, connected vehicle performance for products using those parts, and any related maintenance or quality issues documented in reports. Create a unified dashboard with tables and visualizations.
-   ```
-
-6. **Strategic Recommendations Dashboard**
-   ```
-   Based on all available data, what are the top 3 strategic recommendations to improve our manufacturing operations? Include data from structured tables, semi-structured JSON, and unstructured documents. Present with supporting charts.
+   Match production batches with quality reports. Show me batch number, quality score, and defect descriptions.
    ```
 
-7. **Correlation Analysis Across All Data Types**
+4. **Do vehicle alerts lead to maintenance?**
    ```
-   Are there correlations between supplier performance, production quality, and product reliability? Analyze structured supplier data, production metrics, connected vehicle telemetry, and search quality reports and maintenance logs for patterns. Show correlation matrices and charts.
-   ```
-
-8. **Cost Optimization Analysis**
-   ```
-   Where are the biggest cost optimization opportunities across our supply chain, production, and product operations? Analyze structured cost data, extract cost information from supplier documents, and search communications for cost-related discussions. Create a comprehensive cost analysis table and charts.
+   Show me vehicles with telemetry alerts and what maintenance was performed. Create charts showing the correlation.
    ```
 
-9. **Sustainability Insights Dashboard**
+5. **How does everything connect?**
    ```
-   Analyze our energy consumption and supply chain practices. Extract energy data from production and IoT sensors, analyze supplier sustainability from documents, and search reports for sustainability initiatives. Create a sustainability dashboard with charts.
+   Show me supplier risks, production quality for their parts, vehicle performance using those parts, and any related issues from reports. Create a unified dashboard.
    ```
 
-10. **Cross-Document Pattern Analysis**
+6. **What should we focus on?**
+   ```
+   Based on all our data, what are the top 3 things we should improve? Use data from tables, JSON, and documents. Show supporting charts.
+   ```
+
+7. **Are supplier, production, and vehicle quality related?**
+   ```
+   Is there a connection between supplier performance, production quality, and vehicle reliability? Analyze supplier data, production metrics, vehicle telemetry, and search reports for patterns.
+   ```
+
+8. **Where can we save money?**
+   ```
+   Where are the biggest cost savings opportunities? Look at supply chain costs, production costs, and search documents for cost discussions.
+   ```
+
+9. **How sustainable are we?**
+   ```
+   Analyze our energy use and supply chain practices. Look at production energy, sensor data, supplier documents, and search reports for sustainability info.
+   ```
+
+10. **What do documents say about calibration?**
     ```
-    Search across all unstructured documents for mentions of "calibration" or "calibration issues". What types of documents mention this, what are the contexts, and how does this relate to production quality and IoT sensor data? Create a comprehensive analysis table.
+    Search all documents for calibration mentions. How does this relate to production quality and sensor data?
     ```
 
 ---
