@@ -1,9 +1,24 @@
 -- ============================================================================
 -- Create Unified Cortex Search Service for Unstructured Data
 -- ============================================================================
--- Single comprehensive Cortex Search service for all unstructured text data
--- Enables semantic search across maintenance logs, quality reports, communications, 
--- engineering docs, and incident reports in one unified search experience
+-- Creates a single comprehensive Cortex Search service: manufacturing_documents_search
+-- Enables semantic search across all unstructured text data in one unified search experience
+-- 
+-- Schema: MANUFACTURING_DEMO.SEMANTIC
+-- Service Name: manufacturing_documents_search
+-- 
+-- Data Sources (via UNION ALL):
+-- - Maintenance logs (maintenance_logs table)
+-- - Quality reports (quality_reports table)
+-- - Supplier communications (supplier_communications table)
+-- - Engineering documentation (engineering_docs table)
+-- - Incident reports (incident_reports table)
+-- 
+-- Features:
+-- - Composite PRIMARY KEY (document_type, document_id)
+-- - Embedding model: snowflake-arctic-embed-l-v2.0
+-- - TARGET_LAG: 1 day (refresh frequency)
+-- - Change tracking enabled on all source tables (required)
 -- ============================================================================
 
 USE DATABASE MANUFACTURING_DEMO;

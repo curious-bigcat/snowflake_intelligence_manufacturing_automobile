@@ -1,15 +1,12 @@
 -- ============================================================================
 -- Snowflake Intelligence Setup for Manufacturing Demo
 -- ============================================================================
--- This script sets up the Snowflake Intelligence infrastructure
+-- This script sets up the Snowflake Intelligence infrastructure for vehicle manufacturing
+-- Creates databases, schemas, tables (structured, semi-structured, unstructured), and warehouse
 -- Run this script as ACCOUNTADMIN or a role with sufficient privileges
 -- ============================================================================
 
--- Step 1: Create Intelligence Object
--- This creates the main Intelligence object in your account
-
-
--- Step 3: Create Database and Schema for Demo Data
+-- Step 1: Create Database and Schema for Demo Data
 USE ROLE ACCOUNTADMIN;
 CREATE DATABASE IF NOT EXISTS MANUFACTURING_DEMO;
 CREATE SCHEMA IF NOT EXISTS MANUFACTURING_DEMO.DATA;
@@ -26,7 +23,7 @@ GRANT USAGE ON SCHEMA MANUFACTURING_DEMO.SEMANTIC TO ROLE PUBLIC;
 GRANT USAGE ON DATABASE SNOWFLAKE_INTELLIGENCE TO ROLE PUBLIC;
 GRANT USAGE ON SCHEMA SNOWFLAKE_INTELLIGENCE.AGENTS TO ROLE PUBLIC;
 
--- Step 4: Create Warehouse for Intelligence Operations
+-- Step 2: Create Warehouse for Intelligence Operations
 CREATE WAREHOUSE IF NOT EXISTS INTEL_WH
   WITH WAREHOUSE_SIZE = 'X-SMALL'
   AUTO_SUSPEND = 60
@@ -36,11 +33,11 @@ CREATE WAREHOUSE IF NOT EXISTS INTEL_WH
 
 GRANT USAGE ON WAREHOUSE INTEL_WH TO ROLE PUBLIC;
 
--- Step 5: Create Sample Manufacturing Tables (for demo purposes)
--- These represent typical manufacturing data sources covering:
--- STRUCTURED: Traditional relational tables
--- SEMI-STRUCTURED: JSON/VARIANT columns with nested data
--- UNSTRUCTURED: Text documents, logs, reports
+-- Step 3: Create Manufacturing Tables (for demo purposes)
+-- Creates 11 tables covering three data types:
+-- STRUCTURED (3 tables): Traditional relational tables (supply_chain, production, inventory)
+-- SEMI-STRUCTURED (4 tables): JSON/VARIANT columns with nested data (connected_products, iot_sensors, supplier_documents, product_configurations)
+-- UNSTRUCTURED (5 tables): Text documents, logs, reports (maintenance_logs, quality_reports, supplier_communications, engineering_docs, incident_reports)
 
 -- ============================================================================
 -- STRUCTURED DATA - Traditional relational tables
@@ -226,13 +223,12 @@ CREATE OR REPLACE TABLE MANUFACTURING_DEMO.DATA.incident_reports (
 );
 
 -- ============================================================================
--- INSERT SAMPLE DATA
+-- INSERT MINIMAL SAMPLE DATA
 -- ============================================================================
--- NOTE: Detailed vehicle manufacturing data with 50+ records per table
--- is provided in file: 01b_insert_vehicle_data.sql
--- Run that file after this setup script completes
--- 
--- For now, inserting minimal data to allow setup to complete:
+-- NOTE: This script inserts minimal sample data (3-5 records per table) for initial setup
+-- Detailed vehicle manufacturing data with 50+ records per table is provided in: 01b_insert_vehicle_data.sql
+-- Run 01b_insert_vehicle_data.sql after this setup script completes to populate comprehensive data
+-- ============================================================================
 
 INSERT INTO MANUFACTURING_DEMO.DATA.production VALUES
 ('LINE-01', 'MACHINE-A', 'PROD-001', 'BATCH-2024-001', '2024-01-15 08:00:00', '2024-01-15 16:00:00', 500, 0.95, 1250.50, 30, 'OP-001', CURRENT_TIMESTAMP()),
@@ -440,7 +436,7 @@ INSERT INTO MANUFACTURING_DEMO.DATA.incident_reports VALUES
 
 COMMIT;
 
--- Step 6: Grant SELECT on tables
+-- Step 4: Grant SELECT privileges on tables
 GRANT SELECT ON ALL TABLES IN SCHEMA MANUFACTURING_DEMO.DATA TO ROLE PUBLIC;
 GRANT SELECT ON FUTURE TABLES IN SCHEMA MANUFACTURING_DEMO.DATA TO ROLE PUBLIC;
 

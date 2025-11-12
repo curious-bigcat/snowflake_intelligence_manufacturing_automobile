@@ -2,7 +2,15 @@
 -- Vehicle Manufacturing Data - Realistic Synthetic Data
 -- ============================================================================
 -- This script inserts 50+ records per table with realistic vehicle manufacturing data
--- Includes: Structured, Semi-structured, and Unstructured data
+-- Run this script AFTER 01_setup_intelligence.sql completes successfully
+-- 
+-- Data Types Covered:
+-- STRUCTURED: Supply chain orders (50+), production batches (50+), inventory records (50+)
+-- SEMI-STRUCTURED: Connected vehicle telemetry (50+), IoT sensor readings, supplier documents, product configurations
+-- UNSTRUCTURED: Maintenance logs, quality reports, supplier communications, engineering docs, incident reports
+-- 
+-- Vehicle Models Included: Toyota Camry, Honda Accord, Toyota RAV4, Ford F-150, 
+--                          Tesla Model 3, BMW 3 Series, Mercedes C-Class, and more
 -- ============================================================================
 
 USE DATABASE MANUFACTURING_DEMO;

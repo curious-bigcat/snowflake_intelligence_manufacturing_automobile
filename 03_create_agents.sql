@@ -1,9 +1,22 @@
 -- ============================================================================
 -- Create Manufacturing Intelligence Agents
 -- ============================================================================
--- These agents are specialized for different Manufacturing use cases
--- Using the unified semantic view and Cortex Search service
--- All agents are created in SNOWFLAKE_INTELLIGENCE.AGENTS schema
+-- Creates 4 specialized Intelligence agents for different manufacturing use cases
+-- All agents use the unified semantic view (manufacturing_operations) and Cortex Search service (manufacturing_documents_search)
+-- 
+-- Schema: SNOWFLAKE_INTELLIGENCE.AGENTS
+-- 
+-- Agents Created:
+-- 1. supply_chain_agent - Supplier risk, inventory, logistics
+-- 2. production_agent - Quality, efficiency, maintenance, IoT sensors
+-- 3. connected_products_agent - Telematics, fleet management, vehicle diagnostics
+-- 4. manufacturing_operations_agent - Cross-functional insights across all domains
+-- 
+-- Configuration:
+-- - Orchestration model: claude-4-sonnet
+-- - Tools: Analyst1 (cortex_analyst_text_to_sql) for semantic view queries
+--          Search1 (cortex_search) for unstructured data search
+-- - Tool resources configured with semantic view and Cortex Search service references
 -- ============================================================================
 
 -- Agent 1: Supply Chain Intelligence Agent

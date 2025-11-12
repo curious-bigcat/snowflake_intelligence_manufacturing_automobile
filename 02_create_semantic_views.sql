@@ -1,8 +1,18 @@
 -- ============================================================================
 -- Create Unified Semantic View for Manufacturing Intelligence
 -- ============================================================================
--- Single comprehensive semantic view with relationships between all tables
+-- Creates a single comprehensive semantic view: manufacturing_operations
+-- Combines all structured and semi-structured tables with relationships, dimensions, and metrics
 -- This view enables cross-table queries and joins for Intelligence agents
+-- 
+-- Schema: MANUFACTURING_DEMO.SEMANTIC
+-- View Name: manufacturing_operations
+-- 
+-- Includes:
+-- - 11 tables (3 structured, 4 semi-structured, 4 unstructured referenced via relationships)
+-- - Relationships between tables (supply chain ↔ inventory, production ↔ quality, etc.)
+-- - Business-friendly dimensions (risk categories, quality ratings, stock status, alert status)
+-- - Aggregate metrics (averages, totals, counts) for analytics
 -- ============================================================================
 
 USE DATABASE MANUFACTURING_DEMO;
