@@ -164,8 +164,8 @@ DIMENSIONS (
 METRICS (
   iot.avg_primary_sensor_value AS AVG(iot.sensor_readings[0]:value::NUMBER),
   iot.avg_uptime_hours AS AVG(iot.machine_state:uptime_hours::NUMBER),
-  iot.total_alert_count AS SUM(ARRAY_SIZE(iot.machine_state:alerts)),
-  iot.total_warning_count AS SUM(ARRAY_SIZE(iot.machine_state:warnings)),
+  iot.alert_records_count AS SUM(CASE WHEN ARRAY_SIZE(iot.machine_state:alerts) > 0 THEN 1 ELSE 0 END),
+  iot.warning_records_count AS SUM(CASE WHEN ARRAY_SIZE(iot.machine_state:warnings) > 0 THEN 1 ELSE 0 END),
   iot.sensor_reading_count AS COUNT(*)
 );
 
