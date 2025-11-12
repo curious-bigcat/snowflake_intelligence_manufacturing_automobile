@@ -151,12 +151,16 @@ All agents are created in the **`SNOWFLAKE_INTELLIGENCE.AGENTS`** schema:
 ```
 
 **What this does:**
-- Creates Intelligence object: `manufacturing_intelligence`
 - Creates databases: `MANUFACTURING_DEMO` and `SNOWFLAKE_INTELLIGENCE`
 - Creates schemas: `DATA`, `SEMANTIC` (in MANUFACTURING_DEMO), and `AGENTS` (in SNOWFLAKE_INTELLIGENCE)
-- Creates all required tables: structured (supply_chain, production, inventory), semi-structured (connected_products, iot_sensors, supplier_documents, product_configurations), unstructured (maintenance_logs, quality_reports, supplier_communications, engineering_docs, incident_reports)
-- Creates warehouses: `INTEL_WH` and `CORTEX_SEARCH_WH`
-- Grants necessary privileges to PUBLIC role
+- Creates all required table structures: 
+  - **Structured tables:** `supply_chain`, `production`, `inventory`
+  - **Semi-structured tables:** `connected_products`, `iot_sensors`, `supplier_documents`, `product_configurations` (with VARIANT columns for JSON data)
+  - **Unstructured tables:** `maintenance_logs`, `quality_reports`, `supplier_communications`, `engineering_docs`, `incident_reports` (with TEXT columns)
+- Creates warehouse: `INTEL_WH` (X-SMALL, auto-suspend 60s)
+- Inserts minimal sample data (3-5 records per table) for initial setup
+- Grants USAGE privileges on databases, schemas, and warehouse to PUBLIC role
+- Grants SELECT privileges on all tables to PUBLIC role
 
 #### Step 2: Load Vehicle Manufacturing Data
 ```sql
@@ -165,10 +169,12 @@ All agents are created in the **`SNOWFLAKE_INTELLIGENCE.AGENTS`** schema:
 ```
 
 **What this does:**
-- Inserts realistic vehicle manufacturing data
-- Includes vehicles: Camry, Accord, RAV4, F-150, Model 3, BMW 3 Series, etc.
-- Populates all tables with 50+ records each
-- Uses realistic names, VINs, locations, and telemetry data
+- Inserts 50+ realistic vehicle manufacturing records per table
+- **Structured data:** Supply chain orders (Bosch, Continental, Magna, ZF, etc.), production batches, inventory levels
+- **Semi-structured data:** Connected vehicle telemetry (VEH-001 through VEH-050+), IoT sensor readings, supplier documents (contracts, invoices, certificates), product configurations (PROD-001, PROD-002, etc.)
+- **Unstructured data:** Maintenance logs, quality reports, supplier communications (emails, meeting notes, contracts), engineering docs (design specs, test plans, change requests), incident reports
+- Uses realistic vehicle data: Toyota Camry, Honda Accord, Ford F-150, Tesla Model 3, BMW 3 Series, etc.
+- Includes realistic supplier names, VINs, locations, telemetry data, and manufacturing scenarios
 
 #### Step 3: Create Semantic Views & Cortex Search
 ```sql
@@ -180,10 +186,21 @@ All agents are created in the **`SNOWFLAKE_INTELLIGENCE.AGENTS`** schema:
 ```
 
 **What this does:**
-- **Semantic View:** Creates unified `manufacturing_operations` semantic view combining all structured and semi-structured tables with relationships, dimensions (supplier names, risk categories, quality ratings, stock status, alert status, etc.), and metrics (averages, totals, counts)
-- **Cortex Search:** Creates unified `manufacturing_documents_search` Cortex Search service enabling semantic search across all unstructured text data (maintenance logs, quality reports, supplier communications, engineering docs, incident reports)
-- Enables change tracking on unstructured tables (required for Cortex Search)
-- Configures embedding model: `snowflake-arctic-embed-l-v2.0`
+- **Semantic View (`02_create_semantic_views.sql`):** Creates unified `manufacturing_operations` semantic view in `MANUFACTURING_DEMO.SEMANTIC` schema
+  - Combines all structured and semi-structured tables with PRIMARY KEY and UNIQUE constraints
+  - Defines relationships between tables (supply chain ↔ inventory, production ↔ quality reports, production ↔ maintenance logs, etc.)
+  - Creates dimensions: supplier names, risk categories (Low/Medium/High), delivery status (On Time/Early/In Progress/Pending), quality ratings (Excellent/Good/Acceptable/Needs Improvement), stock status (Reorder Needed/Low Stock/Adequate), alert status, driver names, etc.
+  - Creates metrics: averages (delivery days, quality scores, sensor values), totals (quantity, cost, energy consumption), counts (orders, batches, telemetry records)
+  - Grants SELECT privilege on semantic view to PUBLIC role
+
+- **Cortex Search (`02a_create_cortex_search.sql`):** Creates unified `manufacturing_documents_search` Cortex Search service in `MANUFACTURING_DEMO.SEMANTIC` schema
+  - Enables change tracking on all unstructured tables (required for Cortex Search)
+  - Creates warehouse: `CORTEX_SEARCH_WH` (X-SMALL, auto-suspend 60s)
+  - Combines all unstructured text data using UNION ALL: maintenance logs, quality reports, supplier communications, engineering docs, incident reports
+  - Uses composite PRIMARY KEY (document_type, document_id) with attributes for filtering
+  - Configures embedding model: `snowflake-arctic-embed-l-v2.0`
+  - Sets TARGET_LAG to 1 day for refresh frequency
+  - Grants USAGE privilege on Cortex Search service to PUBLIC role
 
 #### Step 4: Create Intelligence Agents
 ```sql
@@ -328,11 +345,11 @@ KPMG_event/
 
 | File | Purpose | Key Components |
 |------|---------|----------------|
-| `01_setup_intelligence.sql` | Infrastructure setup | Creates Intelligence object, databases (`MANUFACTURING_DEMO`, `SNOWFLAKE_INTELLIGENCE`), schemas (`DATA`, `SEMANTIC`, `AGENTS`), all tables (structured, semi-structured, unstructured), warehouses (`INTEL_WH`, `CORTEX_SEARCH_WH`) |
-| `01b_insert_vehicle_data.sql` | Data population | Inserts 50+ realistic vehicle manufacturing records per table with real-world data (Camry, Accord, RAV4, F-150, Model 3, BMW 3 Series, etc.) |
-| `02_create_semantic_views.sql` | Semantic layer | Creates unified `manufacturing_operations` semantic view with relationships, dimensions, and metrics across all structured and semi-structured tables |
-| `02a_create_cortex_search.sql` | Search service | Creates unified `manufacturing_documents_search` Cortex Search service enabling semantic search across all unstructured text data (maintenance logs, quality reports, communications, engineering docs, incident reports) |
-| `03_create_agents.sql` | AI agents | Creates 4 specialized Intelligence agents (`supply_chain_agent`, `production_agent`, `connected_products_agent`, `manufacturing_operations_agent`) with FROM SPECIFICATION syntax, tools (Analyst1, Search1), and tool_resources configuration |
+| `01_setup_intelligence.sql` | Infrastructure setup | Creates databases (`MANUFACTURING_DEMO`, `SNOWFLAKE_INTELLIGENCE`), schemas (`DATA`, `SEMANTIC`, `AGENTS`), all table structures (11 tables: 3 structured, 4 semi-structured, 5 unstructured), warehouse (`INTEL_WH`), inserts minimal sample data, grants privileges |
+| `01b_insert_vehicle_data.sql` | Data population | Inserts 50+ realistic vehicle manufacturing records per table covering structured (supply chain orders, production batches, inventory), semi-structured (connected vehicle telemetry, IoT sensors, supplier documents, product configs), and unstructured data (maintenance logs, quality reports, communications, engineering docs, incident reports) |
+| `02_create_semantic_views.sql` | Semantic layer | Creates unified `manufacturing_operations` semantic view in `MANUFACTURING_DEMO.SEMANTIC` with table relationships, business-friendly dimensions (risk categories, quality ratings, stock status, alert status, etc.), and aggregate metrics (averages, totals, counts) across all structured and semi-structured tables |
+| `02a_create_cortex_search.sql` | Search service | Enables change tracking on unstructured tables, creates `CORTEX_SEARCH_WH` warehouse, creates unified `manufacturing_documents_search` Cortex Search service in `MANUFACTURING_DEMO.SEMANTIC` combining all unstructured text data (maintenance logs, quality reports, supplier communications, engineering docs, incident reports) with embedding model `snowflake-arctic-embed-l-v2.0` |
+| `03_create_agents.sql` | AI agents | Creates 4 specialized Intelligence agents in `SNOWFLAKE_INTELLIGENCE.AGENTS` schema (`supply_chain_agent`, `production_agent`, `connected_products_agent`, `manufacturing_operations_agent`) using FROM SPECIFICATION with YAML format, configures tools (Analyst1 for semantic view, Search1 for Cortex Search), tool_resources, orchestration model `claude-4-sonnet`, instructions, and grants USAGE privileges |
 | `DEMO_GUIDE.md` | Demo guide | Comprehensive guide with 50+ simple natural language sample queries organized by agent and data type |
 
 ---
