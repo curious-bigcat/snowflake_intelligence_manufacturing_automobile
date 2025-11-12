@@ -23,10 +23,11 @@ Your expertise includes:
 - Spend analytics
 - Sustainable sourcing
 
-You have access to:
+You have access to the unified manufacturing operations semantic view which includes:
 - Supply chain data including supplier information, orders, deliveries, and risk scores
 - Inventory data showing stock levels, reorder points, and warehouse information
 - Production data that may impact supply chain planning
+- Supplier documents and communications
 
 When answering questions:
 1. Provide specific, data-driven insights
@@ -38,12 +39,8 @@ When answering questions:
 Always be concise but thorough in your responses.
 $$;
 
--- Grant access to semantic views for Supply Chain Agent
-GRANT SELECT ON SEMANTIC VIEW MANUFACTURING_DEMO.SEMANTIC.supply_chain_overview TO AGENT supply_chain_agent;
-GRANT SELECT ON SEMANTIC VIEW MANUFACTURING_DEMO.SEMANTIC.inventory_status TO AGENT supply_chain_agent;
-GRANT SELECT ON SEMANTIC VIEW MANUFACTURING_DEMO.SEMANTIC.production_performance TO AGENT supply_chain_agent;
-GRANT SELECT ON SEMANTIC VIEW MANUFACTURING_DEMO.SEMANTIC.supplier_documents_overview TO AGENT supply_chain_agent;
-GRANT SELECT ON SEMANTIC VIEW MANUFACTURING_DEMO.SEMANTIC.supplier_communications_summary TO AGENT supply_chain_agent;
+-- Grant access to unified semantic view for Supply Chain Agent
+GRANT SELECT ON SEMANTIC VIEW MANUFACTURING_DEMO.SEMANTIC.manufacturing_operations TO AGENT supply_chain_agent;
 
 -- Agent 2: Production Intelligence Agent
 -- Handles queries about shopfloor operations, quality, efficiency, maintenance
@@ -62,11 +59,12 @@ Your expertise includes:
 - AI-driven process control
 - Product development insights
 
-You have access to:
+You have access to the unified manufacturing operations semantic view which includes:
 - Production data including machine performance, batch information, quality scores
 - Energy consumption metrics
 - Downtime and efficiency data
 - Operator and production line information
+- IoT sensor data, maintenance logs, quality reports, and incident reports
 
 When answering questions:
 1. Focus on operational efficiency and quality metrics
@@ -78,13 +76,8 @@ When answering questions:
 Always provide actionable insights that can improve production operations.
 $$;
 
--- Grant access to semantic views for Production Agent
-GRANT SELECT ON SEMANTIC VIEW MANUFACTURING_DEMO.SEMANTIC.production_performance TO AGENT production_agent;
-GRANT SELECT ON SEMANTIC VIEW MANUFACTURING_DEMO.SEMANTIC.inventory_status TO AGENT production_agent;
-GRANT SELECT ON SEMANTIC VIEW MANUFACTURING_DEMO.SEMANTIC.iot_sensor_analytics TO AGENT production_agent;
-GRANT SELECT ON SEMANTIC VIEW MANUFACTURING_DEMO.SEMANTIC.maintenance_logs_summary TO AGENT production_agent;
-GRANT SELECT ON SEMANTIC VIEW MANUFACTURING_DEMO.SEMANTIC.quality_reports_summary TO AGENT production_agent;
-GRANT SELECT ON SEMANTIC VIEW MANUFACTURING_DEMO.SEMANTIC.incident_reports_summary TO AGENT production_agent;
+-- Grant access to unified semantic view for Production Agent
+GRANT SELECT ON SEMANTIC VIEW MANUFACTURING_DEMO.SEMANTIC.manufacturing_operations TO AGENT production_agent;
 
 -- Agent 3: Connected Products Agent
 -- Handles queries about connected vehicles, telematics, diagnostics, fleet management
@@ -103,10 +96,11 @@ Your expertise includes:
 - Remote diagnostics and OTA updates
 - Product lifecycle insights
 
-You have access to:
+You have access to the unified manufacturing operations semantic view which includes:
 - Connected product telemetry data including sensors, location, timestamps
 - Vehicle/product identifiers and trip information
 - Driver information and usage patterns
+- Product configurations and engineering documentation
 
 When answering questions:
 1. Analyze telemetry patterns to identify anomalies
@@ -118,10 +112,8 @@ When answering questions:
 Focus on delivering insights that improve product reliability, safety, and customer experience.
 $$;
 
--- Grant access to semantic views for Connected Products Agent
-GRANT SELECT ON SEMANTIC VIEW MANUFACTURING_DEMO.SEMANTIC.connected_products_analytics TO AGENT connected_products_agent;
-GRANT SELECT ON SEMANTIC VIEW MANUFACTURING_DEMO.SEMANTIC.product_configurations_overview TO AGENT connected_products_agent;
-GRANT SELECT ON SEMANTIC VIEW MANUFACTURING_DEMO.SEMANTIC.maintenance_logs_summary TO AGENT connected_products_agent;
+-- Grant access to unified semantic view for Connected Products Agent
+GRANT SELECT ON SEMANTIC VIEW MANUFACTURING_DEMO.SEMANTIC.manufacturing_operations TO AGENT connected_products_agent;
 
 -- Agent 4: Manufacturing Operations Agent (General Purpose)
 -- Handles cross-functional queries across all manufacturing areas
@@ -139,11 +131,14 @@ Your expertise spans:
 - Predictive Analytics
 - Cross-functional optimization
 
-You have access to all manufacturing data including:
+You have access to the unified manufacturing operations semantic view which includes all manufacturing data:
 - Supply chain and supplier information
 - Production and shopfloor data
 - Inventory levels and warehouse data
 - Connected product telemetry
+- IoT sensors, maintenance logs, quality reports
+- Supplier documents and communications
+- Engineering documentation and incident reports
 
 When answering questions:
 1. Provide holistic insights that consider multiple aspects of operations
@@ -155,19 +150,8 @@ When answering questions:
 You excel at connecting dots across different manufacturing functions to deliver comprehensive insights.
 $$;
 
--- Grant access to all semantic views for Manufacturing Operations Agent
-GRANT SELECT ON SEMANTIC VIEW MANUFACTURING_DEMO.SEMANTIC.supply_chain_overview TO AGENT manufacturing_operations_agent;
-GRANT SELECT ON SEMANTIC VIEW MANUFACTURING_DEMO.SEMANTIC.production_performance TO AGENT manufacturing_operations_agent;
-GRANT SELECT ON SEMANTIC VIEW MANUFACTURING_DEMO.SEMANTIC.inventory_status TO AGENT manufacturing_operations_agent;
-GRANT SELECT ON SEMANTIC VIEW MANUFACTURING_DEMO.SEMANTIC.connected_products_analytics TO AGENT manufacturing_operations_agent;
-GRANT SELECT ON SEMANTIC VIEW MANUFACTURING_DEMO.SEMANTIC.iot_sensor_analytics TO AGENT manufacturing_operations_agent;
-GRANT SELECT ON SEMANTIC VIEW MANUFACTURING_DEMO.SEMANTIC.supplier_documents_overview TO AGENT manufacturing_operations_agent;
-GRANT SELECT ON SEMANTIC VIEW MANUFACTURING_DEMO.SEMANTIC.product_configurations_overview TO AGENT manufacturing_operations_agent;
-GRANT SELECT ON SEMANTIC VIEW MANUFACTURING_DEMO.SEMANTIC.maintenance_logs_summary TO AGENT manufacturing_operations_agent;
-GRANT SELECT ON SEMANTIC VIEW MANUFACTURING_DEMO.SEMANTIC.quality_reports_summary TO AGENT manufacturing_operations_agent;
-GRANT SELECT ON SEMANTIC VIEW MANUFACTURING_DEMO.SEMANTIC.supplier_communications_summary TO AGENT manufacturing_operations_agent;
-GRANT SELECT ON SEMANTIC VIEW MANUFACTURING_DEMO.SEMANTIC.engineering_docs_summary TO AGENT manufacturing_operations_agent;
-GRANT SELECT ON SEMANTIC VIEW MANUFACTURING_DEMO.SEMANTIC.incident_reports_summary TO AGENT manufacturing_operations_agent;
+-- Grant access to unified semantic view for Manufacturing Operations Agent
+GRANT SELECT ON SEMANTIC VIEW MANUFACTURING_DEMO.SEMANTIC.manufacturing_operations TO AGENT manufacturing_operations_agent;
 
 -- Grant usage privileges on agents
 GRANT USAGE ON AGENT supply_chain_agent TO ROLE PUBLIC;

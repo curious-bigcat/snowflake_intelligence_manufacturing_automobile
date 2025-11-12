@@ -1,8 +1,9 @@
 -- ============================================================================
--- Create Cortex Search Services for Unstructured Data
+-- Create Unified Cortex Search Service for Unstructured Data
 -- ============================================================================
--- Cortex Search enables semantic search over unstructured text data
--- These services will be used by Intelligence agents for RAG and search
+-- Single comprehensive Cortex Search service for all unstructured text data
+-- Enables semantic search across maintenance logs, quality reports, communications, 
+-- engineering docs, and incident reports in one unified search experience
 -- ============================================================================
 
 USE DATABASE MANUFACTURING_DEMO;
@@ -15,7 +16,7 @@ ALTER TABLE MANUFACTURING_DEMO.DATA.supplier_communications SET CHANGE_TRACKING 
 ALTER TABLE MANUFACTURING_DEMO.DATA.engineering_docs SET CHANGE_TRACKING = TRUE;
 ALTER TABLE MANUFACTURING_DEMO.DATA.incident_reports SET CHANGE_TRACKING = TRUE;
 
--- Create warehouse for Cortex Search services (if not exists)
+-- Create warehouse for Cortex Search service (if not exists)
 CREATE WAREHOUSE IF NOT EXISTS CORTEX_SEARCH_WH
   WITH WAREHOUSE_SIZE = 'X-SMALL'
   AUTO_SUSPEND = 60
@@ -23,155 +24,147 @@ CREATE WAREHOUSE IF NOT EXISTS CORTEX_SEARCH_WH
   INITIALLY_SUSPENDED = TRUE;
 
 -- ============================================================================
--- Cortex Search Service: Maintenance Logs
+-- Unified Cortex Search Service: Manufacturing Documents
 -- ============================================================================
--- Searches maintenance log entries, issues found, actions taken, and recommendations
-CREATE OR REPLACE CORTEX SEARCH SERVICE maintenance_logs_search
-  ON log_entry
-  PRIMARY KEY (log_id)
-  ATTRIBUTES log_id, machine_id, maintenance_date, technician_id, maintenance_type
+-- Searches across all unstructured text data: maintenance logs, quality reports,
+-- supplier communications, engineering documentation, and incident reports
+CREATE OR REPLACE CORTEX SEARCH SERVICE manufacturing_documents_search
+  ON document_text
+  PRIMARY KEY (document_type, document_id)
+  ATTRIBUTES document_type, document_id, source_table, related_id, related_type, document_date, author, category, severity, status
   WAREHOUSE = CORTEX_SEARCH_WH
   TARGET_LAG = '1 day'
   EMBEDDING_MODEL = 'snowflake-arctic-embed-l-v2.0'
   AS (
+    -- Maintenance Logs
     SELECT
-        log_id,
-        machine_id,
-        maintenance_date,
-        technician_id,
-        maintenance_type,
-        -- Combine all text fields for comprehensive search
+        'MAINTENANCE_LOG' AS document_type,
+        log_id AS document_id,
+        'maintenance_logs' AS source_table,
+        machine_id AS related_id,
+        'MACHINE' AS related_type,
+        maintenance_date AS document_date,
+        technician_id AS author,
+        maintenance_type AS category,
+        NULL AS severity,
+        NULL AS status,
         CONCAT_WS(' ',
+            COALESCE('Maintenance Log: ' || log_id, ''),
+            COALESCE('Machine: ' || machine_id, ''),
+            COALESCE('Type: ' || maintenance_type, ''),
             COALESCE(log_entry, ''),
             COALESCE(issues_found, ''),
             COALESCE(actions_taken, ''),
             COALESCE(recommendations, ''),
             COALESCE(parts_used, '')
-        ) AS log_entry
+        ) AS document_text
     FROM MANUFACTURING_DEMO.DATA.maintenance_logs
-);
-
--- ============================================================================
--- Cortex Search Service: Quality Reports
--- ============================================================================
--- Searches quality inspection notes, defect descriptions, root cause analysis, and corrective actions
-CREATE OR REPLACE CORTEX SEARCH SERVICE quality_reports_search
-  ON inspection_notes
-  PRIMARY KEY (report_id)
-  ATTRIBUTES report_id, batch_number, product_id, report_date, inspector_id
-  WAREHOUSE = CORTEX_SEARCH_WH
-  TARGET_LAG = '1 day'
-  EMBEDDING_MODEL = 'snowflake-arctic-embed-l-v2.0'
-  AS (
+    
+    UNION ALL
+    
+    -- Quality Reports
     SELECT
-        report_id,
-        batch_number,
-        product_id,
-        report_date,
-        inspector_id,
-        -- Combine all text fields for comprehensive search
+        'QUALITY_REPORT' AS document_type,
+        report_id AS document_id,
+        'quality_reports' AS source_table,
+        batch_number AS related_id,
+        'BATCH' AS related_type,
+        report_date AS document_date,
+        inspector_id AS author,
+        NULL AS category,
+        NULL AS severity,
+        NULL AS status,
         CONCAT_WS(' ',
+            COALESCE('Quality Report: ' || report_id, ''),
+            COALESCE('Batch: ' || batch_number, ''),
+            COALESCE('Product: ' || product_id, ''),
             COALESCE(inspection_notes, ''),
             COALESCE(defect_description, ''),
             COALESCE(root_cause_analysis, ''),
             COALESCE(corrective_actions, ''),
             COALESCE(test_results, '')
-        ) AS inspection_notes
+        ) AS document_text
     FROM MANUFACTURING_DEMO.DATA.quality_reports
-);
-
--- ============================================================================
--- Cortex Search Service: Supplier Communications
--- ============================================================================
--- Searches supplier communication content, summaries, and action items
-CREATE OR REPLACE CORTEX SEARCH SERVICE supplier_communications_search
-  ON content
-  PRIMARY KEY (communication_id)
-  ATTRIBUTES communication_id, supplier_id, communication_date, communication_type, subject
-  WAREHOUSE = CORTEX_SEARCH_WH
-  TARGET_LAG = '1 day'
-  EMBEDDING_MODEL = 'snowflake-arctic-embed-l-v2.0'
-  AS (
+    
+    UNION ALL
+    
+    -- Supplier Communications
     SELECT
-        communication_id,
-        supplier_id,
-        communication_date,
-        communication_type,
-        subject,
-        -- Combine all text fields for comprehensive search
+        'SUPPLIER_COMMUNICATION' AS document_type,
+        communication_id AS document_id,
+        'supplier_communications' AS source_table,
+        supplier_id AS related_id,
+        'SUPPLIER' AS related_type,
+        communication_date AS document_date,
+        NULL AS author,
+        communication_type AS category,
+        NULL AS severity,
+        NULL AS status,
         CONCAT_WS(' ',
+            COALESCE('Subject: ' || subject, ''),
+            COALESCE('Type: ' || communication_type, ''),
+            COALESCE('Supplier: ' || supplier_id, ''),
             COALESCE(subject, ''),
             COALESCE(content, ''),
             COALESCE(summary, ''),
             COALESCE(action_items, '')
-        ) AS content
+        ) AS document_text
     FROM MANUFACTURING_DEMO.DATA.supplier_communications
-);
-
--- ============================================================================
--- Cortex Search Service: Engineering Documentation
--- ============================================================================
--- Searches engineering document content, design notes, test procedures, and change history
-CREATE OR REPLACE CORTEX SEARCH SERVICE engineering_docs_search
-  ON document_content
-  PRIMARY KEY (doc_id)
-  ATTRIBUTES doc_id, product_id, doc_type, doc_date, author, version
-  WAREHOUSE = CORTEX_SEARCH_WH
-  TARGET_LAG = '1 day'
-  EMBEDDING_MODEL = 'snowflake-arctic-embed-l-v2.0'
-  AS (
+    
+    UNION ALL
+    
+    -- Engineering Documentation
     SELECT
-        doc_id,
-        product_id,
-        doc_type,
-        doc_date,
-        author,
-        version,
-        -- Combine all text fields for comprehensive search
+        'ENGINEERING_DOC' AS document_type,
+        doc_id AS document_id,
+        'engineering_docs' AS source_table,
+        product_id AS related_id,
+        'PRODUCT' AS related_type,
+        doc_date AS document_date,
+        author AS author,
+        doc_type AS category,
+        NULL AS severity,
+        NULL AS status,
         CONCAT_WS(' ',
-            COALESCE(doc_type, ''),
+            COALESCE('Engineering Document: ' || doc_id, ''),
+            COALESCE('Type: ' || doc_type, ''),
+            COALESCE('Product: ' || product_id, ''),
+            COALESCE('Version: ' || version, ''),
             COALESCE(document_content, ''),
             COALESCE(design_notes, ''),
             COALESCE(test_procedures, ''),
             COALESCE(change_history, '')
-        ) AS document_content
+        ) AS document_text
     FROM MANUFACTURING_DEMO.DATA.engineering_docs
-);
-
--- ============================================================================
--- Cortex Search Service: Incident Reports
--- ============================================================================
--- Searches incident descriptions, witness statements, investigation findings, and preventive measures
-CREATE OR REPLACE CORTEX SEARCH SERVICE incident_reports_search
-  ON incident_description
-  PRIMARY KEY (incident_id)
-  ATTRIBUTES incident_id, incident_date, location, severity, status
-  WAREHOUSE = CORTEX_SEARCH_WH
-  TARGET_LAG = '1 day'
-  EMBEDDING_MODEL = 'snowflake-arctic-embed-l-v2.0'
-  AS (
+    
+    UNION ALL
+    
+    -- Incident Reports
     SELECT
-        incident_id,
-        incident_date,
-        location,
-        severity,
-        status,
-        -- Combine all text fields for comprehensive search
+        'INCIDENT_REPORT' AS document_type,
+        incident_id AS document_id,
+        'incident_reports' AS source_table,
+        location AS related_id,
+        'LOCATION' AS related_type,
+        incident_date AS document_date,
+        NULL AS author,
+        NULL AS category,
+        severity AS severity,
+        status AS status,
         CONCAT_WS(' ',
+            COALESCE('Incident Report: ' || incident_id, ''),
+            COALESCE('Location: ' || location, ''),
+            COALESCE('Severity: ' || severity, ''),
+            COALESCE('Status: ' || status, ''),
             COALESCE(incident_description, ''),
             COALESCE(witness_statements, ''),
             COALESCE(investigation_findings, ''),
             COALESCE(preventive_measures, '')
-        ) AS incident_description
+        ) AS document_text
     FROM MANUFACTURING_DEMO.DATA.incident_reports
 );
 
 -- Grant usage permissions
-GRANT USAGE ON CORTEX SEARCH SERVICE maintenance_logs_search TO ROLE PUBLIC;
-GRANT USAGE ON CORTEX SEARCH SERVICE quality_reports_search TO ROLE PUBLIC;
-GRANT USAGE ON CORTEX SEARCH SERVICE supplier_communications_search TO ROLE PUBLIC;
-GRANT USAGE ON CORTEX SEARCH SERVICE engineering_docs_search TO ROLE PUBLIC;
-GRANT USAGE ON CORTEX SEARCH SERVICE incident_reports_search TO ROLE PUBLIC;
+GRANT USAGE ON CORTEX SEARCH SERVICE manufacturing_documents_search TO ROLE PUBLIC;
 
-SELECT 'Cortex Search services created successfully!' AS STATUS;
-
+SELECT 'Unified Cortex Search service created successfully!' AS STATUS;
