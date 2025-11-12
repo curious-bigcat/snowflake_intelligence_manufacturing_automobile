@@ -219,7 +219,7 @@ METRICS (
 );
 
 -- Semantic View: Maintenance Logs Summary (Unstructured)
--- Provides searchable view of maintenance logs with key information extracted
+-- Provides searchable view of maintenance logs with Cortex Search integration
 CREATE OR REPLACE SEMANTIC VIEW maintenance_logs_summary
 TABLES (
   ml AS MANUFACTURING_DEMO.DATA.maintenance_logs PRIMARY KEY (log_id)
@@ -236,6 +236,12 @@ DIMENSIONS (
     WHEN UPPER(ml.log_entry) LIKE '%CALIBRAT%' OR UPPER(ml.actions_taken) LIKE '%CALIBRAT%' THEN 'Calibration Performed'
     ELSE 'Other'
   END,
+  ml.log_entry_search AS CONCAT_WS(' ', 
+    COALESCE(ml.log_entry, ''),
+    COALESCE(ml.issues_found, ''),
+    COALESCE(ml.actions_taken, ''),
+    COALESCE(ml.recommendations, '')
+  ) WITH CORTEX SEARCH SERVICE MANUFACTURING_DEMO.SEMANTIC.maintenance_logs_search USING log_entry,
   ml.created_at AS ml.created_at
 )
 METRICS (
@@ -243,7 +249,7 @@ METRICS (
 );
 
 -- Semantic View: Quality Reports Summary (Unstructured)
--- Provides searchable view of quality reports
+-- Provides searchable view of quality reports with Cortex Search integration
 CREATE OR REPLACE SEMANTIC VIEW quality_reports_summary
 TABLES (
   qr AS MANUFACTURING_DEMO.DATA.quality_reports PRIMARY KEY (report_id)
@@ -260,6 +266,12 @@ DIMENSIONS (
     WHEN UPPER(qr.defect_description) LIKE '%MAJOR%' OR UPPER(qr.defect_description) LIKE '%CRITICAL%' THEN 'Major Defects'
     ELSE 'Defects Found'
   END,
+  qr.inspection_notes_search AS CONCAT_WS(' ',
+    COALESCE(qr.inspection_notes, ''),
+    COALESCE(qr.defect_description, ''),
+    COALESCE(qr.root_cause_analysis, ''),
+    COALESCE(qr.corrective_actions, '')
+  ) WITH CORTEX SEARCH SERVICE MANUFACTURING_DEMO.SEMANTIC.quality_reports_search USING inspection_notes,
   qr.created_at AS qr.created_at
 )
 METRICS (
@@ -267,7 +279,7 @@ METRICS (
 );
 
 -- Semantic View: Supplier Communications Summary (Unstructured)
--- Provides searchable view of supplier communications
+-- Provides searchable view of supplier communications with Cortex Search integration
 CREATE OR REPLACE SEMANTIC VIEW supplier_communications_summary
 TABLES (
   scm AS MANUFACTURING_DEMO.DATA.supplier_communications PRIMARY KEY (communication_id)
@@ -285,6 +297,12 @@ DIMENSIONS (
     WHEN UPPER(scm.communication_type) = 'MEETING NOTES' THEN 'Meeting Notes'
     ELSE 'General'
   END,
+  scm.content_search AS CONCAT_WS(' ',
+    COALESCE(scm.subject, ''),
+    COALESCE(scm.content, ''),
+    COALESCE(scm.summary, ''),
+    COALESCE(scm.action_items, '')
+  ) WITH CORTEX SEARCH SERVICE MANUFACTURING_DEMO.SEMANTIC.supplier_communications_search USING content,
   scm.created_at AS scm.created_at
 )
 METRICS (
@@ -292,7 +310,7 @@ METRICS (
 );
 
 -- Semantic View: Engineering Documentation Summary (Unstructured)
--- Provides searchable view of engineering documents
+-- Provides searchable view of engineering documents with Cortex Search integration
 CREATE OR REPLACE SEMANTIC VIEW engineering_docs_summary
 TABLES (
   ed AS MANUFACTURING_DEMO.DATA.engineering_docs PRIMARY KEY (doc_id)
@@ -304,6 +322,13 @@ DIMENSIONS (
   ed.doc_date AS ed.doc_date,
   ed.author AS ed.author,
   ed.version AS ed.version,
+  ed.document_content_search AS CONCAT_WS(' ',
+    COALESCE(ed.doc_type, ''),
+    COALESCE(ed.document_content, ''),
+    COALESCE(ed.design_notes, ''),
+    COALESCE(ed.test_procedures, ''),
+    COALESCE(ed.change_history, '')
+  ) WITH CORTEX SEARCH SERVICE MANUFACTURING_DEMO.SEMANTIC.engineering_docs_search USING document_content,
   ed.created_at AS ed.created_at
 )
 METRICS (
@@ -311,7 +336,7 @@ METRICS (
 );
 
 -- Semantic View: Incident Reports Summary (Unstructured)
--- Provides searchable view of incident reports
+-- Provides searchable view of incident reports with Cortex Search integration
 CREATE OR REPLACE SEMANTIC VIEW incident_reports_summary
 TABLES (
   ir AS MANUFACTURING_DEMO.DATA.incident_reports PRIMARY KEY (incident_id)
@@ -322,6 +347,12 @@ DIMENSIONS (
   ir.location AS ir.location,
   ir.severity AS ir.severity,
   ir.status AS ir.status,
+  ir.incident_description_search AS CONCAT_WS(' ',
+    COALESCE(ir.incident_description, ''),
+    COALESCE(ir.witness_statements, ''),
+    COALESCE(ir.investigation_findings, ''),
+    COALESCE(ir.preventive_measures, '')
+  ) WITH CORTEX SEARCH SERVICE MANUFACTURING_DEMO.SEMANTIC.incident_reports_search USING incident_description,
   ir.created_at AS ir.created_at
 )
 METRICS (
