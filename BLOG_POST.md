@@ -1,566 +1,384 @@
 ---
-title: "Building an AI-Powered Manufacturing Intelligence Demo with Snowflake Intelligence"
+title: "Transforming Manufacturing Intelligence with Snowflake Intelligence: A Complete Solution"
 published: false
-description: "Learn how to build a comprehensive manufacturing intelligence demo using Snowflake Intelligence, featuring structured, semi-structured, and unstructured data with AI agents"
-tags: snowflake, ai, manufacturing, data-engineering, sql, machine-learning, analytics
+description: "Discover how Snowflake Intelligence solves manufacturing data challenges by unifying structured, semi-structured, and unstructured data with AI-powered agents"
+tags: snowflake, ai, manufacturing, data-engineering, intelligence, analytics, iot
 cover_image: https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200
 ---
 
-# Building an AI-Powered Manufacturing Intelligence Demo with Snowflake Intelligence
+# Transforming Manufacturing Intelligence with Snowflake Intelligence: A Complete Solution
 
-Manufacturing operations generate massive amounts of data across multiple formats—structured relational data, semi-structured JSON from IoT sensors, and unstructured text from maintenance logs and quality reports. Making sense of this data to drive intelligent decisions has traditionally required complex ETL pipelines, multiple tools, and significant engineering effort.
+Modern manufacturing operations generate massive amounts of heterogeneous data—structured supply chain records, semi-structured IoT sensor telemetry, and unstructured maintenance logs. Traditional approaches require complex ETL pipelines, multiple specialized tools, and significant engineering effort to extract insights. **Snowflake Intelligence** revolutionizes this by enabling AI-powered applications directly on your data, eliminating infrastructure complexity.
 
-**Snowflake Intelligence** changes this paradigm by enabling you to build AI-powered applications directly on your data, without complex infrastructure. In this blog post, I'll walk you through building a comprehensive manufacturing intelligence demo that showcases Snowflake's capabilities with structured, semi-structured, and unstructured data.
+In this blog post, we'll explore a comprehensive manufacturing intelligence solution built with Snowflake Intelligence that demonstrates how to unify diverse data types and enable natural language interactions with your manufacturing data.
 
-## 🎯 What We're Building
+## 🎯 The Problem: Manufacturing Data Complexity
 
-We'll create a **vehicle manufacturing intelligence system** that:
+Manufacturing operations face unique data challenges:
 
-- **Ingests multiple data types**: Structured supply chain data, semi-structured IoT sensor telemetry, and unstructured maintenance logs
-- **Creates semantic views**: Business-friendly views that abstract away complex joins and relationships
-- **Enables semantic search**: Full-text search across unstructured documents using Cortex Search
-- **Deploys AI agents**: Specialized agents that answer natural language questions about manufacturing operations
+### Data Fragmentation
+- **Structured data** (supply chain, production, inventory) sits in relational databases
+- **Semi-structured data** (IoT sensors, connected vehicle telemetry) arrives as JSON streams
+- **Unstructured data** (maintenance logs, quality reports, engineering docs) exists as free-form text
 
-## 🏗️ Architecture Overview
+### Traditional Approach Limitations
+- **Complex ETL pipelines** required to transform and load data
+- **Multiple tools** needed for different data types (databases, search engines, vector stores)
+- **High engineering overhead** to build and maintain integrations
+- **Delayed insights** due to batch processing and data movement
+- **Limited accessibility** - only SQL experts can query the data
 
-Our demo architecture consists of:
+### Business Impact
+- Supply chain managers can't quickly assess supplier risks
+- Production supervisors struggle to correlate quality issues with root causes
+- Fleet managers lack real-time visibility into vehicle health
+- Cross-functional teams can't easily share insights across domains
+
+## 💡 The Solution: Snowflake Intelligence
+
+Snowflake Intelligence provides a unified platform that:
+
+✅ **Unifies all data types** - Structured, semi-structured, and unstructured data in one platform  
+✅ **Eliminates infrastructure complexity** - No separate vector databases or search engines needed  
+✅ **Enables natural language queries** - AI agents understand business context  
+✅ **Provides real-time intelligence** - Always up-to-date insights without manual refreshes  
+✅ **Scales automatically** - Handles growing data volumes seamlessly  
+
+## 🏗️ Solution Architecture
+
+<!-- Architecture Diagram Placeholder -->
+<!-- [Insert Architecture Diagram Here] -->
+<!-- 
+Recommended diagram showing:
+- Data Sources (Structured, Semi-structured, Unstructured)
+- Snowflake Intelligence Platform
+- Unified Semantic View
+- Cortex Search Service
+- Intelligence Agents
+- End Users / Applications
+-->
+
+### High-Level Architecture Components
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    Snowflake Intelligence                    │
+│                    Data Sources                              │
 ├─────────────────────────────────────────────────────────────┤
-│                                                              │
-│  ┌──────────────────┐      ┌──────────────────────────┐   │
-│  │  Structured Data  │      │  Semi-Structured Data   │   │
-│  │  - Supply Chain   │      │  - Connected Vehicles   │   │
-│  │  - Production     │      │  - IoT Sensors         │   │
-│  │  - Inventory     │      │  - Supplier Documents   │   │
-│  └────────┬──────────┘      └──────────┬───────────────┘   │
-│           │                            │                   │
-│           └────────────┬───────────────┘                   │
-│                        │                                   │
-│           ┌────────────▼───────────────┐                   │
-│           │  Unified Semantic View     │                   │
-│           │  manufacturing_operations  │                   │
-│           └────────────┬───────────────┘                   │
-│                        │                                   │
-│  ┌─────────────────────▼─────────────────────┐           │
-│  │         Intelligence Agents                 │           │
-│  │  - Supply Chain Agent                       │           │
-│  │  - Production Agent                         │           │
-│  │  - Connected Products Agent                 │           │
-│  │  - Manufacturing Operations Agent            │           │
-│  └─────────────────────┬───────────────────────┘           │
-│                        │                                   │
-│  ┌─────────────────────▼─────────────────────┐           │
-│  │      Cortex Search Service                  │           │
-│  │  manufacturing_documents_search             │           │
-│  │  (Unstructured Data: Logs, Reports, Docs)  │           │
-│  └─────────────────────────────────────────────┘           │
-└─────────────────────────────────────────────────────────────┘
+│  Structured    │  Semi-Structured  │  Unstructured         │
+│  • Supply Chain│  • IoT Sensors     │  • Maintenance Logs   │
+│  • Production  │  • Connected       │  • Quality Reports    │
+│  • Inventory   │    Vehicles        │  • Engineering Docs   │
+│                │  • Supplier Docs   │  • Incident Reports   │
+└────────┬───────┴──────────┬─────────┴──────────┬────────────┘
+         │                  │                    │
+         └──────────────────┼────────────────────┘
+                            │
+         ┌──────────────────▼────────────────────┐
+         │     Snowflake Intelligence Platform    │
+         ├────────────────────────────────────────┤
+         │  • Unified Semantic View              │
+         │  • Cortex Search Service              │
+         │  • Intelligence Agents                │
+         └──────────────────┬────────────────────┘
+                            │
+         ┌──────────────────▼────────────────────┐
+         │         Natural Language Interface     │
+         │  • Supply Chain Agent                 │
+         │  • Production Agent                    │
+         │  • Connected Products Agent            │
+         │  • Operations Agent                   │
+         └────────────────────────────────────────┘
 ```
 
-## 📊 Data Types in Our Demo
+## 📊 Solution Functionality
 
-### Structured Data (3 Tables)
+### 1. Unified Data Access
 
-Traditional relational tables with fixed schemas:
+Our solution creates a **single semantic view** (`manufacturing_operations`) that combines:
 
-- **`supply_chain`**: Supplier orders, delivery dates, risk scores, regions
-- **`production`**: Production batches, quality scores, energy consumption, downtime
-- **`inventory`**: Warehouse stock levels, reorder points, part numbers
+- **3 Structured Tables**: Supply chain, production, inventory
+- **4 Semi-Structured Tables**: Connected vehicles, IoT sensors, supplier documents, product configurations
+- **5 Unstructured Tables**: Maintenance logs, quality reports, supplier communications, engineering docs, incident reports
 
-### Semi-Structured Data (4 Tables)
+**Key Capabilities:**
+- Business-friendly dimensions (risk categories, quality ratings) instead of raw scores
+- Automatic relationships enable cross-table queries without complex JOINs
+- Pre-calculated aggregate metrics for performance
+- JSON extraction handled transparently
 
-JSON/VARIANT columns with nested data:
+### 2. Semantic Search Across Documents
 
-- **`connected_products`**: Vehicle telemetry with nested sensor arrays, diagnostics, location data, driver info, trip metadata
-- **`iot_sensors`**: Manufacturing sensor readings with machine state, calibration data
-- **`supplier_documents`**: Document metadata, extracted fields, compliance information
-- **`product_configurations`**: Product specs, BOM structures, configuration options
+A unified **Cortex Search service** (`manufacturing_documents_search`) enables:
 
-### Unstructured Data (5 Tables)
+- **Hybrid search**: Combines vector (semantic) and keyword search
+- **Cross-document search**: Query maintenance logs, quality reports, and engineering docs simultaneously
+- **Contextual understanding**: Finds relevant documents even with different terminology
+- **Real-time updates**: Automatically refreshes as new documents are added
 
-Free-form text documents:
+**Example Use Cases:**
+- "Find all maintenance logs about bearing failures"
+- "Search quality reports for paint defects"
+- "What engineering documents mention battery optimization?"
 
-- **`maintenance_logs`**: Detailed maintenance notes, issues found, actions taken
-- **`quality_reports`**: Inspection notes, defect descriptions, root cause analysis
-- **`supplier_communications`**: Emails, meeting notes, contracts
-- **`engineering_docs`**: Design specifications, test procedures, change history
-- **`incident_reports`**: Incident descriptions, witness statements, investigation findings
+### 3. AI-Powered Intelligence Agents
 
-## 🚀 Setup Guide
+Four specialized agents provide domain-specific intelligence:
 
-### Prerequisites
+#### Supply Chain Agent
+- **Capabilities**: Supplier risk assessment, inventory optimization, delivery tracking
+- **Sample Queries**: 
+  - "Which suppliers have high risk scores?"
+  - "Show me inventory levels for critical parts"
+  - "What's the average delivery time by region?"
 
-- Snowflake account with Intelligence enabled
-- `ACCOUNTADMIN` role or equivalent privileges
-- `SNOWFLAKE.CORTEX_USER` database role granted
+#### Production Agent
+- **Capabilities**: Quality analysis, efficiency metrics, predictive maintenance
+- **Sample Queries**:
+  - "Show me production efficiency by assembly line"
+  - "What machines need maintenance?"
+  - "Identify quality issues by batch"
 
-### Step 1: Create Infrastructure
+#### Connected Products Agent
+- **Capabilities**: Vehicle telematics, fleet management, predictive diagnostics
+- **Sample Queries**:
+  - "Are there any vehicles with sensor alerts?"
+  - "Show me vehicles with low battery health"
+  - "What's the average fuel efficiency by vehicle model?"
 
-First, let's set up the databases, schemas, and tables:
+#### Manufacturing Operations Agent
+- **Capabilities**: Cross-functional insights, end-to-end visibility
+- **Sample Queries**:
+  - "What's the correlation between supplier risk and production quality?"
+  - "Show me end-to-end view from supplier to customer delivery"
+  - "Give me strategic recommendations for operations"
 
-```sql
--- Create databases and schemas
-CREATE DATABASE IF NOT EXISTS MANUFACTURING_DEMO;
-CREATE SCHEMA IF NOT EXISTS MANUFACTURING_DEMO.DATA;
-CREATE SCHEMA IF NOT EXISTS MANUFACTURING_DEMO.SEMANTIC;
+## 🔧 High-Level Configuration
 
-CREATE DATABASE IF NOT EXISTS SNOWFLAKE_INTELLIGENCE;
-CREATE SCHEMA IF NOT EXISTS SNOWFLAKE_INTELLIGENCE.AGENTS;
+### Semantic View Configuration
 
--- Create warehouse
-CREATE WAREHOUSE IF NOT EXISTS INTEL_WH
-  WITH WAREHOUSE_SIZE = 'X-SMALL'
-  AUTO_SUSPEND = 60
-  AUTO_RESUME = TRUE;
+The unified semantic view is configured with:
+
+- **11 Tables** with primary keys and relationships
+- **Business Dimensions**: Risk categories, quality ratings, stock status, alert status
+- **Aggregate Metrics**: Averages, totals, counts across all data types
+- **Automatic JSON Extraction**: Nested data accessed transparently
+
+### Cortex Search Configuration
+
+The search service is configured with:
+
+- **Embedding Model**: `snowflake-arctic-embed-l-v2.0` (multilingual, 1024 dimensions)
+- **Primary Key**: Composite key (document_type, document_id) for uniqueness
+- **Attributes**: Document metadata for filtering (date, author, category, severity)
+- **Refresh Frequency**: 1 day target lag for near real-time updates
+
+### Intelligence Agents Configuration
+
+Each agent is configured with:
+
+- **Orchestration Model**: `claude-4-sonnet` for natural language understanding
+- **Tools**: 
+  - `Analyst1`: Text-to-SQL conversion for semantic view queries
+  - `Search1`: Semantic search across unstructured documents
+- **Budget Constraints**: Time and token limits for cost control
+- **Domain-Specific Instructions**: Tailored responses for each use case
+
+## 🎬 Demo Recording
+
+<!-- Demo Recording Placeholder -->
+<!-- [Insert Demo Recording Here] -->
+<!-- 
+Recommended demo flow:
+1. Show data sources (structured, semi-structured, unstructured)
+2. Demonstrate semantic view querying
+3. Show Cortex Search in action
+4. Interact with Intelligence Agents:
+   - Ask supply chain questions
+   - Query production metrics
+   - Search unstructured documents
+   - Cross-functional analysis
+5. Show real-time updates
+-->
+
+**Demo Highlights:**
+- Natural language queries across all data types
+- Real-time insights from semantic views
+- Semantic search finding relevant documents
+- Cross-functional analysis connecting supply chain to production
+- Actionable recommendations from AI agents
+
+## 🚀 Key Benefits
+
+### For Business Users
+- **No SQL Required**: Ask questions in natural language
+- **Faster Insights**: Get answers in seconds, not hours
+- **Comprehensive View**: See connections across all data types
+- **Actionable Recommendations**: Agents provide next steps, not just data
+
+### For IT Teams
+- **Simplified Architecture**: One platform instead of multiple tools
+- **Reduced Maintenance**: No separate vector databases or search engines
+- **Automatic Scaling**: Handles growth without manual intervention
+- **Cost Efficiency**: Pay only for compute used
+
+### For Organizations
+- **Faster Decision Making**: Real-time intelligence enables quick responses
+- **Better Collaboration**: Shared understanding across teams
+- **Competitive Advantage**: Leverage AI without complex infrastructure
+- **Future-Proof**: Built on Snowflake's scalable platform
+
+## 📈 Real-World Impact
+
+### Supply Chain Optimization
+- **Risk Reduction**: Identify high-risk suppliers before issues occur
+- **Cost Savings**: Optimize inventory levels based on real-time demand
+- **Delivery Improvement**: Track and predict delivery performance
+
+### Production Excellence
+- **Quality Improvement**: Correlate production parameters with quality outcomes
+- **Efficiency Gains**: Identify bottlenecks and optimization opportunities
+- **Predictive Maintenance**: Prevent downtime through proactive maintenance
+
+### Connected Products
+- **Customer Satisfaction**: Proactive vehicle health monitoring
+- **Safety Enhancement**: Real-time alert detection and response
+- **Fleet Optimization**: Optimize routes and maintenance schedules
+
+## 🎓 Snowflake Intelligence: The Technology
+
+### What is Snowflake Intelligence?
+
+Snowflake Intelligence is a comprehensive platform that brings AI capabilities directly to your data:
+
+- **Semantic Views**: Business-friendly abstractions over complex data models
+- **Cortex Search**: Low-latency semantic search over unstructured data
+- **Intelligence Agents**: AI-powered assistants that understand your domain
+- **Cortex LLM Functions**: Direct access to large language models
+
+### Why Snowflake Intelligence?
+
+1. **Unified Platform**: All capabilities in one place, no tool sprawl
+2. **Data Security**: Enterprise-grade security and governance
+3. **Cost Effective**: Pay only for what you use
+4. **Scalable**: Handles petabytes of data seamlessly
+5. **Easy to Use**: Natural language interface, no complex setup
+
+### Key Differentiators
+
+- ✅ **No Vector Database Needed**: Embeddings handled automatically
+- ✅ **No ETL Complexity**: Direct queries on source data
+- ✅ **Real-Time Updates**: Always current, no batch delays
+- ✅ **Domain-Aware**: Agents understand your business context
+
+## 🔍 Technical Approach
+
+### Data Unification Strategy
+
+1. **Structured Data**: Direct table access with semantic view abstraction
+2. **Semi-Structured Data**: VARIANT columns with automatic JSON extraction
+3. **Unstructured Data**: TEXT columns with Cortex Search indexing
+
+### Intelligence Layer Architecture
+
+1. **Semantic Layer**: Unified view with relationships and metrics
+2. **Search Layer**: Unified Cortex Search service across all documents
+3. **Agent Layer**: Specialized agents with domain knowledge
+
+### Query Flow
+
+```
+User Question → Intelligence Agent → Tool Selection
+                                      ├─→ Analyst1 (Semantic View Query)
+                                      └─→ Search1 (Document Search)
+                                    ↓
+                            Results Aggregation
+                                    ↓
+                        Contextual Response Generation
+                                    ↓
+                            User Receives Answer
 ```
 
-### Step 2: Create Tables
+## 📊 Solution Metrics
 
-Let's create our tables. Here's an example of each data type:
+### Data Coverage
+- **11 Tables** unified in single semantic view
+- **50+ Records** per table for comprehensive demo
+- **5 Document Types** searchable via Cortex Search
+- **4 Specialized Agents** covering key manufacturing domains
 
-**Structured Table Example:**
-```sql
-CREATE OR REPLACE TABLE MANUFACTURING_DEMO.DATA.supply_chain (
-    supplier_id VARCHAR,
-    supplier_name VARCHAR,
-    part_number VARCHAR,
-    part_description VARCHAR,
-    order_date DATE,
-    delivery_date DATE,
-    quantity NUMBER,
-    unit_cost NUMBER(10,2),
-    status VARCHAR,
-    risk_score NUMBER(3,2),
-    region VARCHAR,
-    created_at TIMESTAMP_NTZ DEFAULT CURRENT_TIMESTAMP()
-);
-```
+### Performance Characteristics
+- **Query Latency**: Sub-second responses for semantic view queries
+- **Search Latency**: Low-latency semantic search (<100ms)
+- **Agent Response**: 5-15 seconds for complex queries
+- **Refresh Frequency**: Daily updates for search index
 
-**Semi-Structured Table Example:**
-```sql
-CREATE OR REPLACE TABLE MANUFACTURING_DEMO.DATA.connected_products (
-    vehicle_id VARCHAR,
-    product_id VARCHAR,
-    telemetry_timestamp TIMESTAMP_NTZ,
-    telemetry_data VARIANT,  -- JSON: sensors, diagnostics, error codes
-    location_data VARIANT,   -- JSON: lat, lon, address, geofence
-    driver_info VARIANT,     -- JSON: driver details, behavior metrics
-    trip_metadata VARIANT,   -- JSON: route, distance, fuel efficiency
-    created_at TIMESTAMP_NTZ DEFAULT CURRENT_TIMESTAMP()
-);
-```
+## 🎯 Use Cases Enabled
 
-**Unstructured Table Example:**
-```sql
-CREATE OR REPLACE TABLE MANUFACTURING_DEMO.DATA.maintenance_logs (
-    log_id VARCHAR,
-    machine_id VARCHAR,
-    maintenance_date DATE,
-    technician_id VARCHAR,
-    maintenance_type VARCHAR,
-    log_entry TEXT,           -- Free-form text
-    issues_found TEXT,
-    actions_taken TEXT,
-    recommendations TEXT,
-    parts_used TEXT,
-    created_at TIMESTAMP_NTZ DEFAULT CURRENT_TIMESTAMP()
-);
-```
+### Supply Chain Management
+- Real-time supplier risk monitoring
+- Inventory optimization recommendations
+- Delivery performance tracking
+- Cost analysis and optimization
 
-### Step 3: Insert Data
+### Production Operations
+- Quality trend analysis
+- Efficiency benchmarking
+- Predictive maintenance scheduling
+- Energy consumption optimization
 
-We'll insert realistic vehicle manufacturing data. Here's an example of inserting semi-structured data:
+### Connected Products
+- Fleet health monitoring
+- Predictive diagnostics
+- Driver behavior analysis
+- Route optimization
 
-```sql
-INSERT INTO MANUFACTURING_DEMO.DATA.connected_products 
-SELECT 
-    '1HGBH41JXMN109186' AS vehicle_id,
-    'VEH-SEDAN-CAMRY-2024' AS product_id,
-    '2024-01-15 08:30:00'::TIMESTAMP_NTZ AS telemetry_timestamp,
-    PARSE_JSON('{
-        "sensors": [
-            {"type": "engine_temperature", "value": 88.5, "unit": "celsius", "threshold": 95},
-            {"type": "oil_pressure", "value": 42.3, "unit": "psi", "threshold": 50}
-        ],
-        "diagnostics": {
-            "engine_status": "normal",
-            "battery_health": 94,
-            "error_codes": []
-        }
-    }') AS telemetry_data,
-    PARSE_JSON('{
-        "latitude": 42.3314,
-        "longitude": -83.0458,
-        "address": "Detroit, MI",
-        "geofence": "Michigan_Region",
-        "speed": 45
-    }') AS location_data,
-    PARSE_JSON('{
-        "driver_id": "DRV-JOHN-SMITH-001",
-        "name": "John Smith",
-        "behavior_score": 8.7,
-        "fatigue_risk": "low"
-    }') AS driver_info,
-    PARSE_JSON('{
-        "trip_id": "TRIP-2024-001-001",
-        "route": "I-94 Eastbound",
-        "distance_miles": 125.3,
-        "fuel_efficiency": 32.5
-    }') AS trip_metadata,
-    CURRENT_TIMESTAMP() AS created_at;
-```
+### Cross-Functional Analytics
+- End-to-end visibility from supplier to customer
+- Correlation analysis across domains
+- Strategic recommendations
+- Performance dashboards
 
-### Step 4: Create Unified Semantic View
+## 🔮 Future Enhancements
 
-The semantic view combines all our tables with business-friendly dimensions and metrics:
+### Planned Capabilities
+- **Real-Time Streaming**: Process IoT data streams in real-time
+- **Advanced Analytics**: Predictive models for demand forecasting
+- **Integration APIs**: Connect agents to external systems
+- **Custom Models**: Fine-tune agents for specific use cases
 
-```sql
-CREATE OR REPLACE SEMANTIC VIEW MANUFACTURING_DEMO.SEMANTIC.manufacturing_operations
-TABLES (
-  -- Structured Data Tables
-  sc AS MANUFACTURING_DEMO.DATA.supply_chain 
-    PRIMARY KEY (supplier_id, part_number, order_date),
-  prod AS MANUFACTURING_DEMO.DATA.production 
-    PRIMARY KEY (production_line_id, machine_id, batch_number, start_time),
-  inv AS MANUFACTURING_DEMO.DATA.inventory 
-    PRIMARY KEY (warehouse_id, part_number) UNIQUE (part_number),
-  
-  -- Semi-structured Data Tables
-  cp AS MANUFACTURING_DEMO.DATA.connected_products 
-    PRIMARY KEY (vehicle_id, telemetry_timestamp),
-  iot AS MANUFACTURING_DEMO.DATA.iot_sensors 
-    PRIMARY KEY (sensor_id, timestamp),
-  -- ... more tables
-)
-RELATIONSHIPS (
-  sc_inventory AS sc(part_number) REFERENCES inv(part_number),
-  prod_quality_reports AS prod(batch_number) REFERENCES qr(batch_number),
-  prod_maintenance AS prod(machine_id) REFERENCES ml(machine_id)
-)
-DIMENSIONS (
-  -- Supply Chain Dimensions
-  sc.supplier_id AS sc.supplier_id,
-  sc.supplier_name AS sc.supplier_name,
-  sc.risk_category AS CASE 
-    WHEN sc.risk_score < 0.2 THEN 'Low Risk'
-    WHEN sc.risk_score < 0.4 THEN 'Medium Risk'
-    ELSE 'High Risk'
-  END,
-  
-  -- Production Dimensions
-  prod.quality_rating AS CASE 
-    WHEN prod.quality_score >= 0.95 THEN 'Excellent'
-    WHEN prod.quality_score >= 0.90 THEN 'Good'
-    WHEN prod.quality_score >= 0.85 THEN 'Acceptable'
-    ELSE 'Needs Improvement'
-  END,
-  
-  -- Connected Products Dimensions (from JSON)
-  cp.engine_status AS cp.telemetry_data:diagnostics:engine_status::STRING,
-  cp.driver_name AS cp.driver_info:name::STRING,
-  cp.alert_status AS CASE 
-    WHEN cp.telemetry_data:sensors[0]:type::STRING = 'temperature' 
-         AND cp.telemetry_data:sensors[0]:value::NUMBER > 90 
-    THEN 'High Temperature Alert'
-    ELSE 'Normal'
-  END
-)
-METRICS (
-  sc.avg_delivery_days AS AVG(DATEDIFF(day, sc.order_date, sc.delivery_date)),
-  sc.total_cost AS SUM(sc.quantity * sc.unit_cost),
-  prod.avg_quality_score AS AVG(prod.quality_score),
-  prod.total_quantity_produced AS SUM(prod.quantity_produced),
-  cp.avg_battery_health AS AVG(cp.telemetry_data:diagnostics:battery_health::NUMBER),
-  cp.total_trip_distance_miles AS SUM(cp.trip_metadata:distance_miles::NUMBER)
-);
-```
+### Extension Opportunities
+- Add more data sources (ERP systems, MES systems)
+- Create additional specialized agents
+- Integrate with visualization tools
+- Build custom applications using agent APIs
 
-**Key Benefits:**
-- ✅ Business-friendly dimensions (risk categories, quality ratings) instead of raw scores
-- ✅ Automatic relationships enable cross-table queries
-- ✅ Aggregate metrics pre-calculated for performance
-- ✅ JSON extraction handled transparently
+## 📚 Resources
 
-### Step 5: Create Cortex Search Service
+- **Snowflake Intelligence Documentation**: [docs.snowflake.com](https://docs.snowflake.com)
+- **GitHub Repository**: [Complete Demo Code](https://github.com/your-repo)
+- **Snowflake Community**: Join discussions and get help
+- **Snowflake Summit**: Learn about latest features
 
-For unstructured data, we create a unified Cortex Search service:
+## 💭 Conclusion
 
-```sql
--- Enable change tracking (required for Cortex Search)
-ALTER TABLE MANUFACTURING_DEMO.DATA.maintenance_logs SET CHANGE_TRACKING = TRUE;
-ALTER TABLE MANUFACTURING_DEMO.DATA.quality_reports SET CHANGE_TRACKING = TRUE;
--- ... enable for all unstructured tables
+Snowflake Intelligence transforms how manufacturing organizations interact with their data. By unifying structured, semi-structured, and unstructured data in a single platform, it eliminates the complexity of traditional approaches while enabling powerful AI capabilities.
 
--- Create unified Cortex Search service
-CREATE OR REPLACE CORTEX SEARCH SERVICE 
-  MANUFACTURING_DEMO.SEMANTIC.manufacturing_documents_search
-  ON document_text
-  PRIMARY KEY (document_type, document_id)
-  ATTRIBUTES document_type, document_id, source_table, related_id, 
-             document_date, author, category, severity, status
-  WAREHOUSE = CORTEX_SEARCH_WH
-  TARGET_LAG = '1 day'
-  EMBEDDING_MODEL = 'snowflake-arctic-embed-l-v2.0'
-  AS (
-    -- Maintenance Logs
-    SELECT
-        'MAINTENANCE_LOG' AS document_type,
-        log_id AS document_id,
-        'maintenance_logs' AS source_table,
-        machine_id AS related_id,
-        maintenance_date AS document_date,
-        technician_id AS author,
-        maintenance_type AS category,
-        CONCAT_WS(' ',
-            'Maintenance Log: ' || log_id,
-            'Machine: ' || machine_id,
-            log_entry,
-            issues_found,
-            actions_taken,
-            recommendations
-        ) AS document_text
-    FROM MANUFACTURING_DEMO.DATA.maintenance_logs
-    
-    UNION ALL
-    
-    -- Quality Reports
-    SELECT
-        'QUALITY_REPORT' AS document_type,
-        report_id AS document_id,
-        'quality_reports' AS source_table,
-        batch_number AS related_id,
-        report_date AS document_date,
-        inspector_id AS author,
-        CONCAT_WS(' ',
-            'Quality Report: ' || report_id,
-            'Batch: ' || batch_number,
-            inspection_notes,
-            defect_description,
-            root_cause_analysis,
-            corrective_actions
-        ) AS document_text
-    FROM MANUFACTURING_DEMO.DATA.quality_reports
-    
-    -- ... more UNION ALL clauses for other unstructured tables
-);
-```
+**Key Takeaways:**
 
-**Key Features:**
-- 🔍 **Hybrid search**: Combines vector (semantic) and keyword search
-- 📊 **Unified interface**: Search across all document types in one query
-- ⚡ **Low latency**: Optimized for real-time search
-- 🔄 **Auto-refresh**: Updates automatically as source data changes
+1. **Unified Platform**: One solution for all data types eliminates tool sprawl
+2. **Natural Language Interface**: Makes data accessible to everyone, not just SQL experts
+3. **Real-Time Intelligence**: Always current insights without batch processing delays
+4. **Domain-Aware AI**: Agents understand manufacturing context and provide actionable recommendations
+5. **Scalable Architecture**: Grows with your data and usage needs
 
-### Step 6: Create Intelligence Agents
+The manufacturing intelligence solution we've explored demonstrates how Snowflake Intelligence can revolutionize data access and analysis. Whether you're optimizing supply chains, improving production quality, or managing connected products, Snowflake Intelligence provides the foundation for intelligent, data-driven decision making.
 
-Now for the exciting part—creating AI agents that can answer natural language questions:
-
-```sql
-CREATE OR REPLACE AGENT SNOWFLAKE_INTELLIGENCE.AGENTS.supply_chain_agent
-  COMMENT = 'Supply Chain Intelligence Agent'
-  PROFILE = '{"display_name": "Supply Chain Agent", "color": "blue"}'
-  FROM SPECIFICATION
-  $$
-  models:
-    orchestration: claude-4-sonnet
-
-  orchestration:
-    budget:
-      seconds: 60
-      tokens: 32000
-
-  instructions:
-    response: |
-      You are a Supply Chain Intelligence Agent specializing in manufacturing.
-      Provide specific, data-driven insights about suppliers, inventory, and logistics.
-      Highlight risks and opportunities with actionable recommendations.
-
-    orchestration: |
-      Use Analyst1 for supply chain data queries.
-      Use Search1 for searching supplier documents and communications.
-
-  tools:
-    - tool_spec:
-        type: "cortex_analyst_text_to_sql"
-        name: "Analyst1"
-        description: "Converts natural language to SQL queries"
-    - tool_spec:
-        type: "cortex_search"
-        name: "Search1"
-        description: "Searches supplier documents and communications"
-
-  tool_resources:
-    Analyst1:
-      semantic_view: "MANUFACTURING_DEMO.SEMANTIC.manufacturing_operations"
-    Search1:
-      name: "MANUFACTURING_DEMO.SEMANTIC.manufacturing_documents_search"
-      max_results: "10"
-      title_column: "document_text"
-      id_column: "document_id"
-  $$;
-```
-
-We create four specialized agents:
-1. **Supply Chain Agent**: Supplier risk, inventory, logistics
-2. **Production Agent**: Quality, efficiency, maintenance, IoT sensors
-3. **Connected Products Agent**: Telematics, fleet management, vehicle diagnostics
-4. **Manufacturing Operations Agent**: Cross-functional insights
-
-## 💬 Using the Agents
-
-Once deployed, you can ask natural language questions:
-
-### Supply Chain Queries
-
-**Question:** "Which suppliers have high risk scores?"
-
-**Agent Response:** 
-> "I found 3 suppliers with high risk scores (>0.4):
-> - SUP004 (ZF Friedrichshafen): Risk score 0.20, 8-Speed Transmission
-> - SUP005 (Aisin Seiki): Risk score 0.22, CVT Transmission
-> - SUP017 (Benteler Automotive): Risk score 0.22, Chassis Frame Assembly
-> 
-> Recommendations:
-> - Diversify suppliers for critical components
-> - Increase monitoring frequency for high-risk suppliers
-> - Consider backup suppliers for SUP004 and SUP005"
-
-### Production Queries
-
-**Question:** "Show me production efficiency by assembly line"
-
-**Agent Response:**
-> "Production efficiency metrics by assembly line:
-> 
-> | Line | Avg Units/Hour | Avg Quality Score | Total Batches |
-> |------|----------------|-------------------|---------------|
-> | ASSY-LINE-01 | 15.2 | 0.96 | 10 |
-> | ASSY-LINE-02 | 12.1 | 0.95 | 10 |
-> | ASSY-LINE-04 | 11.8 | 0.97 | 10 |
-> 
-> Insights:
-> - ASSY-LINE-01 has highest throughput but quality could improve
-> - ASSY-LINE-04 (EV line) has best quality but lower throughput
-> - Consider cross-training operators to balance efficiency"
-
-### Connected Products Queries
-
-**Question:** "Are there any vehicles with sensor alerts?"
-
-**Agent Response:**
-> "Found 2 vehicles with alerts:
-> 
-> 1. **Vehicle 1HGBH41JXMN109187** (Toyota Camry)
->    - Alert: High Temperature (92.1°C, threshold: 95°C)
->    - Location: Chicago, IL
->    - Recommendation: Schedule maintenance check
-> 
-> 2. **Vehicle 1HGBH41JXMN109192** (Toyota RAV4)
->    - Alert: Low Tire Pressure (34 PSI, threshold: 28 PSI)
->    - Location: Dallas, TX
->    - Recommendation: Check tire pressure, inspect for leaks
-> 
-> Both vehicles are still within safe operating ranges but should be monitored."
-
-### Cross-Functional Queries
-
-**Question:** "What's the correlation between supplier risk and production quality?"
-
-**Agent Response:**
-> "Analysis of supplier risk vs production quality:
-> 
-> **Key Findings:**
-> - Suppliers with risk scores <0.15: Average quality score 0.97
-> - Suppliers with risk scores 0.15-0.20: Average quality score 0.95
-> - Suppliers with risk scores >0.20: Average quality score 0.93
-> 
-> **Correlation:** Moderate negative correlation (-0.42)
-> 
-> **Recommendations:**
-> 1. Prioritize low-risk suppliers for critical components
-> 2. Implement additional quality checks for high-risk suppliers
-> 3. Review supplier qualification process for new suppliers"
-
-## 🔍 Searching Unstructured Data
-
-The Cortex Search service enables semantic search across all documents:
-
-**Question:** "Find maintenance logs about bearing replacement"
-
-**Search Results:**
-> 1. **LOG-003** - Machine C (Predictive Maintenance)
->    - Issue: Bearing wear detected in main drive assembly
->    - Action: Replaced main drive bearing assembly (Part #BRG-45678)
->    - Date: 2024-01-15
-> 
-> 2. **LOG-001** - Machine A (Preventive Maintenance)
->    - Issue: Minor wear detected on belt drive system
->    - Action: Adjusted belt tension, scheduled bearing replacement
->    - Date: 2024-01-10
-
-The search understands semantic meaning, not just keywords!
-
-## 📈 Key Benefits
-
-### 1. **Unified Data Access**
-- Single semantic view abstracts away complex joins
-- Agents can query across all data types seamlessly
-- Relationships automatically handled
-
-### 2. **Natural Language Interface**
-- No SQL knowledge required for end users
-- Agents understand business context
-- Responses include actionable insights
-
-### 3. **Real-Time Intelligence**
-- Semantic views update automatically
-- Cortex Search refreshes daily
-- Agents always use latest data
-
-### 4. **Cost-Effective**
-- No separate vector database needed
-- No complex ETL pipelines
-- Pay only for compute used
-
-## 🎓 Learning Resources
-
-- [Snowflake Intelligence Documentation](https://docs.snowflake.com/en/user-guide/intelligence-overview)
-- [Semantic Views Guide](https://docs.snowflake.com/en/user-guide/semantic-views)
-- [Cortex Search Documentation](https://docs.snowflake.com/en/user-guide/cortex-search)
-- [Intelligence Agents Guide](https://docs.snowflake.com/en/user-guide/agents)
-
-## 🚀 Next Steps
-
-1. **Extend the Demo**: Add more data sources, create additional agents
-2. **Customize Agents**: Fine-tune instructions for your specific use cases
-3. **Integrate**: Connect agents to your applications via REST API
-4. **Scale**: Add more warehouses, optimize semantic views for performance
-
-## 📝 Complete Code Repository
-
-All code for this demo is available on GitHub:
-[GitHub Repository](https://github.com/your-repo/snowflake-intelligence-manufacturing)
-
-The repository includes:
-- Complete SQL setup scripts
-- Sample data generation scripts
-- Detailed README with setup instructions
-- Demo guide with example queries
-
-## 💡 Conclusion
-
-Snowflake Intelligence enables you to build sophisticated AI applications directly on your data, without the complexity of managing separate vector databases, embedding pipelines, or LLM infrastructure. The unified approach—semantic views for structured/semi-structured data and Cortex Search for unstructured data—provides a powerful foundation for intelligent applications.
-
-Whether you're building manufacturing intelligence, customer support systems, or financial analytics, Snowflake Intelligence provides the tools you need to make your data truly intelligent.
-
-**Have questions or want to share your own Snowflake Intelligence projects?** Leave a comment below or reach out on [Twitter](https://twitter.com/yourhandle)!
+**Ready to transform your manufacturing operations?** Start with Snowflake Intelligence and experience the power of unified, AI-powered data intelligence.
 
 ---
 
-**Tags:** #snowflake #ai #manufacturing #data-engineering #sql #machine-learning #analytics
+**Tags:** #snowflake #ai #manufacturing #data-engineering #intelligence #analytics #iot
 
 **Author Bio:** [Your name and bio here]
 
+**Connect:** [Twitter] | [LinkedIn] | [GitHub]
