@@ -21,6 +21,7 @@ This demo showcases Snowflake Intelligence capabilities for Vehicle Manufacturin
 - **Features:** Hybrid (vector + keyword) search with semantic reranking
 
 ### Intelligence Agents
+- **Location:** All agents are created in `SNOWFLAKE_INTELLIGENCE.AGENTS` schema
 - **Syntax:** Uses `FROM SPECIFICATION` with YAML format
 - **Tools:** Each agent has access to:
   - `Analyst1` (cortex_analyst_text_to_sql): Queries the unified semantic view
@@ -30,7 +31,7 @@ This demo showcases Snowflake Intelligence capabilities for Vehicle Manufacturin
 ## Demo Structure
 
 ### Part 1: Supply Chain Intelligence
-**Agent:** `supply_chain_agent`  
+**Agent:** `SNOWFLAKE_INTELLIGENCE.AGENTS.supply_chain_agent`  
 **Use Cases:** Supplier Risk, Inventory Management, Forecasting, Logistics
 
 #### Sample Queries:
@@ -63,7 +64,7 @@ This demo showcases Snowflake Intelligence capabilities for Vehicle Manufacturin
 ---
 
 ### Part 2: Smart Production Intelligence
-**Agent:** `production_agent`  
+**Agent:** `SNOWFLAKE_INTELLIGENCE.AGENTS.production_agent`  
 **Use Cases:** Shopfloor Visibility, Quality Management, Predictive Maintenance, Energy Optimization
 
 #### Sample Queries:
@@ -96,7 +97,7 @@ This demo showcases Snowflake Intelligence capabilities for Vehicle Manufacturin
 ---
 
 ### Part 3: Connected Products Intelligence
-**Agent:** `connected_products_agent`  
+**Agent:** `SNOWFLAKE_INTELLIGENCE.AGENTS.connected_products_agent`  
 **Use Cases:** Telematics, Predictive Maintenance, Fleet Management, EV Optimization
 
 #### Sample Queries:
@@ -129,7 +130,7 @@ This demo showcases Snowflake Intelligence capabilities for Vehicle Manufacturin
 ---
 
 ### Part 4: Cross-Functional Intelligence
-**Agent:** `manufacturing_operations_agent`  
+**Agent:** `SNOWFLAKE_INTELLIGENCE.AGENTS.manufacturing_operations_agent`  
 **Use Cases:** End-to-end optimization, Strategic insights, Cross-functional analysis
 
 #### Sample Queries:
