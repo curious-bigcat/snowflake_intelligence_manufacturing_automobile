@@ -263,7 +263,7 @@ DIMENSIONS (
   qr.created_at AS qr.created_at
 )
 METRICS (
-  -- Text fields available for semantic search via dimensions
+  qr.quality_report_count AS COUNT(*)
 );
 
 -- Semantic View: Supplier Communications Summary (Unstructured)
