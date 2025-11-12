@@ -35,11 +35,11 @@ Creates 4 Intelligence agents with access to semantic views and Cortex Search.
 ## Using the Agents
 
 1. Open Snowflake UI → Intelligence Chat
-2. Select an agent:
-   - `supply_chain_agent` - Supplier risk, inventory, logistics
-   - `production_agent` - Quality, efficiency, maintenance
-   - `connected_products_agent` - Telematics, fleet management
-   - `manufacturing_operations_agent` - Cross-functional insights
+2. Select an agent (all agents are in `SNOWFLAKE_INTELLIGENCE.AGENTS` schema):
+   - `SNOWFLAKE_INTELLIGENCE.AGENTS.supply_chain_agent` - Supplier risk, inventory, logistics
+   - `SNOWFLAKE_INTELLIGENCE.AGENTS.production_agent` - Quality, efficiency, maintenance
+   - `SNOWFLAKE_INTELLIGENCE.AGENTS.connected_products_agent` - Telematics, fleet management
+   - `SNOWFLAKE_INTELLIGENCE.AGENTS.manufacturing_operations_agent` - Cross-functional insights
 
 3. Ask questions in natural language:
    - "What suppliers have high risk scores?"
