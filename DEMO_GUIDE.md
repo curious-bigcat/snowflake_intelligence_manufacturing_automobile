@@ -28,6 +28,350 @@ This demo showcases Snowflake Intelligence capabilities for Vehicle Manufacturin
   - `Search1` (cortex_search): Searches the unified Cortex Search service
 - **Configuration:** Tool resources configured per agent with appropriate filters
 
+## Data Types Exploration Guide
+
+This demo showcases three types of data:
+- **Structured Data**: Traditional relational tables (supply_chain, production, inventory)
+- **Semi-structured Data**: JSON/VARIANT columns (connected_products, iot_sensors, supplier_documents, product_configurations)
+- **Unstructured Data**: Free-form text (maintenance_logs, quality_reports, supplier_communications, engineering_docs, incident_reports)
+
+---
+
+## Structured Data Exploration
+
+### Overview
+Structured data is stored in traditional relational tables with fixed schemas. Examples include supply chain orders, production batches, and inventory levels.
+
+### Example Queries (Generate Tables)
+
+#### 1. Supplier Performance Table
+**Query:**
+```
+Create a table showing supplier performance metrics including total orders, average delivery time, total spend, and risk scores. Sort by risk score descending.
+```
+
+**Expected Output:** Table with columns: Supplier Name, Total Orders, Avg Delivery Days, Total Spend, Risk Score
+
+#### 2. Production Efficiency by Line
+**Query:**
+```
+Show me a table comparing production efficiency across all production lines. Include columns for production line ID, total units produced, average quality score, total downtime minutes, and efficiency percentage.
+```
+
+**Expected Output:** Table with production metrics by line
+
+#### 3. Inventory Status Dashboard
+**Query:**
+```
+Generate a comprehensive inventory status table showing part numbers, current stock levels, reorder levels, reorder quantities, stock status (Reorder Needed/Low Stock/Adequate), and warehouse locations.
+```
+
+**Expected Output:** Table with inventory details
+
+#### 4. Supply Chain Risk Analysis Table
+**Query:**
+```
+Create a detailed table of suppliers with high risk scores (above 0.4). Include supplier name, region, risk category, number of orders, total quantity ordered, and average unit cost.
+```
+
+**Expected Output:** Risk analysis table
+
+#### 5. Production Batch Quality Report
+**Query:**
+```
+Show me a table of all production batches with their quality scores, quantity produced, production duration, energy consumption, and quality rating (Excellent/Good/Acceptable/Needs Improvement).
+```
+
+**Expected Output:** Quality report table
+
+### Example Queries (Generate Graphs/Charts)
+
+#### 1. Supplier Spend by Region (Bar Chart)
+**Query:**
+```
+Create a bar chart showing total spend by supplier region. Use different colors for each region.
+```
+
+**Expected Output:** Bar chart visualization
+
+#### 2. Production Efficiency Trend (Line Chart)
+**Query:**
+```
+Show me a line chart of production efficiency over time by production line. Include a trend line.
+```
+
+**Expected Output:** Time series line chart
+
+#### 3. Inventory Stock Levels Distribution (Pie Chart)
+**Query:**
+```
+Create a pie chart showing the distribution of parts by stock status: Reorder Needed, Low Stock, and Adequate Stock.
+```
+
+**Expected Output:** Pie chart
+
+#### 4. Quality Scores Distribution (Histogram)
+**Query:**
+```
+Generate a histogram showing the distribution of quality scores across all production batches.
+```
+
+**Expected Output:** Histogram chart
+
+#### 5. Supplier Risk vs Spend (Scatter Plot)
+**Query:**
+```
+Create a scatter plot with risk score on x-axis and total spend on y-axis. Color code by region.
+```
+
+**Expected Output:** Scatter plot
+
+---
+
+## Semi-Structured Data Exploration
+
+### Overview
+Semi-structured data is stored in VARIANT columns using JSON format. This includes connected vehicle telemetry, IoT sensor readings, supplier documents, and product configurations.
+
+### Example Queries (JSON/VARIANT Extraction)
+
+#### 1. Connected Vehicle Sensor Analysis
+**Query:**
+```
+Extract and analyze sensor data from connected vehicles. Show me a table with vehicle ID, sensor types, sensor values, thresholds, and alert status for vehicles with sensor values exceeding thresholds.
+```
+
+**Expected Output:** Table with extracted JSON sensor data
+
+#### 2. IoT Sensor Readings Table
+**Query:**
+```
+Create a table from IoT sensor data showing sensor ID, machine ID, primary sensor name, sensor status, machine state, and timestamp. Filter for sensors with warnings or alerts.
+```
+
+**Expected Output:** Table with IoT sensor details
+
+#### 3. Product Configuration Comparison
+**Query:**
+```
+Extract product configuration details and create a comparison table showing product ID, model type, engine type, transmission, dimensions (length, width, weight), and max speed for all product versions.
+```
+
+**Expected Output:** Product configuration comparison table
+
+#### 4. Supplier Document Analysis
+**Query:**
+```
+Extract data from supplier documents and show me a table with document ID, supplier ID, document type, document title, category, currency, payment terms, total value, and ISO standard compliance.
+```
+
+**Expected Output:** Supplier document details table
+
+#### 5. Connected Vehicle Trip Analysis
+**Query:**
+```
+Extract trip metadata from connected vehicles and create a table showing vehicle ID, trip ID, route, distance in miles, duration in minutes, fuel efficiency, number of stops, and driver name.
+```
+
+**Expected Output:** Trip analysis table
+
+### Example Queries (Generate Graphs from Semi-Structured Data)
+
+#### 1. Sensor Value Distribution (Box Plot)
+**Query:**
+```
+Create a box plot showing the distribution of primary sensor values by sensor type from connected vehicles.
+```
+
+**Expected Output:** Box plot chart
+
+#### 2. Battery Health Trend (Line Chart)
+**Query:**
+```
+Show me a line chart of battery health over time for all connected vehicles. Group by vehicle ID.
+```
+
+**Expected Output:** Time series line chart
+
+#### 3. Product Configuration Distribution (Bar Chart)
+**Query:**
+```
+Create a bar chart showing the count of products by engine type and transmission combination.
+```
+
+**Expected Output:** Grouped bar chart
+
+#### 4. IoT Sensor Status by Machine (Stacked Bar Chart)
+**Query:**
+```
+Generate a stacked bar chart showing sensor status distribution (normal/warning/alert) by machine ID.
+```
+
+**Expected Output:** Stacked bar chart
+
+#### 5. Fuel Efficiency by Route (Scatter Plot)
+**Query:**
+```
+Create a scatter plot showing fuel efficiency vs distance for different routes from connected vehicle trip data.
+```
+
+**Expected Output:** Scatter plot
+
+---
+
+## Unstructured Data Exploration (NLP Questions)
+
+### Overview
+Unstructured data consists of free-form text stored in TEXT columns. Cortex Search enables semantic search over this data using natural language queries.
+
+### Example NLP Queries
+
+#### 1. Maintenance Log Search
+**Query:**
+```
+Search maintenance logs for any mentions of bearing failures or bearing replacements. What machines are affected and what actions were taken?
+```
+
+**Expected Output:** Relevant maintenance log entries with context
+
+#### 2. Quality Issue Investigation
+**Query:**
+```
+Find quality reports that mention paint defects or surface finish issues. What were the root causes and corrective actions?
+```
+
+**Expected Output:** Quality report excerpts with analysis
+
+#### 3. Supplier Communication Analysis
+**Query:**
+```
+Search supplier communications for discussions about delivery delays or supply chain disruptions. Summarize the key issues and resolutions.
+```
+
+**Expected Output:** Communication summaries
+
+#### 4. Engineering Documentation Search
+**Query:**
+```
+Find engineering documents related to brake system design or brake component specifications. What are the key design parameters?
+```
+
+**Expected Output:** Engineering document excerpts
+
+#### 5. Incident Report Analysis
+**Query:**
+```
+Search incident reports for safety incidents or equipment failures. What were the common causes and preventive measures recommended?
+```
+
+**Expected Output:** Incident analysis
+
+#### 6. Maintenance Pattern Recognition
+**Query:**
+```
+Analyze maintenance logs to identify recurring issues or patterns. Which machines have the most frequent maintenance needs?
+```
+
+**Expected Output:** Pattern analysis
+
+#### 7. Quality Trend Analysis
+**Query:**
+```
+Search quality reports for trends in defect types over time. Are there any emerging quality concerns?
+```
+
+**Expected Output:** Trend analysis
+
+#### 8. Supplier Performance from Communications
+**Query:**
+```
+Based on supplier communications, what are the main concerns or issues raised? Which suppliers have the most communication activity?
+```
+
+**Expected Output:** Supplier communication insights
+
+#### 9. Engineering Change History
+**Query:**
+```
+Find engineering documents that describe design changes or modifications. What products were affected and why?
+```
+
+**Expected Output:** Change history summary
+
+#### 10. Cross-Document Analysis
+**Query:**
+```
+Search across all documents for mentions of "calibration" or "calibration issues". What types of documents mention this and what are the contexts?
+```
+
+**Expected Output:** Cross-document analysis
+
+### Example Queries (Generate Tables from Unstructured Data)
+
+#### 1. Maintenance Summary Table
+**Query:**
+```
+Create a table summarizing maintenance activities by extracting key information from maintenance logs. Include machine ID, maintenance date, maintenance type, issues found, and actions taken.
+```
+
+**Expected Output:** Maintenance summary table
+
+#### 2. Quality Defect Analysis Table
+**Query:**
+```
+Extract quality defect information from quality reports and create a table showing batch number, defect description, severity, root cause, and corrective actions.
+```
+
+**Expected Output:** Quality defect table
+
+#### 3. Supplier Communication Summary Table
+**Query:**
+```
+Generate a table from supplier communications showing supplier ID, communication date, type, subject, and key action items mentioned.
+```
+
+**Expected Output:** Communication summary table
+
+---
+
+## Combined Data Type Queries
+
+### Cross-Type Analysis Examples
+
+#### 1. Structured + Semi-Structured
+**Query:**
+```
+Correlate production batch data with IoT sensor readings. Show me which production batches had sensor alerts and how that affected quality scores.
+```
+
+**Expected Output:** Combined analysis table/graph
+
+#### 2. Structured + Unstructured
+**Query:**
+```
+Match production batch numbers with quality reports. Create a table showing batch number, quality score from production data, and defect descriptions from quality reports.
+```
+
+**Expected Output:** Combined data table
+
+#### 3. Semi-Structured + Unstructured
+**Query:**
+```
+Correlate connected vehicle telemetry alerts with maintenance logs. Which vehicles had sensor alerts and what maintenance was performed?
+```
+
+**Expected Output:** Correlation analysis
+
+#### 4. All Three Types Combined
+**Query:**
+```
+Provide a comprehensive analysis: Show supplier risk scores, production quality for parts from those suppliers, connected vehicle performance for products using those parts, and any related maintenance or quality issues documented in reports.
+```
+
+**Expected Output:** Comprehensive cross-type analysis
+
+---
+
 ## Demo Structure
 
 ### Part 1: Supply Chain Intelligence
