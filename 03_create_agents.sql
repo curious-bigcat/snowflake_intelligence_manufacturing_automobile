@@ -6,9 +6,6 @@
 -- All agents are created in SNOWFLAKE_INTELLIGENCE.AGENTS schema
 -- ============================================================================
 
-USE INTELLIGENCE manufacturing_intelligence;
-USE SCHEMA SNOWFLAKE_INTELLIGENCE.AGENTS;
-
 -- Agent 1: Supply Chain Intelligence Agent
 -- Handles queries about supply chain, inventory, suppliers, logistics
 CREATE OR REPLACE AGENT SNOWFLAKE_INTELLIGENCE.AGENTS.supply_chain_agent

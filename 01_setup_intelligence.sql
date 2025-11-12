@@ -7,12 +7,7 @@
 
 -- Step 1: Create Intelligence Object
 -- This creates the main Intelligence object in your account
-CREATE INTELLIGENCE IF NOT EXISTS manufacturing_intelligence
-  COMMENT = 'Snowflake Intelligence for Manufacturing & Automobiles Demo';
 
--- Step 2: Grant Usage Privileges
--- Grant usage to roles that will use Intelligence
-GRANT USAGE ON INTELLIGENCE manufacturing_intelligence TO ROLE PUBLIC;
 
 -- Step 3: Create Database and Schema for Demo Data
 USE ROLE ACCOUNTADMIN;

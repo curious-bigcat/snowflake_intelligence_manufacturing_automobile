@@ -152,10 +152,11 @@ All agents are created in the **`SNOWFLAKE_INTELLIGENCE.AGENTS`** schema:
 
 **What this does:**
 - Creates Intelligence object: `manufacturing_intelligence`
-- Creates database: `MANUFACTURING_DEMO`
-- Creates schemas: `DATA`, `SEMANTIC`, `SNOWFLAKE_INTELLIGENCE.AGENTS`
-- Creates all required tables (structured, semi-structured, unstructured)
-- Creates warehouse: `INTEL_WH` and `CORTEX_SEARCH_WH`
+- Creates databases: `MANUFACTURING_DEMO` and `SNOWFLAKE_INTELLIGENCE`
+- Creates schemas: `DATA`, `SEMANTIC` (in MANUFACTURING_DEMO), and `AGENTS` (in SNOWFLAKE_INTELLIGENCE)
+- Creates all required tables: structured (supply_chain, production, inventory), semi-structured (connected_products, iot_sensors, supplier_documents, product_configurations), unstructured (maintenance_logs, quality_reports, supplier_communications, engineering_docs, incident_reports)
+- Creates warehouses: `INTEL_WH` and `CORTEX_SEARCH_WH`
+- Grants necessary privileges to PUBLIC role
 
 #### Step 2: Load Vehicle Manufacturing Data
 ```sql
@@ -179,9 +180,10 @@ All agents are created in the **`SNOWFLAKE_INTELLIGENCE.AGENTS`** schema:
 ```
 
 **What this does:**
-- Creates semantic view: `manufacturing_operations` (unified view of all structured/semi-structured data)
-- Creates Cortex Search service: `manufacturing_documents_search` (unified search across all unstructured documents)
-- Defines relationships, dimensions, and metrics for business-friendly querying
+- **Semantic View:** Creates unified `manufacturing_operations` semantic view combining all structured and semi-structured tables with relationships, dimensions (supplier names, risk categories, quality ratings, stock status, alert status, etc.), and metrics (averages, totals, counts)
+- **Cortex Search:** Creates unified `manufacturing_documents_search` Cortex Search service enabling semantic search across all unstructured text data (maintenance logs, quality reports, supplier communications, engineering docs, incident reports)
+- Enables change tracking on unstructured tables (required for Cortex Search)
+- Configures embedding model: `snowflake-arctic-embed-l-v2.0`
 
 #### Step 4: Create Intelligence Agents
 ```sql
@@ -190,23 +192,19 @@ All agents are created in the **`SNOWFLAKE_INTELLIGENCE.AGENTS`** schema:
 ```
 
 **What this does:**
-- Creates 4 specialized agents in `SNOWFLAKE_INTELLIGENCE.AGENTS` schema
-- Configures agents with tools (Analyst1 for semantic view, Search1 for Cortex Search)
-- Sets up agent instructions, budgets, and sample questions
+- Creates 4 specialized Intelligence agents in `SNOWFLAKE_INTELLIGENCE.AGENTS` schema:
+  - `supply_chain_agent` - Supplier risk, inventory, logistics
+  - `production_agent` - Quality, efficiency, maintenance
+  - `connected_products_agent` - Telematics, fleet management
+  - `manufacturing_operations_agent` - Cross-functional insights
+- Configures each agent with FROM SPECIFICATION syntax (YAML format)
+- Sets up tools: `Analyst1` (cortex_analyst_text_to_sql) for semantic view queries, `Search1` (cortex_search) for unstructured data search
+- Configures tool_resources: semantic_view and cortex_search service references
+- Sets orchestration model: `claude-4-sonnet` with budget constraints
+- Defines agent instructions, sample questions, and profiles
+- Grants USAGE privileges on all agents to PUBLIC role
 
-#### Step 5: Verify Setup
-```sql
--- Verify all components are created correctly
-@04_verify_setup.sql
-```
-
-**What this checks:**
-- Intelligence object exists
-- Database and schemas created
-- Tables populated with data
-- Semantic view created
-- Cortex Search service created and indexed
-- Agents created successfully
+**You're all set!** After running these 4 steps, you can start using the Intelligence agents in Snowflake UI.
 
 ---
 
@@ -315,10 +313,9 @@ KPMG_event/
 │
 ├── 01_setup_intelligence.sql          # Infrastructure setup (Intelligence object, database, schemas, tables)
 ├── 01b_insert_vehicle_data.sql        # Vehicle manufacturing data insertion (50+ records per table)
-├── 02_create_semantic_views.sql        # Unified semantic view creation
-├── 02a_create_cortex_search.sql       # Unified Cortex Search service creation
-├── 03_create_agents.sql               # Intelligence agents creation
-├── 04_verify_setup.sql                 # Setup verification script
+├── 02_create_semantic_views.sql       # Unified semantic view creation with relationships
+├── 02a_create_cortex_search.sql       # Unified Cortex Search service for unstructured data
+├── 03_create_agents.sql               # Intelligence agents creation with tools and configurations
 │
 ├── README.md                           # This file - comprehensive guide
 ├── DEMO_GUIDE.md                       # Detailed demo guide with sample queries
@@ -331,13 +328,12 @@ KPMG_event/
 
 | File | Purpose | Key Components |
 |------|---------|----------------|
-| `01_setup_intelligence.sql` | Initial setup | Creates Intelligence object, database, schemas, tables, warehouses |
-| `01b_insert_vehicle_data.sql` | Data population | Inserts 50+ realistic records per table |
-| `02_create_semantic_views.sql` | Semantic layer | Creates unified `manufacturing_operations` semantic view |
-| `02a_create_cortex_search.sql` | Search service | Creates unified `manufacturing_documents_search` Cortex Search service |
-| `03_create_agents.sql` | AI agents | Creates 4 specialized Intelligence agents |
-| `04_verify_setup.sql` | Verification | Checks all components are created correctly |
-| `DEMO_GUIDE.md` | Demo guide | Comprehensive guide with 50+ sample queries |
+| `01_setup_intelligence.sql` | Infrastructure setup | Creates Intelligence object, databases (`MANUFACTURING_DEMO`, `SNOWFLAKE_INTELLIGENCE`), schemas (`DATA`, `SEMANTIC`, `AGENTS`), all tables (structured, semi-structured, unstructured), warehouses (`INTEL_WH`, `CORTEX_SEARCH_WH`) |
+| `01b_insert_vehicle_data.sql` | Data population | Inserts 50+ realistic vehicle manufacturing records per table with real-world data (Camry, Accord, RAV4, F-150, Model 3, BMW 3 Series, etc.) |
+| `02_create_semantic_views.sql` | Semantic layer | Creates unified `manufacturing_operations` semantic view with relationships, dimensions, and metrics across all structured and semi-structured tables |
+| `02a_create_cortex_search.sql` | Search service | Creates unified `manufacturing_documents_search` Cortex Search service enabling semantic search across all unstructured text data (maintenance logs, quality reports, communications, engineering docs, incident reports) |
+| `03_create_agents.sql` | AI agents | Creates 4 specialized Intelligence agents (`supply_chain_agent`, `production_agent`, `connected_products_agent`, `manufacturing_operations_agent`) with FROM SPECIFICATION syntax, tools (Analyst1, Search1), and tool_resources configuration |
+| `DEMO_GUIDE.md` | Demo guide | Comprehensive guide with 50+ simple natural language sample queries organized by agent and data type |
 
 ---
 
@@ -436,33 +432,25 @@ GRANT DATABASE ROLE SNOWFLAKE.CORTEX_USER TO ROLE <your_role>;
    
    -- Step 4: Agents
    @03_create_agents.sql
-   
-   -- Step 5: Verify
-   @04_verify_setup.sql
    ```
 
 3. **Wait for Cortex Search Indexing:**
    - Cortex Search service indexing may take a few minutes
-   - Check status: `DESCRIBE CORTEX SEARCH SERVICE manufacturing_documents_search;`
+   - Check status: `DESCRIBE CORTEX SEARCH SERVICE MANUFACTURING_DEMO.SEMANTIC.manufacturing_documents_search;`
    - Wait until `INDEXING_STATE` shows `RUNNING`
 
 4. **Start Using Agents:**
    - Navigate to Intelligence Chat in Snowflake UI
-   - Select an agent
-   - Start asking questions!
+   - Select an agent from `SNOWFLAKE_INTELLIGENCE.AGENTS` schema
+   - Start asking questions in natural language!
 
 ---
 
 ## ✅ Verification
 
-### Verify Setup Success
-
-Run the verification script:
-```sql
-@04_verify_setup.sql
-```
-
 ### Manual Verification Steps
+
+After running all setup scripts, verify your setup with these commands:
 
 1. **Check Intelligence Object:**
    ```sql
@@ -474,19 +462,29 @@ Run the verification script:
    SHOW DATABASES LIKE 'MANUFACTURING_DEMO';
    SHOW SCHEMAS IN DATABASE MANUFACTURING_DEMO;
    SHOW DATABASES LIKE 'SNOWFLAKE_INTELLIGENCE';
+   SHOW SCHEMAS IN DATABASE SNOWFLAKE_INTELLIGENCE;
    ```
 
-3. **Check Semantic View:**
+3. **Check Tables:**
+   ```sql
+   SHOW TABLES IN SCHEMA MANUFACTURING_DEMO.DATA;
+   SELECT COUNT(*) FROM MANUFACTURING_DEMO.DATA.supply_chain;
+   SELECT COUNT(*) FROM MANUFACTURING_DEMO.DATA.production;
+   SELECT COUNT(*) FROM MANUFACTURING_DEMO.DATA.inventory;
+   ```
+
+4. **Check Semantic View:**
    ```sql
    SHOW SEMANTIC VIEWS IN SCHEMA MANUFACTURING_DEMO.SEMANTIC;
    ```
 
-4. **Check Cortex Search Service:**
+5. **Check Cortex Search Service:**
    ```sql
    DESCRIBE CORTEX SEARCH SERVICE MANUFACTURING_DEMO.SEMANTIC.manufacturing_documents_search;
+   -- Verify INDEXING_STATE shows 'RUNNING'
    ```
 
-5. **Check Agents:**
+6. **Check Agents:**
    ```sql
    SHOW AGENTS IN SCHEMA SNOWFLAKE_INTELLIGENCE.AGENTS;
    ```
@@ -497,9 +495,9 @@ Run the verification script:
 - ✅ Database `MANUFACTURING_DEMO` with schemas `DATA` and `SEMANTIC`
 - ✅ Database `SNOWFLAKE_INTELLIGENCE` with schema `AGENTS`
 - ✅ All tables populated with 50+ records each
-- ✅ Semantic view `manufacturing_operations` created
-- ✅ Cortex Search service `manufacturing_documents_search` created and indexed
-- ✅ 4 agents created in `SNOWFLAKE_INTELLIGENCE.AGENTS` schema
+- ✅ Semantic view `manufacturing_operations` created with relationships
+- ✅ Cortex Search service `manufacturing_documents_search` created and indexed (`INDEXING_STATE = 'RUNNING'`)
+- ✅ 4 agents created in `SNOWFLAKE_INTELLIGENCE.AGENTS` schema with proper tool configurations
 
 ---
 
