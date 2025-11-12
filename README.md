@@ -469,12 +469,7 @@ GRANT DATABASE ROLE SNOWFLAKE.CORTEX_USER TO ROLE <your_role>;
 
 After running all setup scripts, verify your setup with these commands:
 
-1. **Check Intelligence Object:**
-   ```sql
-   SHOW INTELLIGENCE;
-   ```
-
-2. **Check Database and Schemas:**
+1. **Check Database and Schemas:**
    ```sql
    SHOW DATABASES LIKE 'MANUFACTURING_DEMO';
    SHOW SCHEMAS IN DATABASE MANUFACTURING_DEMO;
