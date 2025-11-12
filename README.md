@@ -146,7 +146,7 @@ All agents are created in the **`SNOWFLAKE_INTELLIGENCE.AGENTS`** schema:
 
 #### Step 1: Setup Infrastructure
 ```sql
--- Run the setup script to create Intelligence object, database, schemas, and tables
+-- Run the setup script to create databases, schemas, tables, and warehouse
 @01_setup_intelligence.sql
 ```
 
@@ -508,13 +508,13 @@ After running all setup scripts, verify your setup with these commands:
 
 ### Expected Results
 
-- ✅ Intelligence object `manufacturing_intelligence` created
 - ✅ Database `MANUFACTURING_DEMO` with schemas `DATA` and `SEMANTIC`
 - ✅ Database `SNOWFLAKE_INTELLIGENCE` with schema `AGENTS`
-- ✅ All tables populated with 50+ records each
-- ✅ Semantic view `manufacturing_operations` created with relationships
-- ✅ Cortex Search service `manufacturing_documents_search` created and indexed (`INDEXING_STATE = 'RUNNING'`)
-- ✅ 4 agents created in `SNOWFLAKE_INTELLIGENCE.AGENTS` schema with proper tool configurations
+- ✅ All 11 tables created (3 structured, 4 semi-structured, 5 unstructured)
+- ✅ All tables populated with 50+ records each (after running `01b_insert_vehicle_data.sql`)
+- ✅ Semantic view `manufacturing_operations` created in `MANUFACTURING_DEMO.SEMANTIC` with relationships, dimensions, and metrics
+- ✅ Cortex Search service `manufacturing_documents_search` created in `MANUFACTURING_DEMO.SEMANTIC` and indexed (`INDEXING_STATE = 'RUNNING'`)
+- ✅ 4 agents created in `SNOWFLAKE_INTELLIGENCE.AGENTS` schema with proper tool configurations (Analyst1, Search1)
 
 ---
 
