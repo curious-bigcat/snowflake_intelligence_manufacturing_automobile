@@ -152,11 +152,6 @@ DIMENSIONS (
   iot.primary_sensor_name AS iot.sensor_readings[0]:sensor_name::STRING,
   iot.primary_sensor_status AS iot.sensor_readings[0]:status::STRING,
   iot.machine_state AS iot.machine_state:state::STRING,
-  iot.overall_status AS CASE 
-    WHEN ARRAY_SIZE(iot.machine_state:alerts) > 0 THEN 'Alert'
-    WHEN ARRAY_SIZE(iot.machine_state:warnings) > 0 THEN 'Warning'
-    ELSE 'Normal'
-  END,
   iot.created_at AS iot.created_at
 )
 METRICS (
