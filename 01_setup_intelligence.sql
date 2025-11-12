@@ -248,15 +248,16 @@ INSERT INTO MANUFACTURING_DEMO.DATA.inventory VALUES
 ('WH-002', 'PART-33333', 3500, 800, 1500, CURRENT_TIMESTAMP());
 
 -- SEMI-STRUCTURED DATA - JSON/VARIANT columns
+-- Note: PARSE_JSON cannot be used directly in VALUES clause, so we use SELECT FROM VALUES pattern
 INSERT INTO MANUFACTURING_DEMO.DATA.connected_products 
 SELECT 
-    column1 AS vehicle_id,
-    column2 AS product_id,
-    column3::TIMESTAMP_NTZ AS telemetry_timestamp,
-    PARSE_JSON(column4) AS telemetry_data,
-    PARSE_JSON(column5) AS location_data,
-    PARSE_JSON(column6) AS driver_info,
-    PARSE_JSON(column7) AS trip_metadata,
+    $1 AS vehicle_id,
+    $2 AS product_id,
+    $3::TIMESTAMP_NTZ AS telemetry_timestamp,
+    PARSE_JSON($4) AS telemetry_data,
+    PARSE_JSON($5) AS location_data,
+    PARSE_JSON($6) AS driver_info,
+    PARSE_JSON($7) AS trip_metadata,
     CURRENT_TIMESTAMP() AS created_at
 FROM VALUES
 ('VEH-001', 'PROD-001', '2024-01-15 10:30:00',
@@ -277,13 +278,13 @@ FROM VALUES
 
 INSERT INTO MANUFACTURING_DEMO.DATA.iot_sensors
 SELECT 
-    column1 AS sensor_id,
-    column2 AS machine_id,
-    column3 AS production_line_id,
-    column4::TIMESTAMP_NTZ AS timestamp,
-    PARSE_JSON(column5) AS sensor_readings,
-    PARSE_JSON(column6) AS machine_state,
-    PARSE_JSON(column7) AS calibration_data,
+    $1 AS sensor_id,
+    $2 AS machine_id,
+    $3 AS production_line_id,
+    $4::TIMESTAMP_NTZ AS timestamp,
+    PARSE_JSON($5) AS sensor_readings,
+    PARSE_JSON($6) AS machine_state,
+    PARSE_JSON($7) AS calibration_data,
     CURRENT_TIMESTAMP() AS created_at
 FROM VALUES
 ('SENSOR-001', 'MACHINE-A', 'LINE-01', '2024-01-15 10:00:00',
@@ -301,13 +302,13 @@ FROM VALUES
 
 INSERT INTO MANUFACTURING_DEMO.DATA.supplier_documents
 SELECT 
-    column1 AS document_id,
-    column2 AS supplier_id,
-    column3 AS document_type,
-    column4::DATE AS document_date,
-    PARSE_JSON(column5) AS metadata,
-    PARSE_JSON(column6) AS extracted_data,
-    PARSE_JSON(column7) AS compliance_info,
+    $1 AS document_id,
+    $2 AS supplier_id,
+    $3 AS document_type,
+    $4::DATE AS document_date,
+    PARSE_JSON($5) AS metadata,
+    PARSE_JSON($6) AS extracted_data,
+    PARSE_JSON($7) AS compliance_info,
     CURRENT_TIMESTAMP() AS created_at
 FROM VALUES
 ('DOC-001', 'SUP001', 'Contract', '2024-01-10',
@@ -325,12 +326,12 @@ FROM VALUES
 
 INSERT INTO MANUFACTURING_DEMO.DATA.product_configurations
 SELECT 
-    column1 AS product_id,
-    column2 AS version,
-    column3::DATE AS configuration_date,
-    PARSE_JSON(column4) AS config_data,
-    PARSE_JSON(column5) AS specifications,
-    PARSE_JSON(column6) AS bill_of_materials,
+    $1 AS product_id,
+    $2 AS version,
+    $3::DATE AS configuration_date,
+    PARSE_JSON($4) AS config_data,
+    PARSE_JSON($5) AS specifications,
+    PARSE_JSON($6) AS bill_of_materials,
     CURRENT_TIMESTAMP() AS created_at
 FROM VALUES
 ('PROD-001', 'V2.1', '2024-01-01',

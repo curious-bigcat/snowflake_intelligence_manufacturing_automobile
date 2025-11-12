@@ -212,13 +212,13 @@ INSERT INTO MANUFACTURING_DEMO.DATA.inventory VALUES
 -- Realistic vehicle VINs and telemetry data from various vehicle models
 INSERT INTO MANUFACTURING_DEMO.DATA.connected_products
 SELECT 
-    column1 AS vehicle_id,
-    column2 AS product_id,
-    column3::TIMESTAMP_NTZ AS telemetry_timestamp,
-    PARSE_JSON(column4) AS telemetry_data,
-    PARSE_JSON(column5) AS location_data,
-    PARSE_JSON(column6) AS driver_info,
-    PARSE_JSON(column7) AS trip_metadata,
+    $1 AS vehicle_id,
+    $2 AS product_id,
+    $3::TIMESTAMP_NTZ AS telemetry_timestamp,
+    PARSE_JSON($4) AS telemetry_data,
+    PARSE_JSON($5) AS location_data,
+    PARSE_JSON($6) AS driver_info,
+    PARSE_JSON($7) AS trip_metadata,
     CURRENT_TIMESTAMP() AS created_at
 FROM VALUES
 -- Toyota Camry vehicles
