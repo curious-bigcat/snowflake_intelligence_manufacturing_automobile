@@ -44,13 +44,63 @@ The architecture follows a layered approach. At the data layer, we have structur
 
 The intelligence layer consists of three key components. A unified semantic view (`manufacturing_operations`) abstracts away complex joins and relationships, providing business-friendly dimensions and pre-calculated metrics. A Cortex Search service (`manufacturing_documents_search`) enables hybrid search combining vector and keyword capabilities across all unstructured documents. Four specialized Intelligence agents—Supply Chain, Production, Connected Products, and Manufacturing Operations—provide natural language interfaces to query and analyze the data.
 
+### Architecture Components
+
+- **Data Sources**: 3 structured tables, 4 semi-structured tables, 5 unstructured tables
+- **Semantic View**: `manufacturing_operations` - unified view with relationships and metrics
+- **Cortex Search**: `manufacturing_documents_search` - hybrid search across all documents
+- **Intelligence Agents**: 4 specialized agents (Supply Chain, Production, Connected Products, Operations)
+- **Query Flow**: User → Agent → Tools (Analyst1/Search1) → Results → Response
+
 ## Solution Functionality
 
 The unified data access capability creates a single semantic view that combines 11 tables—3 structured, 4 semi-structured, and 5 unstructured—into one queryable interface. This provides business-friendly dimensions like risk categories and quality ratings instead of raw scores, automatic relationships that enable cross-table queries without complex JOINs, and pre-calculated aggregate metrics for performance. JSON extraction is handled transparently, allowing users to query nested data structures as if they were standard columns.
 
-The semantic search capability enables hybrid search across all unstructured documents. The unified Cortex Search service combines vector (semantic) and keyword search, allowing users to query maintenance logs, quality reports, and engineering docs simultaneously. It provides contextual understanding, finding relevant documents even with different terminology, and automatically refreshes as new documents are added. Example use cases include finding maintenance logs about bearing failures, searching quality reports for paint defects, and discovering engineering documents that mention battery optimization.
+The semantic search capability enables hybrid search across all unstructured documents. The unified Cortex Search service combines vector (semantic) and keyword search, allowing users to query maintenance logs, quality reports, and engineering docs simultaneously. It provides contextual understanding, finding relevant documents even with different terminology, and automatically refreshes as new documents are added.
 
-The AI-powered Intelligence agents provide domain-specific capabilities. The Supply Chain Agent handles supplier risk assessment, inventory optimization, and delivery tracking, answering questions like "Which suppliers have high risk scores?" and "Show me inventory levels for critical parts." The Production Agent focuses on quality analysis, efficiency metrics, and predictive maintenance, responding to queries such as "Show me production efficiency by assembly line" and "What machines need maintenance?" The Connected Products Agent manages vehicle telematics, fleet management, and predictive diagnostics, answering questions like "Are there any vehicles with sensor alerts?" and "What's the average fuel efficiency by vehicle model?" The Manufacturing Operations Agent provides cross-functional insights, answering complex queries like "What's the correlation between supplier risk and production quality?" and "Show me end-to-end view from supplier to customer delivery."
+The AI-powered Intelligence agents provide domain-specific capabilities. The Supply Chain Agent handles supplier risk assessment, inventory optimization, and delivery tracking. The Production Agent focuses on quality analysis, efficiency metrics, and predictive maintenance. The Connected Products Agent manages vehicle telematics, fleet management, and predictive diagnostics. The Manufacturing Operations Agent provides cross-functional insights and end-to-end visibility.
+
+### Key Capabilities
+
+**Unified Data Access:**
+- Business-friendly dimensions (risk categories, quality ratings) instead of raw scores
+- Automatic relationships enable cross-table queries without complex JOINs
+- Pre-calculated aggregate metrics for performance
+- JSON extraction handled transparently
+
+**Semantic Search:**
+- Hybrid search: Combines vector (semantic) and keyword search
+- Cross-document search: Query all document types simultaneously
+- Contextual understanding: Finds relevant documents with different terminology
+- Real-time updates: Automatically refreshes as new documents are added
+
+**AI-Powered Agents:**
+- **Supply Chain Agent**: Supplier risk assessment, inventory optimization, delivery tracking
+- **Production Agent**: Quality analysis, efficiency metrics, predictive maintenance
+- **Connected Products Agent**: Vehicle telematics, fleet management, predictive diagnostics
+- **Operations Agent**: Cross-functional insights, end-to-end visibility
+
+### Sample Queries
+
+**Supply Chain:**
+- "Which suppliers have high risk scores?"
+- "Show me inventory levels for critical parts"
+- "What's the average delivery time by region?"
+
+**Production:**
+- "Show me production efficiency by assembly line"
+- "What machines need maintenance?"
+- "Identify quality issues by batch"
+
+**Connected Products:**
+- "Are there any vehicles with sensor alerts?"
+- "Show me vehicles with low battery health"
+- "What's the average fuel efficiency by vehicle model?"
+
+**Cross-Functional:**
+- "What's the correlation between supplier risk and production quality?"
+- "Show me end-to-end view from supplier to customer delivery"
+- "Give me strategic recommendations for operations"
 
 ## High-Level Configuration
 
@@ -59,6 +109,26 @@ The semantic view is configured with 11 tables that have primary keys and relati
 The Cortex Search service uses the `snowflake-arctic-embed-l-v2.0` embedding model, which provides multilingual support with 1024 dimensions. It's configured with a composite primary key (document_type, document_id) for uniqueness, includes document metadata attributes for filtering (date, author, category, severity), and refreshes with a 1-day target lag for near real-time updates.
 
 Each Intelligence agent is configured with the `claude-4-sonnet` orchestration model for natural language understanding. They use two tools: `Analyst1` for text-to-SQL conversion against the semantic view, and `Search1` for semantic search across unstructured documents. Budget constraints control time and token limits for cost management, while domain-specific instructions ensure tailored responses for each use case.
+
+### Configuration Details
+
+**Semantic View:**
+- 11 tables with primary keys and relationships
+- Business dimensions: Risk categories, quality ratings, stock status, alert status
+- Aggregate metrics: Averages, totals, counts across all data types
+- Automatic JSON extraction from VARIANT columns
+
+**Cortex Search:**
+- Embedding model: `snowflake-arctic-embed-l-v2.0` (multilingual, 1024 dimensions)
+- Primary key: Composite (document_type, document_id)
+- Attributes: Document metadata (date, author, category, severity)
+- Refresh frequency: 1 day target lag
+
+**Intelligence Agents:**
+- Orchestration model: `claude-4-sonnet`
+- Tools: `Analyst1` (text-to-SQL), `Search1` (semantic search)
+- Budget constraints: Time and token limits for cost control
+- Domain-specific instructions for tailored responses
 
 ## Demo Recording
 
@@ -87,6 +157,26 @@ For IT teams, the architecture is simplified to one platform instead of multiple
 
 For organizations, the solution enables faster decision-making through real-time intelligence, better collaboration through shared understanding across teams, competitive advantage through AI capabilities without complex infrastructure, and future-proofing on Snowflake's scalable platform.
 
+### Benefits Summary
+
+**Business Users:**
+- No SQL required: Ask questions in natural language
+- Faster insights: Get answers in seconds, not hours
+- Comprehensive view: See connections across all data types
+- Actionable recommendations: Agents provide next steps, not just data
+
+**IT Teams:**
+- Simplified architecture: One platform instead of multiple tools
+- Reduced maintenance: No separate vector databases or search engines
+- Automatic scaling: Handles growth without manual intervention
+- Cost efficiency: Pay only for compute used
+
+**Organizations:**
+- Faster decision making: Real-time intelligence enables quick responses
+- Better collaboration: Shared understanding across teams
+- Competitive advantage: Leverage AI without complex infrastructure
+- Future-proof: Built on Snowflake's scalable platform
+
 ## Real-World Impact
 
 The solution delivers measurable impact across manufacturing domains. In supply chain optimization, it enables risk reduction by identifying high-risk suppliers before issues occur, cost savings through inventory optimization based on real-time demand, and delivery improvement through tracking and prediction of delivery performance.
@@ -95,13 +185,42 @@ In production excellence, the solution drives quality improvement by correlating
 
 For connected products, the solution enhances customer satisfaction through proactive vehicle health monitoring, safety enhancement via real-time alert detection and response, and fleet optimization through route and maintenance schedule optimization.
 
+### Impact Areas
+
+**Supply Chain Optimization:**
+- Risk reduction: Identify high-risk suppliers before issues occur
+- Cost savings: Optimize inventory levels based on real-time demand
+- Delivery improvement: Track and predict delivery performance
+
+**Production Excellence:**
+- Quality improvement: Correlate production parameters with quality outcomes
+- Efficiency gains: Identify bottlenecks and optimization opportunities
+- Predictive maintenance: Prevent downtime through proactive actions
+
+**Connected Products:**
+- Customer satisfaction: Proactive vehicle health monitoring
+- Safety enhancement: Real-time alert detection and response
+- Fleet optimization: Optimize routes and maintenance schedules
+
 ## Snowflake Intelligence: The Technology
 
 Snowflake Intelligence is a comprehensive platform that brings AI capabilities directly to your data. It includes Semantic Views for business-friendly abstractions over complex data models, Cortex Search for low-latency semantic search over unstructured data, Intelligence Agents as AI-powered assistants that understand your domain, and Cortex LLM Functions for direct access to large language models.
 
 The platform stands out because it provides a unified platform with all capabilities in one place, eliminating tool sprawl. It offers enterprise-grade security and governance, cost-effective pricing where you pay only for what you use, seamless scalability that handles petabytes of data, and an easy-to-use natural language interface without complex setup.
 
-Key differentiators include no vector database needed (embeddings handled automatically), no ETL complexity (direct queries on source data), real-time updates that are always current without batch delays, and domain-aware agents that understand your business context.
+### Key Differentiators
+
+- **No Vector Database Needed**: Embeddings handled automatically
+- **No ETL Complexity**: Direct queries on source data
+- **Real-Time Updates**: Always current, no batch delays
+- **Domain-Aware**: Agents understand your business context
+
+### Platform Components
+
+- **Semantic Views**: Business-friendly abstractions over complex data models
+- **Cortex Search**: Low-latency semantic search over unstructured data
+- **Intelligence Agents**: AI-powered assistants that understand your domain
+- **Cortex LLM Functions**: Direct access to large language models
 
 ## Technical Approach
 
@@ -111,9 +230,60 @@ The intelligence layer architecture consists of three components. The semantic l
 
 The query flow follows a natural progression: user questions are processed by Intelligence agents that select appropriate tools (Analyst1 for semantic view queries or Search1 for document search), results are aggregated, contextual responses are generated, and users receive comprehensive answers.
 
+### Technical Stack
+
+**Data Layer:**
+- Structured: Direct table access with semantic view abstraction
+- Semi-structured: VARIANT columns with automatic JSON extraction
+- Unstructured: TEXT columns with Cortex Search indexing
+
+**Intelligence Layer:**
+- Semantic layer: Unified view with relationships and metrics
+- Search layer: Unified Cortex Search service across all documents
+- Agent layer: Specialized agents with domain knowledge
+
+**Query Flow:**
+```
+User Question → Intelligence Agent → Tool Selection
+                                      ├─→ Analyst1 (Semantic View Query)
+                                      └─→ Search1 (Document Search)
+                                    ↓
+                            Results Aggregation
+                                    ↓
+                        Contextual Response Generation
+                                    ↓
+                            User Receives Answer
+```
+
 ## Use Cases Enabled
 
 The solution enables numerous use cases across manufacturing operations. In supply chain management, it supports real-time supplier risk monitoring, inventory optimization recommendations, delivery performance tracking, and cost analysis. For production operations, it enables quality trend analysis, efficiency benchmarking, predictive maintenance scheduling, and energy consumption optimization. For connected products, it provides fleet health monitoring, predictive diagnostics, driver behavior analysis, and route optimization. Cross-functional analytics include end-to-end visibility from supplier to customer, correlation analysis across domains, strategic recommendations, and performance dashboards.
+
+### Use Case Categories
+
+**Supply Chain Management:**
+- Real-time supplier risk monitoring
+- Inventory optimization recommendations
+- Delivery performance tracking
+- Cost analysis and optimization
+
+**Production Operations:**
+- Quality trend analysis
+- Efficiency benchmarking
+- Predictive maintenance scheduling
+- Energy consumption optimization
+
+**Connected Products:**
+- Fleet health monitoring
+- Predictive diagnostics
+- Driver behavior analysis
+- Route optimization
+
+**Cross-Functional Analytics:**
+- End-to-end visibility from supplier to customer
+- Correlation analysis across domains
+- Strategic recommendations
+- Performance dashboards
 
 ## Conclusion
 
