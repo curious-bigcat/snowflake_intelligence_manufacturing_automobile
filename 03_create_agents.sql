@@ -3,13 +3,15 @@
 -- ============================================================================
 -- These agents are specialized for different Manufacturing use cases
 -- Using the unified semantic view and Cortex Search service
+-- All agents are created in SNOWFLAKE_INTELLIGENCE.AGENTS schema
 -- ============================================================================
 
 USE INTELLIGENCE manufacturing_intelligence;
+USE SCHEMA SNOWFLAKE_INTELLIGENCE.AGENTS;
 
 -- Agent 1: Supply Chain Intelligence Agent
 -- Handles queries about supply chain, inventory, suppliers, logistics
-CREATE OR REPLACE AGENT supply_chain_agent
+CREATE OR REPLACE AGENT SNOWFLAKE_INTELLIGENCE.AGENTS.supply_chain_agent
   COMMENT = 'Supply Chain Intelligence Agent specializing in manufacturing and automotive supply chains'
   PROFILE = '{"display_name": "Supply Chain Agent", "avatar": "supply-chain-icon.png", "color": "blue"}'
   FROM SPECIFICATION
@@ -84,7 +86,7 @@ CREATE OR REPLACE AGENT supply_chain_agent
 
 -- Agent 2: Production Intelligence Agent
 -- Handles queries about shopfloor operations, quality, efficiency, maintenance
-CREATE OR REPLACE AGENT production_agent
+CREATE OR REPLACE AGENT SNOWFLAKE_INTELLIGENCE.AGENTS.production_agent
   COMMENT = 'Production Intelligence Agent specializing in smart manufacturing and production operations'
   PROFILE = '{"display_name": "Production Agent", "avatar": "production-icon.png", "color": "green"}'
   FROM SPECIFICATION
@@ -164,7 +166,7 @@ CREATE OR REPLACE AGENT production_agent
 
 -- Agent 3: Connected Products Agent
 -- Handles queries about connected vehicles, telematics, diagnostics, fleet management
-CREATE OR REPLACE AGENT connected_products_agent
+CREATE OR REPLACE AGENT SNOWFLAKE_INTELLIGENCE.AGENTS.connected_products_agent
   COMMENT = 'Connected Products Intelligence Agent specializing in connected vehicles and IoT products'
   PROFILE = '{"display_name": "Connected Products Agent", "avatar": "connected-products-icon.png", "color": "purple"}'
   FROM SPECIFICATION
@@ -243,7 +245,7 @@ CREATE OR REPLACE AGENT connected_products_agent
 
 -- Agent 4: Manufacturing Operations Agent (General Purpose)
 -- Handles cross-functional queries across all manufacturing areas
-CREATE OR REPLACE AGENT manufacturing_operations_agent
+CREATE OR REPLACE AGENT SNOWFLAKE_INTELLIGENCE.AGENTS.manufacturing_operations_agent
   COMMENT = 'Manufacturing Operations Intelligence Agent with comprehensive knowledge across all manufacturing domains'
   PROFILE = '{"display_name": "Operations Agent", "avatar": "operations-icon.png", "color": "orange"}'
   FROM SPECIFICATION
@@ -320,14 +322,15 @@ CREATE OR REPLACE AGENT manufacturing_operations_agent
   $$;
 
 -- Grant usage privileges on agents
-GRANT USAGE ON AGENT supply_chain_agent TO ROLE PUBLIC;
-GRANT USAGE ON AGENT production_agent TO ROLE PUBLIC;
-GRANT USAGE ON AGENT connected_products_agent TO ROLE PUBLIC;
-GRANT USAGE ON AGENT manufacturing_operations_agent TO ROLE PUBLIC;
+GRANT USAGE ON AGENT SNOWFLAKE_INTELLIGENCE.AGENTS.supply_chain_agent TO ROLE PUBLIC;
+GRANT USAGE ON AGENT SNOWFLAKE_INTELLIGENCE.AGENTS.production_agent TO ROLE PUBLIC;
+GRANT USAGE ON AGENT SNOWFLAKE_INTELLIGENCE.AGENTS.connected_products_agent TO ROLE PUBLIC;
+GRANT USAGE ON AGENT SNOWFLAKE_INTELLIGENCE.AGENTS.manufacturing_operations_agent TO ROLE PUBLIC;
 
 SELECT 'Manufacturing Intelligence Agents created successfully!' AS STATUS;
+SELECT 'Schema: SNOWFLAKE_INTELLIGENCE.AGENTS' AS INFO;
 SELECT 'Available Agents:' AS INFO;
-SELECT '  - supply_chain_agent' AS AGENT;
-SELECT '  - production_agent' AS AGENT;
-SELECT '  - connected_products_agent' AS AGENT;
-SELECT '  - manufacturing_operations_agent' AS AGENT;
+SELECT '  - SNOWFLAKE_INTELLIGENCE.AGENTS.supply_chain_agent' AS AGENT;
+SELECT '  - SNOWFLAKE_INTELLIGENCE.AGENTS.production_agent' AS AGENT;
+SELECT '  - SNOWFLAKE_INTELLIGENCE.AGENTS.connected_products_agent' AS AGENT;
+SELECT '  - SNOWFLAKE_INTELLIGENCE.AGENTS.manufacturing_operations_agent' AS AGENT;
