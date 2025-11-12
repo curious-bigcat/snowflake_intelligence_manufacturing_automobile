@@ -153,6 +153,7 @@ DIMENSIONS (
   iot.primary_sensor_status AS iot.sensor_readings[0]:status::STRING,
   iot.machine_state AS iot.machine_state:state::STRING,
   iot.operating_mode AS iot.machine_state:operating_mode::STRING,
+  iot.uptime_hours AS iot.machine_state:uptime_hours::NUMBER,
   iot.calibration_technician AS iot.calibration_data:calibration_technician::STRING,
   iot.overall_status AS CASE 
     WHEN ARRAY_SIZE(iot.machine_state:alerts) > 0 THEN 'Alert'
@@ -163,7 +164,6 @@ DIMENSIONS (
 )
 METRICS (
   iot.avg_primary_sensor_value AS AVG(iot.sensor_readings[0]:value::NUMBER),
-  iot.avg_uptime_hours AS AVG(iot.machine_state:uptime_hours::NUMBER),
   iot.alert_records_count AS SUM(CASE WHEN ARRAY_SIZE(iot.machine_state:alerts) > 0 THEN 1 ELSE 0 END),
   iot.warning_records_count AS SUM(CASE WHEN ARRAY_SIZE(iot.machine_state:warnings) > 0 THEN 1 ELSE 0 END),
   iot.sensor_reading_count AS COUNT(*)
