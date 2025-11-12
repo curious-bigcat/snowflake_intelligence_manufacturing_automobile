@@ -210,83 +210,83 @@ INSERT INTO MANUFACTURING_DEMO.DATA.inventory VALUES
 -- SEMI-STRUCTURED DATA - Connected Vehicle Telemetry
 -- ============================================================================
 -- Realistic vehicle VINs and telemetry data from various vehicle models
-INSERT INTO MANUFACTURING_DEMO.DATA.connected_products VALUES
+INSERT INTO MANUFACTURING_DEMO.DATA.connected_products
+SELECT 
+    column1 AS vehicle_id,
+    column2 AS product_id,
+    column3::TIMESTAMP_NTZ AS telemetry_timestamp,
+    PARSE_JSON(column4) AS telemetry_data,
+    PARSE_JSON(column5) AS location_data,
+    PARSE_JSON(column6) AS driver_info,
+    PARSE_JSON(column7) AS trip_metadata,
+    CURRENT_TIMESTAMP() AS created_at
+FROM VALUES
 -- Toyota Camry vehicles
 ('1HGBH41JXMN109186', 'VEH-SEDAN-CAMRY-2024', '2024-01-15 08:30:00',
- PARSE_JSON('{"sensors": [{"type": "engine_temperature", "value": 88.5, "unit": "celsius", "threshold": 95}, {"type": "oil_pressure", "value": 42.3, "unit": "psi", "threshold": 50}, {"type": "rpm", "value": 1850, "unit": "rpm", "threshold": 6500}, {"type": "fuel_level", "value": 65.2, "unit": "percent", "threshold": 10}], "diagnostics": {"engine_status": "normal", "transmission_status": "normal", "battery_health": 94, "error_codes": [], "check_engine_light": false}}'),
- PARSE_JSON('{"latitude": 42.3314, "longitude": -83.0458, "address": "Detroit, MI", "geofence": "Michigan_Region", "speed": 45, "heading": 180, "altitude": 200}'),
- PARSE_JSON('{"driver_id": "DRV-JOHN-SMITH-001", "name": "John Smith", "license_number": "MI-1234567", "behavior_score": 8.7, "driving_hours_today": 3.5, "fatigue_risk": "low", "seatbelt_buckled": true, "phone_connected": true}'),
- PARSE_JSON('{"trip_id": "TRIP-2024-001-001", "route": "I-94 Eastbound", "distance_miles": 125.3, "duration_minutes": 95, "fuel_efficiency": 32.5, "stops": 1, "avg_speed": 79, "max_speed": 82}'),
- CURRENT_TIMESTAMP()),
+ '{"sensors": [{"type": "engine_temperature", "value": 88.5, "unit": "celsius", "threshold": 95}, {"type": "oil_pressure", "value": 42.3, "unit": "psi", "threshold": 50}, {"type": "rpm", "value": 1850, "unit": "rpm", "threshold": 6500}, {"type": "fuel_level", "value": 65.2, "unit": "percent", "threshold": 10}], "diagnostics": {"engine_status": "normal", "transmission_status": "normal", "battery_health": 94, "error_codes": [], "check_engine_light": false}}',
+ '{"latitude": 42.3314, "longitude": -83.0458, "address": "Detroit, MI", "geofence": "Michigan_Region", "speed": 45, "heading": 180, "altitude": 200}',
+ '{"driver_id": "DRV-JOHN-SMITH-001", "name": "John Smith", "license_number": "MI-1234567", "behavior_score": 8.7, "driving_hours_today": 3.5, "fatigue_risk": "low", "seatbelt_buckled": true, "phone_connected": true}',
+ '{"trip_id": "TRIP-2024-001-001", "route": "I-94 Eastbound", "distance_miles": 125.3, "duration_minutes": 95, "fuel_efficiency": 32.5, "stops": 1, "avg_speed": 79, "max_speed": 82}'),
 
 ('1HGBH41JXMN109187', 'VEH-SEDAN-CAMRY-2024', '2024-01-15 09:15:00',
- PARSE_JSON('{"sensors": [{"type": "engine_temperature", "value": 92.1, "unit": "celsius", "threshold": 95}, {"type": "oil_pressure", "value": 38.5, "unit": "psi", "threshold": 50}, {"type": "rpm", "value": 3200, "unit": "rpm", "threshold": 6500}, {"type": "fuel_level", "value": 42.8, "unit": "percent", "threshold": 10}], "diagnostics": {"engine_status": "warning", "transmission_status": "normal", "battery_health": 91, "error_codes": ["TEMP_ELEVATED"], "check_engine_light": false}}'),
- PARSE_JSON('{"latitude": 41.8781, "longitude": -87.6298, "address": "Chicago, IL", "geofence": "Illinois_Region", "speed": 72, "heading": 270, "altitude": 180}'),
- PARSE_JSON('{"driver_id": "DRV-MARIA-GARCIA-002", "name": "Maria Garcia", "license_number": "IL-9876543", "behavior_score": 9.1, "driving_hours_today": 5.2, "fatigue_risk": "low", "seatbelt_buckled": true, "phone_connected": true}'),
- PARSE_JSON('{"trip_id": "TRIP-2024-001-002", "route": "I-90 Westbound", "distance_miles": 245.7, "duration_minutes": 185, "fuel_efficiency": 29.8, "stops": 2, "avg_speed": 80, "max_speed": 85}'),
- CURRENT_TIMESTAMP()),
+ '{"sensors": [{"type": "engine_temperature", "value": 92.1, "unit": "celsius", "threshold": 95}, {"type": "oil_pressure", "value": 38.5, "unit": "psi", "threshold": 50}, {"type": "rpm", "value": 3200, "unit": "rpm", "threshold": 6500}, {"type": "fuel_level", "value": 42.8, "unit": "percent", "threshold": 10}], "diagnostics": {"engine_status": "warning", "transmission_status": "normal", "battery_health": 91, "error_codes": ["TEMP_ELEVATED"], "check_engine_light": false}}',
+ '{"latitude": 41.8781, "longitude": -87.6298, "address": "Chicago, IL", "geofence": "Illinois_Region", "speed": 72, "heading": 270, "altitude": 180}',
+ '{"driver_id": "DRV-MARIA-GARCIA-002", "name": "Maria Garcia", "license_number": "IL-9876543", "behavior_score": 9.1, "driving_hours_today": 5.2, "fatigue_risk": "low", "seatbelt_buckled": true, "phone_connected": true}',
+ '{"trip_id": "TRIP-2024-001-002", "route": "I-90 Westbound", "distance_miles": 245.7, "duration_minutes": 185, "fuel_efficiency": 29.8, "stops": 2, "avg_speed": 80, "max_speed": 85}'),
 
 -- Honda Accord vehicles
 ('1HGBH41JXMN109188', 'VEH-SEDAN-ACCORD-2024', '2024-01-15 10:00:00',
- PARSE_JSON('{"sensors": [{"type": "engine_temperature", "value": 85.2, "unit": "celsius", "threshold": 95}, {"type": "oil_pressure", "value": 45.8, "unit": "psi", "threshold": 50}, {"type": "rpm", "value": 2100, "unit": "rpm", "threshold": 6500}, {"type": "fuel_level", "value": 78.5, "unit": "percent", "threshold": 10}], "diagnostics": {"engine_status": "normal", "transmission_status": "normal", "battery_health": 96, "error_codes": [], "check_engine_light": false}}'),
- PARSE_JSON('{"latitude": 40.7128, "longitude": -74.0060, "address": "New York, NY", "geofence": "New_York_Region", "speed": 0, "heading": 0, "altitude": 10}'),
- PARSE_JSON('{"driver_id": "DRV-ROBERT-CHEN-003", "name": "Robert Chen", "license_number": "NY-4567890", "behavior_score": 8.9, "driving_hours_today": 2.1, "fatigue_risk": "low", "seatbelt_buckled": true, "phone_connected": false}'),
- PARSE_JSON('{"trip_id": "TRIP-2024-001-003", "route": "City Streets Manhattan", "distance_miles": 8.5, "duration_minutes": 35, "fuel_efficiency": 28.2, "stops": 12, "avg_speed": 15, "max_speed": 35}'),
- CURRENT_TIMESTAMP()),
+ '{"sensors": [{"type": "engine_temperature", "value": 85.2, "unit": "celsius", "threshold": 95}, {"type": "oil_pressure", "value": 45.8, "unit": "psi", "threshold": 50}, {"type": "rpm", "value": 2100, "unit": "rpm", "threshold": 6500}, {"type": "fuel_level", "value": 78.5, "unit": "percent", "threshold": 10}], "diagnostics": {"engine_status": "normal", "transmission_status": "normal", "battery_health": 96, "error_codes": [], "check_engine_light": false}}',
+ '{"latitude": 40.7128, "longitude": -74.0060, "address": "New York, NY", "geofence": "New_York_Region", "speed": 0, "heading": 0, "altitude": 10}',
+ '{"driver_id": "DRV-ROBERT-CHEN-003", "name": "Robert Chen", "license_number": "NY-4567890", "behavior_score": 8.9, "driving_hours_today": 2.1, "fatigue_risk": "low", "seatbelt_buckled": true, "phone_connected": false}',
+ '{"trip_id": "TRIP-2024-001-003", "route": "City Streets Manhattan", "distance_miles": 8.5, "duration_minutes": 35, "fuel_efficiency": 28.2, "stops": 12, "avg_speed": 15, "max_speed": 35}'),
 
 -- Toyota RAV4 vehicles
 ('1HGBH41JXMN109189', 'VEH-SUV-RAV4-2024', '2024-01-15 11:30:00',
- PARSE_JSON('{"sensors": [{"type": "engine_temperature", "value": 89.7, "unit": "celsius", "threshold": 95}, {"type": "oil_pressure", "value": 40.2, "unit": "psi", "threshold": 50}, {"type": "rpm", "value": 1950, "unit": "rpm", "threshold": 6500}, {"type": "fuel_level", "value": 55.3, "unit": "percent", "threshold": 10}, {"type": "tire_pressure_fl", "value": 35, "unit": "psi", "threshold": 28}, {"type": "tire_pressure_fr", "value": 35, "unit": "psi", "threshold": 28}], "diagnostics": {"engine_status": "normal", "transmission_status": "normal", "battery_health": 93, "error_codes": [], "check_engine_light": false, "tire_pressure_monitoring": "normal"}}'),
- PARSE_JSON('{"latitude": 34.0522, "longitude": -118.2437, "address": "Los Angeles, CA", "geofence": "California_Region", "speed": 68, "heading": 90, "altitude": 100}'),
- PARSE_JSON('{"driver_id": "DRV-SARAH-JOHNSON-004", "name": "Sarah Johnson", "license_number": "CA-7890123", "behavior_score": 9.3, "driving_hours_today": 4.8, "fatigue_risk": "low", "seatbelt_buckled": true, "phone_connected": true}'),
- PARSE_JSON('{"trip_id": "TRIP-2024-001-004", "route": "Highway 101 Northbound", "distance_miles": 185.2, "duration_minutes": 165, "fuel_efficiency": 26.5, "stops": 1, "avg_speed": 67, "max_speed": 75}'),
- CURRENT_TIMESTAMP()),
+ '{"sensors": [{"type": "engine_temperature", "value": 89.7, "unit": "celsius", "threshold": 95}, {"type": "oil_pressure", "value": 40.2, "unit": "psi", "threshold": 50}, {"type": "rpm", "value": 1950, "unit": "rpm", "threshold": 6500}, {"type": "fuel_level", "value": 55.3, "unit": "percent", "threshold": 10}, {"type": "tire_pressure_fl", "value": 35, "unit": "psi", "threshold": 28}, {"type": "tire_pressure_fr", "value": 35, "unit": "psi", "threshold": 28}], "diagnostics": {"engine_status": "normal", "transmission_status": "normal", "battery_health": 93, "error_codes": [], "check_engine_light": false, "tire_pressure_monitoring": "normal"}}',
+ '{"latitude": 34.0522, "longitude": -118.2437, "address": "Los Angeles, CA", "geofence": "California_Region", "speed": 68, "heading": 90, "altitude": 100}',
+ '{"driver_id": "DRV-SARAH-JOHNSON-004", "name": "Sarah Johnson", "license_number": "CA-7890123", "behavior_score": 9.3, "driving_hours_today": 4.8, "fatigue_risk": "low", "seatbelt_buckled": true, "phone_connected": true}',
+ '{"trip_id": "TRIP-2024-001-004", "route": "Highway 101 Northbound", "distance_miles": 185.2, "duration_minutes": 165, "fuel_efficiency": 26.5, "stops": 1, "avg_speed": 67, "max_speed": 75}'),
 
 -- Ford F-150 vehicles
 ('1FTFW1ET5DFC12345', 'VEH-TRUCK-F150-2024', '2024-01-15 12:00:00',
- PARSE_JSON('{"sensors": [{"type": "engine_temperature", "value": 91.5, "unit": "celsius", "threshold": 100}, {"type": "oil_pressure", "value": 48.2, "unit": "psi", "threshold": 55}, {"type": "rpm", "value": 1750, "unit": "rpm", "threshold": 6000}, {"type": "fuel_level", "value": 38.7, "unit": "percent", "threshold": 10}, {"type": "transmission_temp", "value": 185, "unit": "fahrenheit", "threshold": 200}], "diagnostics": {"engine_status": "normal", "transmission_status": "normal", "battery_health": 89, "error_codes": [], "check_engine_light": false, "towing_mode": false}}'),
- PARSE_JSON('{"latitude": 29.7604, "longitude": -95.3698, "address": "Houston, TX", "geofence": "Texas_Region", "speed": 55, "heading": 45, "altitude": 50}'),
- PARSE_JSON('{"driver_id": "DRV-MICHAEL-BROWN-005", "name": "Michael Brown", "license_number": "TX-2345678", "behavior_score": 8.2, "driving_hours_today": 7.5, "fatigue_risk": "medium", "seatbelt_buckled": true, "phone_connected": true}'),
- PARSE_JSON('{"trip_id": "TRIP-2024-001-005", "route": "I-10 Eastbound", "distance_miles": 320.5, "duration_minutes": 285, "fuel_efficiency": 18.5, "stops": 1, "avg_speed": 68, "max_speed": 78}'),
- CURRENT_TIMESTAMP()),
+ '{"sensors": [{"type": "engine_temperature", "value": 91.5, "unit": "celsius", "threshold": 100}, {"type": "oil_pressure", "value": 48.2, "unit": "psi", "threshold": 55}, {"type": "rpm", "value": 1750, "unit": "rpm", "threshold": 6000}, {"type": "fuel_level", "value": 38.7, "unit": "percent", "threshold": 10}, {"type": "transmission_temp", "value": 185, "unit": "fahrenheit", "threshold": 200}], "diagnostics": {"engine_status": "normal", "transmission_status": "normal", "battery_health": 89, "error_codes": [], "check_engine_light": false, "towing_mode": false}}',
+ '{"latitude": 29.7604, "longitude": -95.3698, "address": "Houston, TX", "geofence": "Texas_Region", "speed": 55, "heading": 45, "altitude": 50}',
+ '{"driver_id": "DRV-MICHAEL-BROWN-005", "name": "Michael Brown", "license_number": "TX-2345678", "behavior_score": 8.2, "driving_hours_today": 7.5, "fatigue_risk": "medium", "seatbelt_buckled": true, "phone_connected": true}',
+ '{"trip_id": "TRIP-2024-001-005", "route": "I-10 Eastbound", "distance_miles": 320.5, "duration_minutes": 285, "fuel_efficiency": 18.5, "stops": 1, "avg_speed": 68, "max_speed": 78}'),
 
 -- Tesla Model 3 (Electric Vehicle)
 ('5YJ3E1EA1KF123456', 'VEH-EV-MODEL3-2024', '2024-01-15 13:15:00',
- PARSE_JSON('{"sensors": [{"type": "battery_level", "value": 72.5, "unit": "percent", "threshold": 20}, {"type": "battery_temperature", "value": 28.5, "unit": "celsius", "threshold": 45}, {"type": "charging_status", "value": "not_charging", "unit": "status"}, {"type": "range_estimate", "value": 285, "unit": "miles", "threshold": 50}, {"type": "motor_temperature", "value": 65.2, "unit": "celsius", "threshold": 85}], "diagnostics": {"battery_health": 94, "charging_port_status": "ok", "motor_status": "normal", "error_codes": [], "autopilot_engaged": false}}'),
- PARSE_JSON('{"latitude": 37.7749, "longitude": -122.4194, "address": "San Francisco, CA", "geofence": "California_Region", "speed": 0, "heading": 0, "altitude": 50}'),
- PARSE_JSON('{"driver_id": "DRV-AMANDA-TAYLOR-006", "name": "Amanda Taylor", "license_number": "CA-3456789", "behavior_score": 9.5, "driving_hours_today": 2.5, "fatigue_risk": "low", "seatbelt_buckled": true, "phone_connected": true}'),
- PARSE_JSON('{"trip_id": "TRIP-2024-001-006", "route": "Highway 280", "distance_miles": 45.2, "duration_minutes": 55, "fuel_efficiency": 0, "energy_consumption_kwh": 12.5, "stops": 0, "avg_speed": 49, "max_speed": 72, "regenerative_braking_efficiency": 87}'),
- CURRENT_TIMESTAMP()),
+ '{"sensors": [{"type": "battery_level", "value": 72.5, "unit": "percent", "threshold": 20}, {"type": "battery_temperature", "value": 28.5, "unit": "celsius", "threshold": 45}, {"type": "charging_status", "value": "not_charging", "unit": "status"}, {"type": "range_estimate", "value": 285, "unit": "miles", "threshold": 50}, {"type": "motor_temperature", "value": 65.2, "unit": "celsius", "threshold": 85}], "diagnostics": {"battery_health": 94, "charging_port_status": "ok", "motor_status": "normal", "error_codes": [], "autopilot_engaged": false}}',
+ '{"latitude": 37.7749, "longitude": -122.4194, "address": "San Francisco, CA", "geofence": "California_Region", "speed": 0, "heading": 0, "altitude": 50}',
+ '{"driver_id": "DRV-AMANDA-TAYLOR-006", "name": "Amanda Taylor", "license_number": "CA-3456789", "behavior_score": 9.5, "driving_hours_today": 2.5, "fatigue_risk": "low", "seatbelt_buckled": true, "phone_connected": true}',
+ '{"trip_id": "TRIP-2024-001-006", "route": "Highway 280", "distance_miles": 45.2, "duration_minutes": 55, "fuel_efficiency": 0, "energy_consumption_kwh": 12.5, "stops": 0, "avg_speed": 49, "max_speed": 72, "regenerative_braking_efficiency": 87}'),
 
 -- BMW 3 Series (Luxury Vehicle)
 ('WBA3A5C59EK123456', 'VEH-LUX-BMW3-2024', '2024-01-15 14:00:00',
- PARSE_JSON('{"sensors": [{"type": "engine_temperature", "value": 87.3, "unit": "celsius", "threshold": 95}, {"type": "oil_pressure", "value": 52.5, "unit": "psi", "threshold": 55}, {"type": "rpm", "value": 1650, "unit": "rpm", "threshold": 7000}, {"type": "fuel_level", "value": 68.9, "unit": "percent", "threshold": 10}, {"type": "turbo_boost", "value": 8.5, "unit": "psi", "threshold": 15}], "diagnostics": {"engine_status": "normal", "transmission_status": "sport_mode", "battery_health": 97, "error_codes": [], "check_engine_light": false, "sport_mode_active": true}}'),
- PARSE_JSON('{"latitude": 40.7589, "longitude": -73.9851, "address": "New York, NY", "geofence": "New_York_Region", "speed": 35, "heading": 180, "altitude": 15}'),
- PARSE_JSON('{"driver_id": "DRV-ALEXANDER-WHITE-007", "name": "Alexander White", "license_number": "NY-5678901", "behavior_score": 8.8, "driving_hours_today": 1.8, "fatigue_risk": "low", "seatbelt_buckled": true, "phone_connected": true}'),
- PARSE_JSON('{"trip_id": "TRIP-2024-001-007", "route": "Park Avenue", "distance_miles": 12.3, "duration_minutes": 28, "fuel_efficiency": 24.5, "stops": 8, "avg_speed": 26, "max_speed": 45}'),
- CURRENT_TIMESTAMP()),
+ '{"sensors": [{"type": "engine_temperature", "value": 87.3, "unit": "celsius", "threshold": 95}, {"type": "oil_pressure", "value": 52.5, "unit": "psi", "threshold": 55}, {"type": "rpm", "value": 1650, "unit": "rpm", "threshold": 7000}, {"type": "fuel_level", "value": 68.9, "unit": "percent", "threshold": 10}, {"type": "turbo_boost", "value": 8.5, "unit": "psi", "threshold": 15}], "diagnostics": {"engine_status": "normal", "transmission_status": "sport_mode", "battery_health": 97, "error_codes": [], "check_engine_light": false, "sport_mode_active": true}}',
+ '{"latitude": 40.7589, "longitude": -73.9851, "address": "New York, NY", "geofence": "New_York_Region", "speed": 35, "heading": 180, "altitude": 15}',
+ '{"driver_id": "DRV-ALEXANDER-WHITE-007", "name": "Alexander White", "license_number": "NY-5678901", "behavior_score": 8.8, "driving_hours_today": 1.8, "fatigue_risk": "low", "seatbelt_buckled": true, "phone_connected": true}',
+ '{"trip_id": "TRIP-2024-001-007", "route": "Park Avenue", "distance_miles": 12.3, "duration_minutes": 28, "fuel_efficiency": 24.5, "stops": 8, "avg_speed": 26, "max_speed": 45}'),
 
 -- More vehicles to reach 50+
 ('1HGBH41JXMN109190', 'VEH-SEDAN-CAMRY-2024', '2024-01-15 15:30:00',
- PARSE_JSON('{"sensors": [{"type": "engine_temperature", "value": 86.8, "unit": "celsius", "threshold": 95}, {"type": "oil_pressure", "value": 44.1, "unit": "psi", "threshold": 50}, {"type": "rpm", "value": 2000, "unit": "rpm", "threshold": 6500}, {"type": "fuel_level", "value": 71.2, "unit": "percent", "threshold": 10}], "diagnostics": {"engine_status": "normal", "transmission_status": "normal", "battery_health": 95, "error_codes": [], "check_engine_light": false}}'),
- PARSE_JSON('{"latitude": 33.4484, "longitude": -112.0740, "address": "Phoenix, AZ", "geofence": "Arizona_Region", "speed": 62, "heading": 270, "altitude": 340}'),
- PARSE_JSON('{"driver_id": "DRV-DAVID-MARTINEZ-008", "name": "David Martinez", "license_number": "AZ-6789012", "behavior_score": 8.6, "driving_hours_today": 6.2, "fatigue_risk": "medium", "seatbelt_buckled": true, "phone_connected": false}'),
- PARSE_JSON('{"trip_id": "TRIP-2024-001-008", "route": "I-10 Westbound", "distance_miles": 195.8, "duration_minutes": 185, "fuel_efficiency": 31.2, "stops": 1, "avg_speed": 64, "max_speed": 78}'),
- CURRENT_TIMESTAMP()),
+ '{"sensors": [{"type": "engine_temperature", "value": 86.8, "unit": "celsius", "threshold": 95}, {"type": "oil_pressure", "value": 44.1, "unit": "psi", "threshold": 50}, {"type": "rpm", "value": 2000, "unit": "rpm", "threshold": 6500}, {"type": "fuel_level", "value": 71.2, "unit": "percent", "threshold": 10}], "diagnostics": {"engine_status": "normal", "transmission_status": "normal", "battery_health": 95, "error_codes": [], "check_engine_light": false}}',
+ '{"latitude": 33.4484, "longitude": -112.0740, "address": "Phoenix, AZ", "geofence": "Arizona_Region", "speed": 62, "heading": 270, "altitude": 340}',
+ '{"driver_id": "DRV-DAVID-MARTINEZ-008", "name": "David Martinez", "license_number": "AZ-6789012", "behavior_score": 8.6, "driving_hours_today": 6.2, "fatigue_risk": "medium", "seatbelt_buckled": true, "phone_connected": false}',
+ '{"trip_id": "TRIP-2024-001-008", "route": "I-10 Westbound", "distance_miles": 195.8, "duration_minutes": 185, "fuel_efficiency": 31.2, "stops": 1, "avg_speed": 64, "max_speed": 78}'),
 
 ('1HGBH41JXMN109191', 'VEH-SEDAN-ACCORD-2024', '2024-01-15 16:00:00',
- PARSE_JSON('{"sensors": [{"type": "engine_temperature", "value": 90.3, "unit": "celsius", "threshold": 95}, {"type": "oil_pressure", "value": 41.7, "unit": "psi", "threshold": 50}, {"type": "rpm", "value": 2250, "unit": "rpm", "threshold": 6500}, {"type": "fuel_level", "value": 58.4, "unit": "percent", "threshold": 10}], "diagnostics": {"engine_status": "normal", "transmission_status": "normal", "battery_health": 92, "error_codes": [], "check_engine_light": false}}'),
- PARSE_JSON('{"latitude": 39.9526, "longitude": -75.1652, "address": "Philadelphia, PA", "geofence": "Pennsylvania_Region", "speed": 0, "heading": 0, "altitude": 40}'),
- PARSE_JSON('{"driver_id": "DRV-JENNIFER-LEE-009", "name": "Jennifer Lee", "license_number": "PA-7890123", "behavior_score": 9.0, "driving_hours_today": 3.8, "fatigue_risk": "low", "seatbelt_buckled": true, "phone_connected": true}'),
- PARSE_JSON('{"trip_id": "TRIP-2024-001-009", "route": "I-95 Northbound", "distance_miles": 85.6, "duration_minutes": 95, "fuel_efficiency": 29.5, "stops": 2, "avg_speed": 54, "max_speed": 72}'),
- CURRENT_TIMESTAMP()),
+ '{"sensors": [{"type": "engine_temperature", "value": 90.3, "unit": "celsius", "threshold": 95}, {"type": "oil_pressure", "value": 41.7, "unit": "psi", "threshold": 50}, {"type": "rpm", "value": 2250, "unit": "rpm", "threshold": 6500}, {"type": "fuel_level", "value": 58.4, "unit": "percent", "threshold": 10}], "diagnostics": {"engine_status": "normal", "transmission_status": "normal", "battery_health": 92, "error_codes": [], "check_engine_light": false}}',
+ '{"latitude": 39.9526, "longitude": -75.1652, "address": "Philadelphia, PA", "geofence": "Pennsylvania_Region", "speed": 0, "heading": 0, "altitude": 40}',
+ '{"driver_id": "DRV-JENNIFER-LEE-009", "name": "Jennifer Lee", "license_number": "PA-7890123", "behavior_score": 9.0, "driving_hours_today": 3.8, "fatigue_risk": "low", "seatbelt_buckled": true, "phone_connected": true}',
+ '{"trip_id": "TRIP-2024-001-009", "route": "I-95 Northbound", "distance_miles": 85.6, "duration_minutes": 95, "fuel_efficiency": 29.5, "stops": 2, "avg_speed": 54, "max_speed": 72}'),
 
 ('1HGBH41JXMN109192', 'VEH-SUV-RAV4-2024', '2024-01-15 17:15:00',
- PARSE_JSON('{"sensors": [{"type": "engine_temperature", "value": 88.9, "unit": "celsius", "threshold": 95}, {"type": "oil_pressure", "value": 43.5, "unit": "psi", "threshold": 50}, {"type": "rpm", "value": 1900, "unit": "rpm", "threshold": 6500}, {"type": "fuel_level", "value": 49.6, "unit": "percent", "threshold": 10}, {"type": "tire_pressure_fl", "value": 34, "unit": "psi", "threshold": 28}], "diagnostics": {"engine_status": "normal", "transmission_status": "normal", "battery_health": 90, "error_codes": [], "check_engine_light": false, "tire_pressure_monitoring": "warning"}}'),
- PARSE_JSON('{"latitude": 32.7767, "longitude": -96.7970, "address": "Dallas, TX", "geofence": "Texas_Region", "speed": 48, "heading": 135, "altitude": 150}'),
- PARSE_JSON('{"driver_id": "DRV-CHRISTOPHER-ANDERSON-010", "name": "Christopher Anderson", "license_number": "TX-8901234", "behavior_score": 8.4, "driving_hours_today": 5.5, "fatigue_risk": "low", "seatbelt_buckled": true, "phone_connected": true}'),
- PARSE_JSON('{"trip_id": "TRIP-2024-001-010", "route": "Highway 75", "distance_miles": 125.3, "duration_minutes": 155, "fuel_efficiency": 27.8, "stops": 1, "avg_speed": 48, "max_speed": 68}'),
- CURRENT_TIMESTAMP());
+ '{"sensors": [{"type": "engine_temperature", "value": 88.9, "unit": "celsius", "threshold": 95}, {"type": "oil_pressure", "value": 43.5, "unit": "psi", "threshold": 50}, {"type": "rpm", "value": 1900, "unit": "rpm", "threshold": 6500}, {"type": "fuel_level", "value": 49.6, "unit": "percent", "threshold": 10}, {"type": "tire_pressure_fl", "value": 34, "unit": "psi", "threshold": 28}], "diagnostics": {"engine_status": "normal", "transmission_status": "normal", "battery_health": 90, "error_codes": [], "check_engine_light": false, "tire_pressure_monitoring": "warning"}}',
+ '{"latitude": 32.7767, "longitude": -96.7970, "address": "Dallas, TX", "geofence": "Texas_Region", "speed": 48, "heading": 135, "altitude": 150}',
+ '{"driver_id": "DRV-CHRISTOPHER-ANDERSON-010", "name": "Christopher Anderson", "license_number": "TX-8901234", "behavior_score": 8.4, "driving_hours_today": 5.5, "fatigue_risk": "low", "seatbelt_buckled": true, "phone_connected": true}',
+ '{"trip_id": "TRIP-2024-001-010", "route": "Highway 75", "distance_miles": 125.3, "duration_minutes": 155, "fuel_efficiency": 27.8, "stops": 1, "avg_speed": 48, "max_speed": 68}');
 
 -- Continue adding more vehicles (will add remaining in next batch to reach 50+)
 -- Note: Due to length constraints, I'll create a pattern that can be repeated

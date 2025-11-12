@@ -248,71 +248,99 @@ INSERT INTO MANUFACTURING_DEMO.DATA.inventory VALUES
 ('WH-002', 'PART-33333', 3500, 800, 1500, CURRENT_TIMESTAMP());
 
 -- SEMI-STRUCTURED DATA - JSON/VARIANT columns
-INSERT INTO MANUFACTURING_DEMO.DATA.connected_products VALUES
+INSERT INTO MANUFACTURING_DEMO.DATA.connected_products 
+SELECT 
+    column1 AS vehicle_id,
+    column2 AS product_id,
+    column3::TIMESTAMP_NTZ AS telemetry_timestamp,
+    PARSE_JSON(column4) AS telemetry_data,
+    PARSE_JSON(column5) AS location_data,
+    PARSE_JSON(column6) AS driver_info,
+    PARSE_JSON(column7) AS trip_metadata,
+    CURRENT_TIMESTAMP() AS created_at
+FROM VALUES
 ('VEH-001', 'PROD-001', '2024-01-15 10:30:00',
- PARSE_JSON('{"sensors": [{"type": "temperature", "value": 85.5, "unit": "celsius", "threshold": 90}, {"type": "pressure", "value": 45.2, "unit": "psi", "threshold": 50}, {"type": "vibration", "value": 2.3, "unit": "g", "threshold": 5.0}], "diagnostics": {"engine_status": "normal", "battery_health": 92, "error_codes": []}}'),
- PARSE_JSON('{"latitude": 37.7749, "longitude": -122.4194, "address": "San Francisco, CA", "geofence": "North_Region", "speed": 65, "heading": 180}'),
- PARSE_JSON('{"driver_id": "DRV-001", "name": "John Smith", "license_number": "CA123456", "behavior_score": 8.5, "driving_hours_today": 6.5, "fatigue_risk": "low"}'),
- PARSE_JSON('{"trip_id": "TRIP-001", "route": "Highway 101", "distance_miles": 245.5, "duration_minutes": 225, "fuel_efficiency": 28.5, "stops": 2}'),
- CURRENT_TIMESTAMP()),
+ '{"sensors": [{"type": "temperature", "value": 85.5, "unit": "celsius", "threshold": 90}, {"type": "pressure", "value": 45.2, "unit": "psi", "threshold": 50}, {"type": "vibration", "value": 2.3, "unit": "g", "threshold": 5.0}], "diagnostics": {"engine_status": "normal", "battery_health": 92, "error_codes": []}}',
+ '{"latitude": 37.7749, "longitude": -122.4194, "address": "San Francisco, CA", "geofence": "North_Region", "speed": 65, "heading": 180}',
+ '{"driver_id": "DRV-001", "name": "John Smith", "license_number": "CA123456", "behavior_score": 8.5, "driving_hours_today": 6.5, "fatigue_risk": "low"}',
+ '{"trip_id": "TRIP-001", "route": "Highway 101", "distance_miles": 245.5, "duration_minutes": 225, "fuel_efficiency": 28.5, "stops": 2}'),
 ('VEH-002', 'PROD-002', '2024-01-15 11:00:00',
- PARSE_JSON('{"sensors": [{"type": "battery_level", "value": 78.5, "unit": "percent", "threshold": 20}, {"type": "charging_status", "value": "not_charging", "unit": "status"}, {"type": "range_estimate", "value": 245, "unit": "miles"}], "diagnostics": {"battery_health": 88, "charging_port_status": "ok", "error_codes": []}}'),
- PARSE_JSON('{"latitude": 40.7128, "longitude": -74.0060, "address": "New York, NY", "geofence": "East_Region", "speed": 0, "heading": 0}'),
- PARSE_JSON('{"driver_id": "DRV-002", "name": "Sarah Johnson", "license_number": "NY789012", "behavior_score": 9.2, "driving_hours_today": 4.0, "fatigue_risk": "low"}'),
- PARSE_JSON('{"trip_id": "TRIP-002", "route": "City Streets", "distance_miles": 12.3, "duration_minutes": 45, "fuel_efficiency": 0, "stops": 5}'),
- CURRENT_TIMESTAMP()),
+ '{"sensors": [{"type": "battery_level", "value": 78.5, "unit": "percent", "threshold": 20}, {"type": "charging_status", "value": "not_charging", "unit": "status"}, {"type": "range_estimate", "value": 245, "unit": "miles"}], "diagnostics": {"battery_health": 88, "charging_port_status": "ok", "error_codes": []}}',
+ '{"latitude": 40.7128, "longitude": -74.0060, "address": "New York, NY", "geofence": "East_Region", "speed": 0, "heading": 0}',
+ '{"driver_id": "DRV-002", "name": "Sarah Johnson", "license_number": "NY789012", "behavior_score": 9.2, "driving_hours_today": 4.0, "fatigue_risk": "low"}',
+ '{"trip_id": "TRIP-002", "route": "City Streets", "distance_miles": 12.3, "duration_minutes": 45, "fuel_efficiency": 0, "stops": 5}'),
 ('VEH-003', 'PROD-001', '2024-01-15 14:20:00',
- PARSE_JSON('{"sensors": [{"type": "temperature", "value": 92.3, "unit": "celsius", "threshold": 90}, {"type": "pressure", "value": 48.5, "unit": "psi", "threshold": 50}, {"type": "vibration", "value": 4.8, "unit": "g", "threshold": 5.0}], "diagnostics": {"engine_status": "warning", "battery_health": 85, "error_codes": ["TEMP_HIGH", "VIBRATION_ELEVATED"]}}'),
- PARSE_JSON('{"latitude": 34.0522, "longitude": -118.2437, "address": "Los Angeles, CA", "geofence": "West_Region", "speed": 72, "heading": 270}'),
- PARSE_JSON('{"driver_id": "DRV-003", "name": "Mike Davis", "license_number": "CA456789", "behavior_score": 7.8, "driving_hours_today": 8.5, "fatigue_risk": "medium"}'),
- PARSE_JSON('{"trip_id": "TRIP-003", "route": "Interstate 5", "distance_miles": 380.2, "duration_minutes": 320, "fuel_efficiency": 26.2, "stops": 1}'),
- CURRENT_TIMESTAMP());
+ '{"sensors": [{"type": "temperature", "value": 92.3, "unit": "celsius", "threshold": 90}, {"type": "pressure", "value": 48.5, "unit": "psi", "threshold": 50}, {"type": "vibration", "value": 4.8, "unit": "g", "threshold": 5.0}], "diagnostics": {"engine_status": "warning", "battery_health": 85, "error_codes": ["TEMP_HIGH", "VIBRATION_ELEVATED"]}}',
+ '{"latitude": 34.0522, "longitude": -118.2437, "address": "Los Angeles, CA", "geofence": "West_Region", "speed": 72, "heading": 270}',
+ '{"driver_id": "DRV-003", "name": "Mike Davis", "license_number": "CA456789", "behavior_score": 7.8, "driving_hours_today": 8.5, "fatigue_risk": "medium"}',
+ '{"trip_id": "TRIP-003", "route": "Interstate 5", "distance_miles": 380.2, "duration_minutes": 320, "fuel_efficiency": 26.2, "stops": 1}');
 
-INSERT INTO MANUFACTURING_DEMO.DATA.iot_sensors VALUES
+INSERT INTO MANUFACTURING_DEMO.DATA.iot_sensors
+SELECT 
+    column1 AS sensor_id,
+    column2 AS machine_id,
+    column3 AS production_line_id,
+    column4::TIMESTAMP_NTZ AS timestamp,
+    PARSE_JSON(column5) AS sensor_readings,
+    PARSE_JSON(column6) AS machine_state,
+    PARSE_JSON(column7) AS calibration_data,
+    CURRENT_TIMESTAMP() AS created_at
+FROM VALUES
 ('SENSOR-001', 'MACHINE-A', 'LINE-01', '2024-01-15 10:00:00',
- PARSE_JSON('[{"sensor_name": "temperature_probe_1", "value": 75.5, "unit": "celsius", "status": "normal", "threshold_min": 60, "threshold_max": 90}, {"sensor_name": "pressure_gauge_1", "value": 45.2, "unit": "psi", "status": "normal", "threshold_min": 30, "threshold_max": 60}, {"sensor_name": "vibration_sensor", "value": 1.8, "unit": "g", "status": "normal", "threshold_max": 5.0}]'),
- PARSE_JSON('{"state": "running", "operating_mode": "production", "alerts": [], "warnings": [], "uptime_hours": 1245.5}'),
- PARSE_JSON('{"last_calibration": "2024-01-01", "calibration_due": "2024-04-01", "offset_temperature": 0.2, "offset_pressure": 0.0, "calibration_technician": "TECH-001"}'),
- CURRENT_TIMESTAMP()),
+ '[{"sensor_name": "temperature_probe_1", "value": 75.5, "unit": "celsius", "status": "normal", "threshold_min": 60, "threshold_max": 90}, {"sensor_name": "pressure_gauge_1", "value": 45.2, "unit": "psi", "status": "normal", "threshold_min": 30, "threshold_max": 60}, {"sensor_name": "vibration_sensor", "value": 1.8, "unit": "g", "status": "normal", "threshold_max": 5.0}]',
+ '{"state": "running", "operating_mode": "production", "alerts": [], "warnings": [], "uptime_hours": 1245.5}',
+ '{"last_calibration": "2024-01-01", "calibration_due": "2024-04-01", "offset_temperature": 0.2, "offset_pressure": 0.0, "calibration_technician": "TECH-001"}'),
 ('SENSOR-002', 'MACHINE-B', 'LINE-02', '2024-01-15 10:00:00',
- PARSE_JSON('[{"sensor_name": "temperature_probe_1", "value": 82.3, "unit": "celsius", "status": "normal", "threshold_min": 60, "threshold_max": 90}, {"sensor_name": "flow_rate", "value": 125.5, "unit": "liters/min", "status": "normal", "threshold_min": 100, "threshold_max": 150}]'),
- PARSE_JSON('{"state": "running", "operating_mode": "production", "alerts": [], "warnings": ["flow_rate_approaching_max"], "uptime_hours": 892.3}'),
- PARSE_JSON('{"last_calibration": "2023-12-15", "calibration_due": "2024-03-15", "offset_temperature": 0.5, "offset_flow": 0.0, "calibration_technician": "TECH-002"}'),
- CURRENT_TIMESTAMP()),
+ '[{"sensor_name": "temperature_probe_1", "value": 82.3, "unit": "celsius", "status": "normal", "threshold_min": 60, "threshold_max": 90}, {"sensor_name": "flow_rate", "value": 125.5, "unit": "liters/min", "status": "normal", "threshold_min": 100, "threshold_max": 150}]',
+ '{"state": "running", "operating_mode": "production", "alerts": [], "warnings": ["flow_rate_approaching_max"], "uptime_hours": 892.3}',
+ '{"last_calibration": "2023-12-15", "calibration_due": "2024-03-15", "offset_temperature": 0.5, "offset_flow": 0.0, "calibration_technician": "TECH-002"}'),
 ('SENSOR-003', 'MACHINE-C', 'LINE-03', '2024-01-15 10:00:00',
- PARSE_JSON('[{"sensor_name": "temperature_probe_1", "value": 88.7, "unit": "celsius", "status": "warning", "threshold_min": 60, "threshold_max": 90}, {"sensor_name": "pressure_gauge_1", "value": 58.2, "unit": "psi", "status": "warning", "threshold_min": 30, "threshold_max": 60}]'),
- PARSE_JSON('{"state": "running", "operating_mode": "production", "alerts": ["temperature_high"], "warnings": ["pressure_approaching_max"], "uptime_hours": 2103.7}'),
- PARSE_JSON('{"last_calibration": "2023-11-20", "calibration_due": "2024-02-20", "offset_temperature": 0.3, "offset_pressure": 0.1, "calibration_technician": "TECH-001"}'),
- CURRENT_TIMESTAMP());
+ '[{"sensor_name": "temperature_probe_1", "value": 88.7, "unit": "celsius", "status": "warning", "threshold_min": 60, "threshold_max": 90}, {"sensor_name": "pressure_gauge_1", "value": 58.2, "unit": "psi", "status": "warning", "threshold_min": 30, "threshold_max": 60}]',
+ '{"state": "running", "operating_mode": "production", "alerts": ["temperature_high"], "warnings": ["pressure_approaching_max"], "uptime_hours": 2103.7}',
+ '{"last_calibration": "2023-11-20", "calibration_due": "2024-02-20", "offset_temperature": 0.3, "offset_pressure": 0.1, "calibration_technician": "TECH-001"}');
 
-INSERT INTO MANUFACTURING_DEMO.DATA.supplier_documents VALUES
+INSERT INTO MANUFACTURING_DEMO.DATA.supplier_documents
+SELECT 
+    column1 AS document_id,
+    column2 AS supplier_id,
+    column3 AS document_type,
+    column4::DATE AS document_date,
+    PARSE_JSON(column5) AS metadata,
+    PARSE_JSON(column6) AS extracted_data,
+    PARSE_JSON(column7) AS compliance_info,
+    CURRENT_TIMESTAMP() AS created_at
+FROM VALUES
 ('DOC-001', 'SUP001', 'Contract', '2024-01-10',
- PARSE_JSON('{"document_title": "Supply Agreement 2024", "pages": 15, "language": "English", "format": "PDF", "file_size_mb": 2.5, "tags": ["contract", "supply", "2024"], "category": "Legal"}'),
- PARSE_JSON('{"total_value": 250000, "currency": "USD", "payment_terms": "Net 30", "delivery_terms": "FOB", "warranty_period_months": 12, "penalty_clauses": true}'),
- PARSE_JSON('{"iso_certified": true, "iso_standard": "ISO 9001:2015", "environmental_compliance": "ISO 14001", "last_audit_date": "2023-12-15", "audit_score": 95, "certifications": ["ISO 9001", "ISO 14001", "IATF 16949"]}'),
- CURRENT_TIMESTAMP()),
+ '{"document_title": "Supply Agreement 2024", "pages": 15, "language": "English", "format": "PDF", "file_size_mb": 2.5, "tags": ["contract", "supply", "2024"], "category": "Legal"}',
+ '{"total_value": 250000, "currency": "USD", "payment_terms": "Net 30", "delivery_terms": "FOB", "warranty_period_months": 12, "penalty_clauses": true}',
+ '{"iso_certified": true, "iso_standard": "ISO 9001:2015", "environmental_compliance": "ISO 14001", "last_audit_date": "2023-12-15", "audit_score": 95, "certifications": ["ISO 9001", "ISO 14001", "IATF 16949"]}'),
 ('DOC-002', 'SUP002', 'Quality Certificate', '2024-01-05',
- PARSE_JSON('{"document_title": "Quality Assurance Certificate Q4 2023", "pages": 3, "language": "English", "format": "PDF", "file_size_mb": 0.8, "tags": ["quality", "certificate", "Q4-2023"], "category": "Quality"}'),
- PARSE_JSON('{"defect_rate": 0.02, "purity_level": 99.8, "test_date": "2023-12-20", "test_standard": "ASTM D1234", "batch_numbers": ["BATCH-2023-Q4-001", "BATCH-2023-Q4-002"]}'),
- PARSE_JSON('{"iso_certified": true, "iso_standard": "ISO 9001:2015", "environmental_compliance": "ISO 14001", "last_audit_date": "2023-11-10", "audit_score": 92, "certifications": ["ISO 9001", "ISO 14001"]}'),
- CURRENT_TIMESTAMP()),
+ '{"document_title": "Quality Assurance Certificate Q4 2023", "pages": 3, "language": "English", "format": "PDF", "file_size_mb": 0.8, "tags": ["quality", "certificate", "Q4-2023"], "category": "Quality"}',
+ '{"defect_rate": 0.02, "purity_level": 99.8, "test_date": "2023-12-20", "test_standard": "ASTM D1234", "batch_numbers": ["BATCH-2023-Q4-001", "BATCH-2023-Q4-002"]}',
+ '{"iso_certified": true, "iso_standard": "ISO 9001:2015", "environmental_compliance": "ISO 14001", "last_audit_date": "2023-11-10", "audit_score": 92, "certifications": ["ISO 9001", "ISO 14001"]}'),
 ('DOC-003', 'SUP003', 'Invoice', '2024-01-28',
- PARSE_JSON('{"document_title": "Invoice INV-2024-00128", "pages": 2, "language": "English", "format": "PDF", "file_size_mb": 0.5, "tags": ["invoice", "payment", "2024"], "category": "Financial"}'),
- PARSE_JSON('{"invoice_number": "INV-2024-00128", "invoice_date": "2024-01-28", "due_date": "2024-02-27", "total_amount": 191500, "currency": "USD", "line_items": [{"part": "PART-11111", "quantity": 2000, "unit_price": 95.75}]}'),
- PARSE_JSON('{"iso_certified": true, "iso_standard": "ISO 9001:2015", "environmental_compliance": null, "last_audit_date": "2023-10-05", "audit_score": 88, "certifications": ["ISO 9001"]}'),
- CURRENT_TIMESTAMP());
+ '{"document_title": "Invoice INV-2024-00128", "pages": 2, "language": "English", "format": "PDF", "file_size_mb": 0.5, "tags": ["invoice", "payment", "2024"], "category": "Financial"}',
+ '{"invoice_number": "INV-2024-00128", "invoice_date": "2024-01-28", "due_date": "2024-02-27", "total_amount": 191500, "currency": "USD", "line_items": [{"part": "PART-11111", "quantity": 2000, "unit_price": 95.75}]}',
+ '{"iso_certified": true, "iso_standard": "ISO 9001:2015", "environmental_compliance": null, "last_audit_date": "2023-10-05", "audit_score": 88, "certifications": ["ISO 9001"]}');
 
-INSERT INTO MANUFACTURING_DEMO.DATA.product_configurations VALUES
+INSERT INTO MANUFACTURING_DEMO.DATA.product_configurations
+SELECT 
+    column1 AS product_id,
+    column2 AS version,
+    column3::DATE AS configuration_date,
+    PARSE_JSON(column4) AS config_data,
+    PARSE_JSON(column5) AS specifications,
+    PARSE_JSON(column6) AS bill_of_materials,
+    CURRENT_TIMESTAMP() AS created_at
+FROM VALUES
 ('PROD-001', 'V2.1', '2024-01-01',
- PARSE_JSON('{"model": "Premium", "engine_type": "V6 Turbo", "transmission": "8-Speed Automatic", "drivetrain": "AWD", "features": ["Adaptive Cruise Control", "Lane Keep Assist", "Blind Spot Monitoring", "360 Camera"], "options": {"interior": "Leather", "color": "Metallic Blue", "wheels": "20-inch Alloy"}}'),
- PARSE_JSON('{"dimensions": {"length_mm": 4850, "width_mm": 1920, "height_mm": 1680, "wheelbase_mm": 2850}, "weight_kg": 1850, "materials": {"body": "Aluminum", "frame": "Steel", "interior": "Leather/Synthetic"}, "performance": {"max_speed_kmh": 250, "acceleration_0_100": 5.8, "fuel_tank_liters": 70}}'),
- PARSE_JSON('{"components": [{"part_id": "PART-12345", "name": "Engine Block", "quantity": 1, "supplier": "SUP001"}, {"part_id": "PART-67890", "name": "Transmission Gear", "quantity": 1, "supplier": "SUP002"}, {"part_id": "PART-11111", "name": "Brake System", "quantity": 4, "supplier": "SUP003"}], "total_components": 1250, "assembly_complexity": "High"}'),
- CURRENT_TIMESTAMP()),
+ '{"model": "Premium", "engine_type": "V6 Turbo", "transmission": "8-Speed Automatic", "drivetrain": "AWD", "features": ["Adaptive Cruise Control", "Lane Keep Assist", "Blind Spot Monitoring", "360 Camera"], "options": {"interior": "Leather", "color": "Metallic Blue", "wheels": "20-inch Alloy"}}',
+ '{"dimensions": {"length_mm": 4850, "width_mm": 1920, "height_mm": 1680, "wheelbase_mm": 2850}, "weight_kg": 1850, "materials": {"body": "Aluminum", "frame": "Steel", "interior": "Leather/Synthetic"}, "performance": {"max_speed_kmh": 250, "acceleration_0_100": 5.8, "fuel_tank_liters": 70}}',
+ '{"components": [{"part_id": "PART-12345", "name": "Engine Block", "quantity": 1, "supplier": "SUP001"}, {"part_id": "PART-67890", "name": "Transmission Gear", "quantity": 1, "supplier": "SUP002"}, {"part_id": "PART-11111", "name": "Brake System", "quantity": 4, "supplier": "SUP003"}], "total_components": 1250, "assembly_complexity": "High"}'),
 ('PROD-002', 'V1.5', '2024-01-01',
- PARSE_JSON('{"model": "Electric", "battery_type": "Lithium-Ion", "battery_capacity_kwh": 85, "charging": {"type": "CCS", "max_power_kw": 150, "fast_charge_support": true}, "features": ["Regenerative Braking", "One-Pedal Driving", "Over-the-Air Updates", "Smart Charging"], "options": {"interior": "Vegan Leather", "color": "Pearl White", "wheels": "19-inch Aero"}}'),
- PARSE_JSON('{"dimensions": {"length_mm": 4750, "width_mm": 1890, "height_mm": 1620, "wheelbase_mm": 2900}, "weight_kg": 2100, "materials": {"body": "Aluminum", "frame": "Aluminum", "interior": "Recycled Materials"}, "performance": {"max_speed_kmh": 200, "acceleration_0_100": 4.5, "range_km": 450, "charging_time_minutes": 30}}'),
- PARSE_JSON('{"components": [{"part_id": "PART-22222", "name": "Battery Pack", "quantity": 1, "supplier": "SUP004"}, {"part_id": "PART-33333", "name": "ECU Module", "quantity": 2, "supplier": "SUP005"}], "total_components": 980, "assembly_complexity": "Medium"}'),
- CURRENT_TIMESTAMP());
+ '{"model": "Electric", "battery_type": "Lithium-Ion", "battery_capacity_kwh": 85, "charging": {"type": "CCS", "max_power_kw": 150, "fast_charge_support": true}, "features": ["Regenerative Braking", "One-Pedal Driving", "Over-the-Air Updates", "Smart Charging"], "options": {"interior": "Vegan Leather", "color": "Pearl White", "wheels": "19-inch Aero"}}',
+ '{"dimensions": {"length_mm": 4750, "width_mm": 1890, "height_mm": 1620, "wheelbase_mm": 2900}, "weight_kg": 2100, "materials": {"body": "Aluminum", "frame": "Aluminum", "interior": "Recycled Materials"}, "performance": {"max_speed_kmh": 200, "acceleration_0_100": 4.5, "range_km": 450, "charging_time_minutes": 30}}',
+ '{"components": [{"part_id": "PART-22222", "name": "Battery Pack", "quantity": 1, "supplier": "SUP004"}, {"part_id": "PART-33333", "name": "ECU Module", "quantity": 2, "supplier": "SUP005"}], "total_components": 980, "assembly_complexity": "Medium"}');
 
 -- UNSTRUCTURED DATA - Free-form text documents
 INSERT INTO MANUFACTURING_DEMO.DATA.maintenance_logs VALUES
