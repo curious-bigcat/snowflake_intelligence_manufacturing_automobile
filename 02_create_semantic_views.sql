@@ -31,28 +31,10 @@ TABLES (
   ir AS MANUFACTURING_DEMO.DATA.incident_reports PRIMARY KEY (incident_id)
 )
 RELATIONSHIPS (
-  -- Supply Chain Relationships
-  -- Note: supplier_id in supply_chain is part of composite PK, so we can't reference it directly
-  -- sc_supplier_docs AS sc(supplier_id) REFERENCES sd(supplier_id),
-  sc_inventory AS sc(part_number) REFERENCES inv(part_number),
-  
-  -- Production Relationships
-  -- Note: product_id in production is not unique, so we can't reference it directly
-  -- prod_product_config AS prod(product_id) REFERENCES pc(product_id),
-  -- prod_connected_products AS prod(product_id) REFERENCES cp(product_id),
-  prod_quality_reports AS prod(batch_number) REFERENCES qr(batch_number),
-  prod_iot_sensors AS prod(machine_id) REFERENCES iot(machine_id),
-  prod_iot_line AS prod(production_line_id) REFERENCES iot(production_line_id),
-  prod_maintenance AS prod(machine_id) REFERENCES ml(machine_id),
-  
-  -- Supplier Communications
-  -- Note: supplier_id in supply_chain is part of composite PK, so we can't reference it directly
-  -- scm_supplier AS scm(supplier_id) REFERENCES sc(supplier_id),
-  
-  -- Engineering Docs
-  -- Note: product_id in production is not unique, so we can't reference it directly
-  -- ed_product AS ed(product_id) REFERENCES prod(product_id),
-  -- ed_product_config AS ed(product_id) REFERENCES pc(product_id)
+  -- Note: Relationships require referenced columns to be PRIMARY KEY or UNIQUE
+  -- Since most foreign keys are not primary keys, we'll rely on semantic view
+  -- to enable cross-table queries through shared dimensions (product_id, supplier_id, etc.)
+  -- without explicit relationship definitions
 )
 DIMENSIONS (
   -- Supply Chain Dimensions
